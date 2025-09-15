@@ -4,14 +4,15 @@ import ToasterAlert from "../toaster/ToasterAlert";
 import { toast } from "sonner";
 import httpClient from "../Utils/httpClient";
 import { useNavigate } from "react-router-dom";
-
+import { userLogin } from "../Services/loginService";
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [loader, setLoader] = useState(false);
-  const [formData, setFormData] = useState({
+  const initialStage = {
     email: "",
     password: "",
-  });
+  };
+  const [showPassword, setShowPassword] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [formData, setFormData] = useState(initialStage);
 
   const navigate = useNavigate();
 
@@ -48,19 +49,17 @@ const Login = () => {
     }
 
     try {
-      const response = await httpClient.post("/user/userLogin", formData);
-
-      if (response?.data?.success) {
-        const token = response?.data?.data?.token;
-        localStorage.setItem("RoyalTouchAuthToken", token);
-        toast.success("Logged in successfully!");
+      const response = await userLogin(formData);
+      console.log("response", response);
+      if (response?.success) {
+        const token = response?.data?.token;
+        localStorage.setItem("SpondiasAuthToken", token);
+        toast.success(response?.message || "Login successfull");
         navigate("/dashboard");
-      } else {
-        toast.warning(response?.data?.message || "Login failed");
       }
-    } catch (err) {
-      console.error(err.response?.data || err.message);
-      toast.error(err.response?.data?.message || "Something went wrong!");
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong");
+      console.error("Login not successfull:", error);
     } finally {
       setLoader(false);
     }

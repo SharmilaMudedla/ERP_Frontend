@@ -18,7 +18,7 @@ const Dashboard = () => {
           </div>
           {/* End::page-header */}
           {/* Start:: row-1 */}
-          <div className="row">
+          {/* <div className="row">
             <div className="col-xxl-9">
               <div className="row">
                 <div className="col-xl-3 col-lg-6 col-md-6 col-sm-6">
@@ -295,7 +295,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* End:: row-1 */}
         </div>
       </div>

@@ -1,6 +1,11 @@
-import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("SpondiasAuthToken");
+    navigate("/");
+  };
   return (
     <>
       {/* Start::main-header */}
@@ -125,7 +130,7 @@ const Header = () => {
                 <li>
                   <a
                     className="dropdown-item d-flex align-items-center"
-                    href="sign-in-cover.html"
+                    onClick={handleLogout}
                   >
                     <i className="ri-logout-circle-line fs-15 me-2 text-gray fw-normal" />
                     Sign Out
