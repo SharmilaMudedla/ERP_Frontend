@@ -4,7 +4,9 @@
   /* page loader */
   function hideLoader() {
     const loader = document.getElementById("loader");
-    loader.classList.add("d-none")
+    if (loader) {
+      loader.classList.add("d-none");
+    }
   }
 
   window.addEventListener("load", hideLoader);
@@ -30,7 +32,7 @@
   flatpickr("#daterange", {
     mode: "range",
     dateFormat: "Y-m-d",
-    defaultDate: ["2024-07-01", "2024-07-30"]
+    defaultDate: ["2024-07-01", "2024-07-30"],
   });
   /* breadcrumb date range picker */
 
@@ -213,12 +215,12 @@
               "--form-control-bg",
               `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
             );
-            document
-              .querySelector("html")
-              .style.setProperty(
-                "--gray-3",
-                `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
-              );
+          document
+            .querySelector("html")
+            .style.setProperty(
+              "--gray-3",
+              `rgb(${color[0] + 14}, ${color[1] + 14}, ${color[2] + 14})`
+            );
           localStorage.removeItem("bgtheme");
           // updateColors();
           html.setAttribute("data-theme-mode", "dark");
@@ -241,7 +243,7 @@
     }
     nanoButtons1[0].click();
     /* for theme background */
-}
+  }
 
   /* header theme toggle */
   function toggleTheme() {
@@ -289,7 +291,7 @@
         html.setAttribute("style", "");
       }
       html.setAttribute("data-menu-styles", "dark");
-      
+
       if (document.querySelector("#switcher-canvas")) {
         document.querySelector("#switcher-dark-theme").checked = true;
         document.querySelector("#switcher-menu-dark").checked = true;
@@ -312,7 +314,10 @@
     }
   }
   let layoutSetting = document.querySelector(".layout-setting");
-  layoutSetting.addEventListener("click", toggleTheme);
+  if (layoutSetting) {
+    layoutSetting.addEventListener("click", toggleTheme);
+  }
+
   /* header theme toggle */
 
   /* Choices JS */
@@ -330,7 +335,11 @@
   /* Choices JS */
 
   /* footer year */
-  document.getElementById("year").innerHTML = new Date().getFullYear();
+  const yearElem = document.getElementById("year");
+  if (yearElem) {
+    yearElem.innerHTML = new Date().getFullYear();
+  }
+
   /* footer year */
 
   /* node waves */
@@ -383,25 +392,13 @@
   /* count-up */
 
   /* back to top */
-  const scrollToTop = document.querySelector(".scrollToTop");
-  const $rootElement = document.documentElement;
-  const $body = document.body;
-  window.onscroll = () => {
-    const scrollTop = window.scrollY || window.pageYOffset;
-    const clientHt = $rootElement.scrollHeight - $rootElement.clientHeight;
-    if (window.scrollY > 100) {
-      scrollToTop.style.display = "flex";
-    } else {
-      scrollToTop.style.display = "none";
-    }
-  };
-  scrollToTop.onclick = () => {
-    window.scrollTo(0, 0);
-  };
+
   /* back to top */
 
   /* header dropdowns scroll */
-  var myHeadernotification = document.getElementById("header-notification-scroll");
+  var myHeadernotification = document.getElementById(
+    "header-notification-scroll"
+  );
   new SimpleBar(myHeadernotification, { autoHide: true });
 
   var myHeaderCart = document.getElementById("header-cart-items-scroll");
@@ -421,27 +418,27 @@
         "Why do we dream?",
         "How do birds fly?",
         "What is the largest mammal?",
-        "Why do leaves change color in the fall?"
+        "Why do leaves change color in the fall?",
       ],
       cache: true,
     },
     resultItem: {
-      highlight: true
+      highlight: true,
     },
     events: {
       input: {
         selection: (event) => {
           const selection = event.detail.selection.value;
           autoCompleteJS.input.value = selection;
-        }
-      }
-    }
+        },
+      },
+    },
   });
 })();
 
 /* full screen */
 var elem = document.documentElement;
-window.openFullscreen = function() {
+window.openFullscreen = function () {
   let open = document.querySelector(".full-screen-open");
   let close = document.querySelector(".full-screen-close");
 
@@ -477,7 +474,7 @@ window.openFullscreen = function() {
     close.classList.add("d-none");
     open.classList.add("d-block");
   }
-}
+};
 /* full screen */
 
 /* toggle switches */
@@ -498,10 +495,12 @@ headerbtn.forEach((button) => {
     e.preventDefault();
     e.stopPropagation();
     button.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
-    document.getElementById("cart-data").innerText = `${document.querySelectorAll(".dropdown-item-close").length
-      } Items`;
-    document.getElementById("cart-icon-badge").innerText = `${document.querySelectorAll(".dropdown-item-close").length
-      }`;
+    document.getElementById("cart-data").innerText = `${
+      document.querySelectorAll(".dropdown-item-close").length
+    } Items`;
+    document.getElementById("cart-icon-badge").innerText = `${
+      document.querySelectorAll(".dropdown-item-close").length
+    }`;
     console.log(
       document.getElementById("header-cart-items-scroll").children.length
     );
@@ -522,8 +521,9 @@ headerbtn1.forEach((button) => {
     e.preventDefault();
     e.stopPropagation();
     button.parentNode.parentNode.parentNode.parentNode.remove();
-    document.getElementById("notifiation-data").innerText = `${document.querySelectorAll(".dropdown-item-close1").length
-      } Unread`;
+    document.getElementById("notifiation-data").innerText = `${
+      document.querySelectorAll(".dropdown-item-close1").length
+    } Unread`;
     if (document.querySelectorAll(".dropdown-item-close1").length == 0) {
       let elementHide1 = document.querySelector(".empty-header-item1");
       let elementShow1 = document.querySelector(".empty-item1");

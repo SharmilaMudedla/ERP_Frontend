@@ -1,6 +1,5 @@
 "use strict";
 
-
 const ANIMATION_DURATION = 300;
 
 const sidebar = document.getElementById("sidebar");
@@ -188,29 +187,35 @@ const slideDown = (target, duration = ANIMATION_DURATION) => {
 
   if (html.getAttribute("dir") == "rtl") {
     if (leftEdge < 0) {
-      target.classList.add('force-left');
+      target.classList.add("force-left");
     } else {
-      if (listItem.closest('ul').classList.contains('force-left') && rightEdge < window.innerWidth) {
-        target.classList.add('force-left');
+      if (
+        listItem.closest("ul").classList.contains("force-left") &&
+        rightEdge < window.innerWidth
+      ) {
+        target.classList.add("force-left");
       } else {
         // Reset classes and position if not moving out
-        target.classList.remove('force-left');
+        target.classList.remove("force-left");
       }
     }
   } else {
     // Check if moving out to the right
     if (rightEdge > window.innerWidth) {
-      target.classList.add('force-left');
+      target.classList.add("force-left");
     } else {
-      if (listItem.closest('ul').classList.contains('force-left') && leftEdge > 0) {
-        target.classList.add('force-left');
+      if (
+        listItem.closest("ul").classList.contains("force-left") &&
+        leftEdge > 0
+      ) {
+        target.classList.add("force-left");
       }
       // Check if moving out to the left
       else if (leftEdge < 0) {
-        target.classList.remove('force-left');
+        target.classList.remove("force-left");
       } else {
         // Reset classes and position if not moving out
-        target.classList.remove('force-left');
+        target.classList.remove("force-left");
       }
     }
   }
@@ -258,7 +263,13 @@ defaultOpenMenus.forEach((element) => {
 firstLevelItems.forEach((element) => {
   element.addEventListener("click", () => {
     let html = document.querySelector("html");
-    if ((html.getAttribute("data-nav-style") != "menu-hover" && html.getAttribute("data-nav-style") != "icon-hover") || window.innerWidth < 992 || (!html.getAttribute("data-toggled") && html.getAttribute("data-nav-layout") != "horizontal")) {
+    if (
+      (html.getAttribute("data-nav-style") != "menu-hover" &&
+        html.getAttribute("data-nav-style") != "icon-hover") ||
+      window.innerWidth < 992 ||
+      (!html.getAttribute("data-toggled") &&
+        html.getAttribute("data-nav-layout") != "horizontal")
+    ) {
       const parentMenu = element.closest(".nav.sub-open");
       if (parentMenu)
         parentMenu
@@ -284,8 +295,13 @@ innerLevelItems.forEach((element) => {
   let html = document.querySelector("html");
   // if ((html.getAttribute('data-nav-style') !== "menu-hover" || html.getAttribute('data-nav-style') !== "icon-hover") ) {
   element.addEventListener("click", () => {
-
-    if ((html.getAttribute("data-nav-style") != "menu-hover" && html.getAttribute("data-nav-style") != "icon-hover") || window.innerWidth < 992 || (!html.getAttribute("data-toggled") && html.getAttribute("data-nav-layout") != "horizontal")) {
+    if (
+      (html.getAttribute("data-nav-style") != "menu-hover" &&
+        html.getAttribute("data-nav-style") != "icon-hover") ||
+      window.innerWidth < 992 ||
+      (!html.getAttribute("data-toggled") &&
+        html.getAttribute("data-nav-layout") != "horizontal")
+    ) {
       const innerMenu = element.closest(".slide-menu");
       if (innerMenu)
         innerMenu
@@ -313,11 +329,12 @@ let headerToggleBtn, WindowPreSize;
 (() => {
   let html = document.querySelector("html");
   headerToggleBtn = document.querySelector(".sidemenu-toggle");
-  headerToggleBtn.addEventListener("click", toggleSidemenu);
+  if (headerToggleBtn) {
+    headerToggleBtn.addEventListener("click", toggleSidemenu);
+  }
+
   let mainContent = document.querySelector(".main-content");
-  if (window.innerWidth <= 992) {
-    mainContent.addEventListener("click", menuClose);
-  } else {
+  if (mainContent) {
     mainContent.removeEventListener("click", menuClose);
   }
 
@@ -342,7 +359,7 @@ let headerToggleBtn, WindowPreSize;
     !localStorage.getItem("menoverticalstyles") &&
     !document.querySelector(".landing-body") &&
     document.querySelector("html").getAttribute("data-nav-layout") !==
-    "horizontal"
+      "horizontal"
   ) {
     // To enable sidemenu layout styles
     // iconTextFn();
@@ -362,10 +379,7 @@ let headerToggleBtn, WindowPreSize;
     html.setAttribute("dir", "rtl");
     document
       .querySelector("#style")
-      ?.setAttribute(
-        "href",
-        "assets/libs/bootstrap/css/bootstrap.rtl.min.css"
-      );
+      ?.setAttribute("href", "assets/libs/bootstrap/css/bootstrap.rtl.min.css");
     //RTL
     if (localStorage.getItem("menortl")) {
       document.querySelector("#switcher-rtl").checked = true;
@@ -750,7 +764,6 @@ function doubletFn() {
   //       e.querySelector(".side-menu__label").textContent;
   //   });
   // });
-
 }
 function menuClickFn() {
   let html = document.querySelector("html");
@@ -796,7 +809,8 @@ function iconHoverFn() {
 function setNavActive() {
   let currentPath = window.location.pathname.split("/")[0];
 
-  currentPath = location.pathname == "/" ? "index" : location.pathname.substring(1);
+  currentPath =
+    location.pathname == "/" ? "index" : location.pathname.substring(1);
   currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
   let sidemenuItems = document.querySelectorAll(".side-menu__item");
   sidemenuItems.forEach((e) => {
@@ -804,27 +818,31 @@ function setNavActive() {
       currentPath = "index";
     }
 
-    if (e.getAttribute('href') === window.location.href) {
-      e.classList.add('active');
-      e.parentElement.classList.add('active');
-      e.parentElement.classList.add('open');
-      let parent = e.closest('ul');
+    if (e.getAttribute("href") === window.location.href) {
+      e.classList.add("active");
+      e.parentElement.classList.add("active");
+      e.parentElement.classList.add("open");
+      let parent = e.closest("ul");
       let hasParent = parent;
-      if(hasParent.previousElementSibling){
+      if (hasParent.previousElementSibling) {
         while (hasParent) {
-            hasParent.previousElementSibling.classList.add('active');
-            hasParent.previousElementSibling.classList.add('open');
-            hasParent.parentElement.classList.add('active');
-            hasParent.parentElement.classList.add('open');
-            let hasChild =  hasParent.querySelector('li.active')?.querySelector('ul');
-            hasChild ? hasChild.style.display = 'block' : null;
-            hasParent = hasParent.parentElement.closest('ul');
-          }
+          hasParent.previousElementSibling.classList.add("active");
+          hasParent.previousElementSibling.classList.add("open");
+          hasParent.parentElement.classList.add("active");
+          hasParent.parentElement.classList.add("open");
+          let hasChild = hasParent
+            .querySelector("li.active")
+            ?.querySelector("ul");
+          hasChild ? (hasChild.style.display = "block") : null;
+          hasParent = hasParent.parentElement.closest("ul");
         }
+      }
     }
   });
 }
-document.querySelector(".slide.has-sub.active .slide.has-sub.active")?.classList.add("open");
+document
+  .querySelector(".slide.has-sub.active .slide.has-sub.active")
+  ?.classList.add("open");
 function clearNavDropdown() {
   let sidemenus = document.querySelectorAll("ul.slide-menu");
   sidemenus.forEach((e) => {
@@ -1024,7 +1042,7 @@ function checkHoriMenu() {
   }
   if (
     document.querySelector("html").getAttribute("data-nav-layout") ===
-    "horizontal" &&
+      "horizontal" &&
     window.innerWidth > 992
   ) {
     let activeMenus = document.querySelectorAll(".slide.has-sub.open > ul");
@@ -1042,7 +1060,6 @@ function checkHoriMenu() {
       var leftEdge = dropdownRect.left - dropdownWidth;
 
       if (html.getAttribute("dir") == "rtl") {
-
         // Check if moving out to the right
         if (e.classList.contains("child1")) {
           if (dropdownRect.left < 0) {
@@ -1050,13 +1067,16 @@ function checkHoriMenu() {
           }
         }
         if (leftEdge < 0) {
-          target.classList.add('force-left');
+          target.classList.add("force-left");
         } else {
-          if (listItem.closest('ul').classList.contains('force-left') && rightEdge < window.innerWidth) {
-            target.classList.add('force-left');
+          if (
+            listItem.closest("ul").classList.contains("force-left") &&
+            rightEdge < window.innerWidth
+          ) {
+            target.classList.add("force-left");
           } else {
             // Reset classes and position if not moving out
-            target.classList.remove('force-left');
+            target.classList.remove("force-left");
           }
         }
       } else {
@@ -1067,35 +1087,36 @@ function checkHoriMenu() {
           }
         }
         if (rightEdge > window.innerWidth) {
-          target.classList.add('force-left');
+          target.classList.add("force-left");
         } else {
-          if (listItem.closest('ul').classList.contains('force-left') && leftEdge > 0) {
-            target.classList.add('force-left');
+          if (
+            listItem.closest("ul").classList.contains("force-left") &&
+            leftEdge > 0
+          ) {
+            target.classList.add("force-left");
           }
           // Check if moving out to the left
           else if (leftEdge < 0) {
-            target.classList.remove('force-left');
+            target.classList.remove("force-left");
           } else {
             // Reset classes and position if not moving out
-            target.classList.remove('force-left');
+            target.classList.remove("force-left");
           }
         }
       }
     });
-    let leftForceItem = document.querySelector(
-      ".slide-menu.active.force-left"
-    );
+    let leftForceItem = document.querySelector(".slide-menu.active.force-left");
     if (leftForceItem) {
       if (document.querySelector("html").getAttribute("dir") != "rtl") {
-        let check =
-          leftForceItem.getBoundingClientRect().right;
+        let check = leftForceItem.getBoundingClientRect().right;
         if (check < innerWidth) {
           leftForceItem.classList.remove("force-left");
-        }
-        else if (leftForceItem.getBoundingClientRect().left < 0) {
+        } else if (leftForceItem.getBoundingClientRect().left < 0) {
           if (
-            (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
-              document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
+            document.documentElement.getAttribute("data-nav-style") ==
+              "menu-hover" ||
+            document.documentElement.getAttribute("data-nav-style") ==
+              "icon-hover" ||
             window.innerWidth > 992
           ) {
             e.classList.remove("force-left");
@@ -1108,8 +1129,10 @@ function checkHoriMenu() {
           leftForceItem.getBoundingClientRect().width;
         if (check > 0) {
           if (
-            (document.documentElement.getAttribute("data-nav-style") == "menu-hover" ||
-              document.documentElement.getAttribute("data-nav-style") == "icon-hover") ||
+            document.documentElement.getAttribute("data-nav-style") ==
+              "menu-hover" ||
+            document.documentElement.getAttribute("data-nav-style") ==
+              "icon-hover" ||
             window.innerWidth > 992
           ) {
             leftForceItem.classList.remove("force-left");
@@ -1189,7 +1212,12 @@ function HoverToggleInnerMenuFn(event) {
   let html = document.documentElement;
   let element = event.currentTarget;
   let target = element.querySelector("ul");
-  if (element && html.getAttribute("data-nav-layout") == "horizontal" && (html.getAttribute("data-nav-style") == "menu-hover" || html.getAttribute("data-nav-style") == "icon-hover")) {
+  if (
+    element &&
+    html.getAttribute("data-nav-layout") == "horizontal" &&
+    (html.getAttribute("data-nav-style") == "menu-hover" ||
+      html.getAttribute("data-nav-style") == "icon-hover")
+  ) {
     const listItem = element.closest("li");
     // Get the position of the clicked element
     var dropdownRect = listItem.getBoundingClientRect();
@@ -1201,29 +1229,35 @@ function HoverToggleInnerMenuFn(event) {
 
     if (html.getAttribute("dir") == "rtl") {
       if (leftEdge < 0) {
-        target.classList.add('force-left');
+        target.classList.add("force-left");
       } else {
-        if (listItem.closest('ul').classList.contains('force-left') && rightEdge < window.innerWidth) {
-          target.classList.add('force-left');
+        if (
+          listItem.closest("ul").classList.contains("force-left") &&
+          rightEdge < window.innerWidth
+        ) {
+          target.classList.add("force-left");
         } else {
           // Reset classes and position if not moving out
-          target.classList.remove('force-left');
+          target.classList.remove("force-left");
         }
       }
     } else {
       // Check if moving out to the right
       if (rightEdge > window.innerWidth) {
-        target.classList.add('force-left');
+        target.classList.add("force-left");
       } else {
-        if (listItem.closest('ul').classList.contains('force-left') && leftEdge > 0) {
-          target.classList.add('force-left');
+        if (
+          listItem.closest("ul").classList.contains("force-left") &&
+          leftEdge > 0
+        ) {
+          target.classList.add("force-left");
         }
         // Check if moving out to the left
         else if (leftEdge < 0) {
-          target.classList.remove('force-left');
+          target.classList.remove("force-left");
         } else {
           // Reset classes and position if not moving out
-          target.classList.remove('force-left');
+          target.classList.remove("force-left");
         }
       }
     }
@@ -1300,13 +1334,14 @@ let customScrollTop = () => {
     if (ele.classList.contains("active")) {
       let elemRect = ele.getBoundingClientRect();
       if (
-        ele.children[0] && 
+        ele.children[0] &&
         ele.parentElement.classList.contains("has-sub") &&
         elemRect.top > 435
       ) {
         ele.scrollIntoView({ behavior: "smooth" });
       }
-    } 0
+    }
+    0;
   });
 };
 setTimeout(() => {
@@ -1319,9 +1354,9 @@ document.querySelector(".main-content").addEventListener("click", () => {
   document.querySelectorAll(".slide-menu").forEach((ele) => {
     if (
       document.querySelector("html").getAttribute("data-toggled") ==
-      "menu-click-closed" ||
+        "menu-click-closed" ||
       document.querySelector("html").getAttribute("data-toggled") ==
-      "icon-click-closed"
+        "icon-click-closed"
     ) {
       ele.style.display = "none";
     }
