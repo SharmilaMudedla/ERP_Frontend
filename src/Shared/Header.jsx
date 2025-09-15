@@ -1,7 +1,23 @@
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [dark, setDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    const html = document.documentElement;
+    if (dark) {
+      html.setAttribute("data-bs-theme", "dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.setAttribute("data-bs-theme", "light");
+      localStorage.setItem("theme", "light");
+    }
+  }, [dark]);
+
   const handleLogout = () => {
     localStorage.removeItem("SpondiasAuthToken");
     navigate("/");
@@ -78,6 +94,55 @@ const Header = () => {
                 {/* End::header-link-icon */}
               </a>
             </li>
+            {/* Start::header-element */}
+            <li className="header-element header-theme-mode">
+              <span
+                className="header-link layout-setting"
+                onClick={() => setDark((prev) => !prev)}
+              >
+                <span className="light-layout">
+                  {/* Moon Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="header-link-icon"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
+                    />
+                  </svg>
+                </span>
+                <span className="dark-layout">
+                  {/* Sun Icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="header-link-icon"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M17 12a5 5 0 1 1-10 0a5 5 0 0 1 10 0M12 2v1.5m0 17V22m7.07-2.929l-1.06-1.06M5.99 5.989L4.928 4.93M22 12h-1.5m-17 0H2m17.071-7.071l-1.06 1.06M5.99 18.011l-1.06 1.06"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </li>
+
+            {/* End::header-element */}
+
             {/* End::header-element */}
             <li className="header-element dropdown">
               {/* Start::header-link|dropdown-toggle */}

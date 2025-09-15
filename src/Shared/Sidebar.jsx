@@ -142,10 +142,7 @@ const Sidebar = () => {
                     <a>Role</a>
                   </li>
                   <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/add-role"
-                    >
+                    <Link className="dropdown-item side-menu__item" to="/Roles">
                       Add Role
                     </Link>
                   </li>
@@ -160,25 +157,8 @@ const Sidebar = () => {
                   aria-expanded={openMenus.user}
                   aria-controls="dashboard-menu"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="side-menu__icon"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <g
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      color="currentColor"
-                    >
-                      <path d="M4.5 14.5a7.5 7.5 0 1 1 15 0a7.5 7.5 0 0 1-15 0"></path>
-                      <path d="M9 14.5c0-1.657 1.295-3 2.893-3h.214c1.598 0 2.893 1.343 2.893 3s-1.295 3-2.893 3h-.214C10.295 17.5 9 16.157 9 14.5M13.56 2l-2.561 5m7-5l-2.821 5.602M10.44 2L12 4.594M6 2l2.821 5.5"></path>
-                    </g>
-                  </svg>
+                  {" "}
+                  <i class="bi bi-person side-menu__icon"></i>
                   <span className="side-menu__label">Manage Users</span>
                   <i className="ri-arrow-down-s-line side-menu__angle"></i>
                 </a>
@@ -200,10 +180,7 @@ const Sidebar = () => {
                     <a>Users</a>
                   </li>
                   <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/add-user"
-                    >
+                    <Link className="dropdown-item side-menu__item" to="/Users">
                       Add User
                     </Link>
                   </li>
