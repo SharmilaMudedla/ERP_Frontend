@@ -24,10 +24,20 @@ const AddDepartment = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const validateForm = () => {
@@ -133,7 +143,13 @@ const AddDepartment = () => {
                         </label>
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${
+                            errors.name
+                              ? "is-invalid"
+                              : formData.name
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="name"
                           name="name"
                           value={formData.name || ""}
@@ -141,7 +157,7 @@ const AddDepartment = () => {
                           placeholder="Enter department name"
                         />
                         {errors.name && (
-                          <small className="text-danger">{errors.name}</small>
+                          <div className="invalid-feedback">{errors.name}</div>
                         )}
                       </div>
 
@@ -152,7 +168,13 @@ const AddDepartment = () => {
                         </label>
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${
+                            errors.description
+                              ? "is-invalid"
+                              : formData.description
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="description"
                           name="description"
                           value={formData.description || ""}
@@ -160,9 +182,9 @@ const AddDepartment = () => {
                           placeholder="Enter description"
                         />
                         {errors.description && (
-                          <small className="text-danger">
+                          <div className="invalid-feedback">
                             {errors.description}
-                          </small>
+                          </div>
                         )}
                       </div>
 

@@ -67,7 +67,7 @@ const ManageDepartment = () => {
                       <Link to="/dashboard">Home</Link>
                     </li>
                     <li className="breadcrumb-item active" aria-current="page">
-                      departments
+                      Departments
                     </li>
                   </ol>
                 </nav>

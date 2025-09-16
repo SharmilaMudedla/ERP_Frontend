@@ -7,6 +7,7 @@ const Sidebar = () => {
     roles: false,
     user: false,
     department: false,
+    employee: false,
   });
 
   const toggleMenu = (key, e) => {
@@ -201,8 +202,10 @@ const Sidebar = () => {
                   aria-controls="dashboard-menu"
                 >
                   {" "}
-                  <i class="bi bi-person side-menu__icon"></i>
-                  <span className="side-menu__label">Manage departments</span>
+                  <i class="ri-git-branch-line"></i>
+                  <span className="side-menu__label">
+                    &nbsp;&nbsp;Manage Departments
+                  </span>
                   <i className="ri-arrow-down-s-line side-menu__angle"></i>
                 </a>
 
@@ -228,6 +231,50 @@ const Sidebar = () => {
                       to="/department"
                     >
                       Departments
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+              <li
+                className={`slide has-sub ${openMenus.employee ? "open" : ""}`}
+              >
+                <a
+                  href="#dashboard"
+                  className="side-menu__item"
+                  onClick={(e) => toggleMenu("employee", e)}
+                  aria-expanded={openMenus.employee}
+                  aria-controls="dashboard-menu"
+                >
+                  {" "}
+                  <i class="bi bi-person-add"></i>
+                  <span className="side-menu__label">
+                    &nbsp; &nbsp;Manage Empolyees
+                  </span>
+                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                </a>
+
+                <ul
+                  id="dashboard-menu"
+                  className="slide-menu child1"
+                  style={{
+                    display: openMenus.employee ? "block" : "none",
+                    position: "relative",
+                    left: "0px",
+                    top: "0px",
+                    margin: "0px",
+                    transform: "translate(5px, 703px)",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <li className="slide side-menu__label1">
+                    <a>Departments</a>
+                  </li>
+                  <li className="slide ">
+                    <Link
+                      className="dropdown-item side-menu__item"
+                      to="/employees"
+                    >
+                      Employees
                     </Link>
                   </li>
                 </ul>

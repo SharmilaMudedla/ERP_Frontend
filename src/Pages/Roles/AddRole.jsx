@@ -35,6 +35,13 @@ const AddRole = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const validateForm = () => {
@@ -148,7 +155,13 @@ const AddRole = () => {
                         </label>
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${
+                            errors.name
+                              ? "is-invalid"
+                              : formData.name
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="name"
                           name="name"
                           value={formData.name || ""}
@@ -157,7 +170,7 @@ const AddRole = () => {
                           disabled={loader}
                         />
                         {errors.name && (
-                          <small className="text-danger">{errors.name}</small>
+                          <div className="invalid-feedback">{errors.name}</div>
                         )}
                       </div>
 
@@ -167,7 +180,13 @@ const AddRole = () => {
                           Description
                         </label>
                         <textarea
-                          className="form-control"
+                          className={`form-control ${
+                            errors.description
+                              ? "is-invalid"
+                              : formData.description
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="description"
                           name="description"
                           rows="3"
@@ -177,9 +196,9 @@ const AddRole = () => {
                           disabled={loader}
                         ></textarea>
                         {errors.description && (
-                          <small className="text-danger">
+                          <div className="invalid-feedback">
                             {errors.description}
-                          </small>
+                          </div>
                         )}
                       </div>
 

@@ -7229,7 +7229,7 @@ typography
   font-size: 0.75rem;
 }
 .btn.btn-lg {
-  padding: 0.65rem 1rem;
+  padding: 0.65rem 0rem;
   border-radius: 0.3rem;
   font-size: 0.95rem;
 }

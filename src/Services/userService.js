@@ -1,4 +1,4 @@
-import httpClient from "../utils/httpClient";
+import httpClient from "../Utils/httpClient";
 const addUser = async (data) => {
   try {
     const response = await httpClient.post("/user/addUser", data);

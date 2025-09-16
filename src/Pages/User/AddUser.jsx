@@ -41,10 +41,20 @@ const AddUser = () => {
     fetchUsers();
   }, []);
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const validateForm = () => {
@@ -148,7 +158,13 @@ const AddUser = () => {
                         </label>
                         <input
                           type="text"
-                          className="form-control"
+                          className={`form-control ${
+                            errors.name
+                              ? "is-invalid"
+                              : formData.name
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="name"
                           name="name"
                           value={formData.name || ""}
@@ -156,7 +172,7 @@ const AddUser = () => {
                           placeholder="Enter name"
                         />
                         {errors.name && (
-                          <small className="text-danger">{errors.name}</small>
+                          <div className="invalid-feedback">{errors.name}</div>
                         )}
                       </div>
 
@@ -167,7 +183,13 @@ const AddUser = () => {
                         </label>
                         <input
                           type="email"
-                          className="form-control"
+                          className={`form-control ${
+                            errors.email
+                              ? "is-invalid"
+                              : formData.email
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="email"
                           name="email"
                           value={formData.email || ""}
@@ -175,7 +197,7 @@ const AddUser = () => {
                           placeholder="Enter email"
                         />
                         {errors.email && (
-                          <small className="text-danger">{errors.email}</small>
+                          <div className="invalid-feedback">{errors.email}</div>
                         )}
                       </div>
 
@@ -185,7 +207,13 @@ const AddUser = () => {
                           Role *
                         </label>
                         <select
-                          className="form-select"
+                          className={`form-control ${
+                            errors.roleId
+                              ? "is-invalid"
+                              : formData.roleId
+                              ? "is-valid"
+                              : ""
+                          }`}
                           id="roleId"
                           name="roleId"
                           value={formData.roleId || ""}
@@ -199,7 +227,9 @@ const AddUser = () => {
                           ))}
                         </select>
                         {errors.roleId && (
-                          <small className="text-danger">{errors.roleId}</small>
+                          <div className="invalid-feedback">
+                            {errors.roleId}
+                          </div>
                         )}
                       </div>
 
@@ -211,7 +241,13 @@ const AddUser = () => {
                           </label>
                           <input
                             type="password"
-                            className="form-control"
+                            className={`form-control ${
+                              errors.password
+                                ? "is-invalid"
+                                : formData.password
+                                ? "is-valid"
+                                : ""
+                            }`}
                             id="password"
                             name="password"
                             value={formData.password || ""}
@@ -219,9 +255,9 @@ const AddUser = () => {
                             placeholder="Enter password"
                           />
                           {errors.password && (
-                            <small className="text-danger">
+                            <div className="invalid-feedback">
                               {errors.password}
-                            </small>
+                            </div>
                           )}
                         </div>
                       )}

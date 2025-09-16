@@ -1,7 +1,7 @@
 import httpClient from "../Utils/httpClient";
-const addDepartment = async (data) => {
+const addEmployee = async (data) => {
   try {
-    const response = await httpClient.post("/department/addDepartment", data);
+    const response = await httpClient.post("/employee/addEmployee", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -11,24 +11,9 @@ const addDepartment = async (data) => {
     throw error;
   }
 };
-const getDepartments = async () => {
+const getEmployees = async () => {
   try {
-    const response = await httpClient.get("/department/getDepartments");
-    if (!response?.data?.success) {
-      throw new Error(response?.data?.message || "Something went wrong");
-    }
-    return response?.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-const getSingleDepartment = async (id) => {
-  try {
-    const response = await httpClient.get(
-      `/department/getSingleDepartment/${id}`
-    );
+    const response = await httpClient.get("/employee/getEmployees");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -39,10 +24,23 @@ const getSingleDepartment = async (id) => {
   }
 };
 
-const updateDepartment = async (id, data) => {
+const getEmployee = async (id) => {
+  try {
+    const response = await httpClient.get(`/employee/getSingleEmployee/${id}`);
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const updateEmployee = async (id, data) => {
   try {
     const response = await httpClient.put(
-      `/department/updateDepartment/${id}`,
+      `/employee/updateEmployee/${id}`,
       data
     );
     if (!response?.data?.success) {
@@ -55,10 +53,10 @@ const updateDepartment = async (id, data) => {
   }
 };
 
-const changeDepartmentStatus = async (id) => {
+const changeEmployeeStatus = async (id) => {
   try {
     const response = await httpClient.patch(
-      `/department/updateDepartmentStatus/${id}`
+      `/employee/updateEmployeeStatus/${id}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -71,9 +69,9 @@ const changeDepartmentStatus = async (id) => {
 };
 
 export {
-  addDepartment,
-  getDepartments,
-  getSingleDepartment,
-  updateDepartment,
-  changeDepartmentStatus,
+  addEmployee,
+  getEmployees,
+  getEmployee,
+  updateEmployee,
+  changeEmployeeStatus,
 };
