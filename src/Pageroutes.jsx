@@ -7,6 +7,8 @@ import AddRole from "./Pages/Roles/AddRole";
 import Loader from "./loader/Loader";
 import ManageRoles from "./Pages/Roles/ManageRoles";
 import ManageUsers from "./Pages/User/ManageUsers";
+import ManageDepartment from "./Pages/Department/ManageDepartment";
+import AddDepartment from "./Pages/Department/AddDepartment";
 
 const Pageroutes = () => {
   return (
@@ -18,7 +20,8 @@ const Pageroutes = () => {
         <Route path="/Users" element={<ManageUsers />} />
         <Route path="/add-role" element={<AddRole />} />
         <Route path="/add-user" element={<AddUser />} />
-        <Route path="/load" element={<Loader />} />
+        <Route path="/department" element={<ManageDepartment />} />
+        <Route path="/add-department" element={<AddDepartment />} />
       </Routes>
     </>
   );
