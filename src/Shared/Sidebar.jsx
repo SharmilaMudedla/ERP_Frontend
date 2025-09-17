@@ -24,6 +24,7 @@ const Sidebar = () => {
       return newState;
     });
   };
+  const role = localStorage.getItem("UserRole");
 
   return (
     <>
@@ -98,243 +99,258 @@ const Sidebar = () => {
                   <i className="ri-arrow-down-s-line side-menu__angle"></i>
                 </Link>
               </li>
-              {/* Role Dropdown */}
-              <li className={`slide has-sub ${openMenus.roles ? "open" : ""}`}>
-                <a
-                  href="#dashboard"
-                  className="side-menu__item"
-                  onClick={(e) => toggleMenu("roles", e)}
-                  aria-expanded={openMenus.roles}
-                  aria-controls="dashboard-menu"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="side-menu__icon"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
+              {(role === "admin" || role === "manager") && (
+                <>
+                  <li
+                    className={`slide has-sub ${openMenus.roles ? "open" : ""}`}
                   >
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="1.5"
-                      d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12M11 7h6M7 7h1m-1 5h1m-1 5h1m3-5h6m-6 5h6"
-                      color="currentColor"
-                    ></path>
-                  </svg>
-                  <span className="side-menu__label">Manage Roles</span>
-                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                </a>
-
-                <ul
-                  id="dashboard-menu"
-                  className="slide-menu child1"
-                  style={{
-                    display: openMenus.roles ? "block" : "none",
-                    position: "relative",
-                    left: "0px",
-                    top: "0px",
-                    margin: "0px",
-                    transform: "translate(5px, 703px)",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <li className="slide side-menu__label1">
-                    <a>Role</a>
-                  </li>
-                  <li className="slide ">
-                    <Link className="dropdown-item side-menu__item" to="/Roles">
-                      Roles
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              {/* Users Dropdown */}
-              <li className={`slide has-sub ${openMenus.user ? "open" : ""}`}>
-                <a
-                  href="#dashboard"
-                  className="side-menu__item"
-                  onClick={(e) => toggleMenu("user", e)}
-                  aria-expanded={openMenus.user}
-                  aria-controls="dashboard-menu"
-                >
-                  {" "}
-                  <i class="bi bi-person side-menu__icon"></i>
-                  <span className="side-menu__label">Manage Users</span>
-                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                </a>
-
-                <ul
-                  id="dashboard-menu"
-                  className="slide-menu child1"
-                  style={{
-                    display: openMenus.user ? "block" : "none",
-                    position: "relative",
-                    left: "0px",
-                    top: "0px",
-                    margin: "0px",
-                    transform: "translate(5px, 703px)",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <li className="slide side-menu__label1">
-                    <a>Users</a>
-                  </li>
-                  <li className="slide ">
-                    <Link className="dropdown-item side-menu__item" to="/Users">
-                      Users
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              {/* Department Dropdown */}
-              <li
-                className={`slide has-sub ${
-                  openMenus.department ? "open" : ""
-                }`}
-              >
-                <a
-                  href="#dashboard"
-                  className="side-menu__item"
-                  onClick={(e) => toggleMenu("department", e)}
-                  aria-expanded={openMenus.department}
-                  aria-controls="dashboard-menu"
-                >
-                  {" "}
-                  <i class="ri-git-branch-line"></i>
-                  <span className="side-menu__label">
-                    &nbsp;&nbsp;Manage Departments
-                  </span>
-                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                </a>
-
-                <ul
-                  id="dashboard-menu"
-                  className="slide-menu child1"
-                  style={{
-                    display: openMenus.department ? "block" : "none",
-                    position: "relative",
-                    left: "0px",
-                    top: "0px",
-                    margin: "0px",
-                    transform: "translate(5px, 703px)",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <li className="slide side-menu__label1">
-                    <a>Departments</a>
-                  </li>
-                  <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/department"
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("roles", e)}
+                      aria-expanded={openMenus.roles}
+                      aria-controls="dashboard-menu"
                     >
-                      Departments
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                className={`slide has-sub ${openMenus.employee ? "open" : ""}`}
-              >
-                <a
-                  href="#dashboard"
-                  className="side-menu__item"
-                  onClick={(e) => toggleMenu("employee", e)}
-                  aria-expanded={openMenus.employee}
-                  aria-controls="dashboard-menu"
-                >
-                  {" "}
-                  <i class="bi bi-person-add"></i>
-                  <span className="side-menu__label">
-                    &nbsp; &nbsp;Manage Empolyees
-                  </span>
-                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                </a>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="side-menu__icon"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
+                          d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12M11 7h6M7 7h1m-1 5h1m-1 5h1m3-5h6m-6 5h6"
+                          color="currentColor"
+                        />
+                      </svg>
+                      <span className="side-menu__label">Manage Roles</span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
 
-                <ul
-                  id="dashboard-menu"
-                  className="slide-menu child1"
-                  style={{
-                    display: openMenus.employee ? "block" : "none",
-                    position: "relative",
-                    left: "0px",
-                    top: "0px",
-                    margin: "0px",
-                    transform: "translate(5px, 703px)",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <li className="slide side-menu__label1">
-                    <a>Departments</a>
-                  </li>
-                  <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/employees"
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.roles ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
                     >
-                      Employees
-                    </Link>
+                      <li className="slide side-menu__label1">
+                        <a>Role</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/Roles"
+                        >
+                          Roles
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
-                </ul>
-              </li>
-              {/* Department Dropdown */}
-              <li
-                className={`slide has-sub ${
-                  openMenus.attendance ? "open" : ""
-                }`}
-              >
-                <a
-                  href="#dashboard"
-                  className="side-menu__item"
-                  onClick={(e) => toggleMenu("attendance", e)}
-                  aria-expanded={openMenus.attendance}
-                  aria-controls="dashboard-menu"
-                >
-                  {" "}
-                  <i class="ri-id-card-fill"></i>
-                  <span className="side-menu__label">
-                    &nbsp;&nbsp;Manage Attendance
-                  </span>
-                  <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                </a>
+                  {/* Users Dropdown */}
+                  <li
+                    className={`slide has-sub ${openMenus.user ? "open" : ""}`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("user", e)}
+                      aria-expanded={openMenus.user}
+                      aria-controls="dashboard-menu"
+                    >
+                      {" "}
+                      <i class="bi bi-person side-menu__icon"></i>
+                      <span className="side-menu__label">Manage Users</span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
 
-                <ul
-                  id="dashboard-menu"
-                  className="slide-menu child1"
-                  style={{
-                    display: openMenus.attendance ? "block" : "none",
-                    position: "relative",
-                    left: "0px",
-                    top: "0px",
-                    margin: "0px",
-                    transform: "translate(5px, 703px)",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <li className="slide side-menu__label1">
-                    <a>attendance</a>
-                  </li>
-                  <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/attendance"
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.user ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
                     >
-                      Attendance
-                    </Link>
+                      <li className="slide side-menu__label1">
+                        <a>Users</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/Users"
+                        >
+                          Users
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
-                  <li className="slide ">
-                    <Link
-                      className="dropdown-item side-menu__item"
-                      to="/viewAttendance"
+                  {/* Department Dropdown */}
+                  <li
+                    className={`slide has-sub ${
+                      openMenus.department ? "open" : ""
+                    }`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("department", e)}
+                      aria-expanded={openMenus.department}
+                      aria-controls="dashboard-menu"
                     >
-                      View Attendance
-                    </Link>
+                      {" "}
+                      <i class="ri-git-branch-line"></i>
+                      <span className="side-menu__label">
+                        &nbsp;&nbsp;Manage Departments
+                      </span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
+
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.department ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <li className="slide side-menu__label1">
+                        <a>Departments</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/department"
+                        >
+                          Departments
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
-                </ul>
-              </li>
+                  <li
+                    className={`slide has-sub ${
+                      openMenus.employee ? "open" : ""
+                    }`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("employee", e)}
+                      aria-expanded={openMenus.employee}
+                      aria-controls="dashboard-menu"
+                    >
+                      {" "}
+                      <i class="bi bi-person-add"></i>
+                      <span className="side-menu__label">
+                        &nbsp; &nbsp;Manage Empolyees
+                      </span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
+
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.employee ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <li className="slide side-menu__label1">
+                        <a>Departments</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/employees"
+                        >
+                          Employees
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                  {/* Department Dropdown */}
+                  <li
+                    className={`slide has-sub ${
+                      openMenus.attendance ? "open" : ""
+                    }`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("attendance", e)}
+                      aria-expanded={openMenus.attendance}
+                      aria-controls="dashboard-menu"
+                    >
+                      {" "}
+                      <i class="ri-id-card-fill"></i>
+                      <span className="side-menu__label">
+                        &nbsp;&nbsp;Manage Attendance
+                      </span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
+
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.attendance ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <li className="slide side-menu__label1">
+                        <a>attendance</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/attendance"
+                        >
+                          Attendance
+                        </Link>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/viewAttendance"
+                        >
+                          View Attendance
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>

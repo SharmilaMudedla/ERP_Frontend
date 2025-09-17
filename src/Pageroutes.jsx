@@ -1,8 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loader from "./loader/Loader";
-import ManageAttendance from "./Pages/Attendance/ManageAttendance";
-import ViewAttendance from "./Pages/Attendance/ViewAttendance";
+import ProtectedRoute from "./ProtectedRoute";
 
 const Login = lazy(() => import("./Authentication/Login"));
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
@@ -16,24 +15,148 @@ const ManageDepartment = lazy(() =>
 const AddDepartment = lazy(() => import("./Pages/Department/AddDepartment"));
 const ManageEmployees = lazy(() => import("./Pages/Employees/ManageEmployees"));
 const AddEmployee = lazy(() => import("./Pages/Employees/AddEmployee"));
-
-const Pageroutes = () => (
-  <Suspense fallback={<Loader />}>
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/Roles" element={<ManageRoles />} />
-      <Route path="/Users" element={<ManageUsers />} />
-      <Route path="/add-role" element={<AddRole />} />
-      <Route path="/add-user" element={<AddUser />} />
-      <Route path="/department" element={<ManageDepartment />} />
-      <Route path="/add-department" element={<AddDepartment />} />
-      <Route path="/employees" element={<ManageEmployees />} />
-      <Route path="/add-employee" element={<AddEmployee />} />
-      <Route path="/attendance" element={<ManageAttendance />} />
-      <Route path="/viewAttendance" element={<ViewAttendance />} />
-    </Routes>
-  </Suspense>
+const ManageAttendance = lazy(() =>
+  import("./Pages/Attendance/ManageAttendance")
 );
+const ViewAttendance = lazy(() => import("./Pages/Attendance/ViewAttendance"));
+
+const Pageroutes = () => {
+  const token = localStorage.getItem("SpondiasAuthToken");
+  const role = localStorage.getItem("UserRole") || "";
+
+  const isAdminOrManager = token && (role === "admin" || role === "manager");
+  const isAuthenticated = !!token;
+
+  return (
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        {/* Public route */}
+        <Route path="/" element={<Login />} />
+
+        {/* Dashboard accessible to all authenticated users */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute isAllowed={isAuthenticated} redirectPath="/">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Protected routes only for admin/manager */}
+        <Route
+          path="/Roles"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ManageRoles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Users"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ManageUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-role"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <AddRole />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-user"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <AddUser />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/department"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ManageDepartment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-department"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <AddDepartment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ManageEmployees />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-employee"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <AddEmployee />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/attendance"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ManageAttendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/viewAttendance"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ViewAttendance />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Suspense>
+  );
+};
 
 export default Pageroutes;
