@@ -9,6 +9,7 @@ import {
 } from "../../Services/attendenceService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
+import convertTo12HourFormat from "../../Utils/convert24hours";
 
 const ManageAttendance = () => {
   const [loader, setLoader] = useState(false);
@@ -43,12 +44,8 @@ const ManageAttendance = () => {
         response.data.forEach((att) => {
           attObj[att.employeeId._id] = {
             id: att._id,
-            checkInTime: att.checkInTime
-              ? att.checkInTime.substring(11, 16)
-              : "",
-            checkOutTime: att.checkOutTime
-              ? att.checkOutTime.substring(11, 16)
-              : "",
+            checkInTime: att.checkInTime || "",
+            checkOutTime: att.checkOutTime || "",
             status: att.status.toLowerCase(),
           };
         });
@@ -145,8 +142,8 @@ const ManageAttendance = () => {
         const payload = {
           employeeId: emp.employeeId,
           date: selectedDate,
-          checkInTime: new Date(`${selectedDate}T${att.checkInTime}`),
-          checkOutTime: new Date(`${selectedDate}T${att.checkOutTime}`),
+          checkInTime: convertTo12HourFormat(att.checkInTime),
+          checkOutTime: convertTo12HourFormat(att.checkOutTime),
           status: att.status.charAt(0).toUpperCase() + att.status.slice(1),
         };
 
@@ -239,9 +236,6 @@ const ManageAttendance = () => {
                                 <td>{emp.gender}</td>
                                 <td>
                                   <div className="input-group">
-                                    <span className="input-group-text text-muted">
-                                      <i className="ri-time-line" />
-                                    </span>
                                     <input
                                       type="time"
                                       className="form-control"
@@ -264,9 +258,6 @@ const ManageAttendance = () => {
                                 </td>
                                 <td>
                                   <div className="input-group">
-                                    <span className="input-group-text text-muted">
-                                      <i className="ri-time-line" />
-                                    </span>
                                     <input
                                       type="time"
                                       className="form-control"

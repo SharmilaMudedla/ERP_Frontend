@@ -1,0 +1,37 @@
+.radio-label {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.radio-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid gray;
+  border-radius: 50%;
+  position: relative;
+  cursor: default;
+  outline: none;
+  background-color: white;
+}
+
+.radio-input:checked {
+  border-width: 6px;
+  border-style: solid;
+  background-color: transparent;
+}
+
+.radio-input.present:checked {
+  border-color: green;
+}
+
+.radio-input.absent:checked {
+  border-color: red;
+}
+
+.radio-input.leave:checked {
+  border-color: orange;
+}

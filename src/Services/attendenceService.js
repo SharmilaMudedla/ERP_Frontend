@@ -55,10 +55,10 @@ const updateAttendance = async (id, data) => {
   }
 };
 
-const getAttendenceByDate = async (Date) => {
+const getAttendenceByDate = async (date) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getAttendanceByDate/${Date}`
+      `/attendance/getAttendanceByDate/${date}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
