@@ -54,6 +54,7 @@ const Login = () => {
       if (response?.success) {
         const token = response?.data?.token;
         localStorage.setItem("SpondiasAuthToken", token);
+
         toast.success(response?.message || "Login successfull");
         navigate("/dashboard");
       }

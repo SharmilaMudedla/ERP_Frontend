@@ -325,6 +325,14 @@ const Sidebar = () => {
                       Attendance
                     </Link>
                   </li>
+                  <li className="slide ">
+                    <Link
+                      className="dropdown-item side-menu__item"
+                      to="/viewAttendance"
+                    >
+                      View Attendance
+                    </Link>
+                  </li>
                 </ul>
               </li>
             </ul>
