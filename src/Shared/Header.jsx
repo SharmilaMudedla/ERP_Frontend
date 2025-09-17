@@ -20,6 +20,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("SpondiasAuthToken");
+    localStorage.removeItem("UserRole");
     navigate("/");
   };
   return (

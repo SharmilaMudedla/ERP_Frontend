@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../loader/Loader";
 import ToasterAlert from "../toaster/ToasterAlert";
 import { toast } from "sonner";
-import httpClient from "../Utils/httpClient";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../Services/loginService";
+import { getRoles } from "../Services/roleService";
 const Login = () => {
   const initialStage = {
     email: "",
@@ -15,7 +15,26 @@ const Login = () => {
   const [formData, setFormData] = useState(initialStage);
 
   const navigate = useNavigate();
-
+  const [roles, setRoles] = useState([]);
+  const fetchRoles = async () => {
+    setLoader(true);
+    try {
+      const response = await getRoles();
+      if (response?.success) {
+        setRoles(response?.data || []);
+      }
+      console.log("response", response);
+    } catch (error) {
+      setRoles([]);
+      toast.error(error?.message || "Error fetching Roles");
+      console.error(" Error fetching Roles:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+  useEffect(() => {
+    fetchRoles();
+  }, []);
   const handleChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -41,6 +60,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoader(true);
+
     const errors = validateForm(formData);
     if (Object.keys(errors).length > 0) {
       Object.values(errors).forEach((err) => toast.warning(err));
@@ -50,17 +70,26 @@ const Login = () => {
 
     try {
       const response = await userLogin(formData);
-      console.log("response", response);
       if (response?.success) {
         const token = response?.data?.token;
-        localStorage.setItem("SpondiasAuthToken", token);
+        const userRoleId = response?.data?.user?.roleId;
 
-        toast.success(response?.message || "Login successfull");
+        const matchedRole = roles.find(
+          (role) => role._id === userRoleId || role.id === userRoleId
+        );
+
+        const roleName = matchedRole?.name
+          ? matchedRole.name.toLowerCase()
+          : "employee";
+
+        localStorage.setItem("SpondiasAuthToken", token);
+        localStorage.setItem("UserRole", roleName);
+
+        toast.success(response?.message || "Login successful");
         navigate("/dashboard");
       }
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
-      console.error("Login not successfull:", error);
     } finally {
       setLoader(false);
     }
