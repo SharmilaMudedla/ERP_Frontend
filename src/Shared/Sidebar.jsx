@@ -9,6 +9,7 @@ const Sidebar = () => {
     department: false,
     employee: false,
     attendance: false,
+    leave: false,
   });
 
   const toggleMenu = (key, e) => {
@@ -99,6 +100,7 @@ const Sidebar = () => {
                   <i className="ri-arrow-down-s-line side-menu__angle"></i>
                 </Link>
               </li>
+
               {(role === "admin" || role === "manager") && (
                 <>
                   <li
@@ -347,9 +349,99 @@ const Sidebar = () => {
                           View Attendance
                         </Link>
                       </li>
+                      <li
+                        className={`slide has-sub ${
+                          openMenus.leave ? "open" : ""
+                        }`}
+                      >
+                        <a
+                          href="#dashboard"
+                          className="side-menu__item"
+                          onClick={(e) => toggleMenu("leave", e)}
+                          aria-expanded={openMenus.leave}
+                          aria-controls="dashboard-menu"
+                        >
+                          {" "}
+                          <i class="bi bi-person side-menu__icon"></i>
+                          <span className="side-menu__label">
+                            Manage Leaves
+                          </span>
+                          <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                        </a>
+
+                        <ul
+                          id="dashboard-menu"
+                          className="slide-menu child1"
+                          style={{
+                            display: openMenus.leave ? "block" : "none",
+                            position: "relative",
+                            left: "0px",
+                            top: "0px",
+                            margin: "0px",
+                            transform: "translate(5px, 703px)",
+                            boxSizing: "border-box",
+                          }}
+                        >
+                          <li className="slide side-menu__label1">
+                            <a>Leave</a>
+                          </li>
+                          <li className="slide ">
+                            <Link
+                              className="dropdown-item side-menu__item"
+                              to="/leave"
+                            >
+                              View Leave Data
+                            </Link>
+                          </li>
+                        </ul>
+                      </li>
                     </ul>
                   </li>
                 </>
+              )}
+              {role === "employee" && (
+                <li
+                  className={`slide has-sub ${openMenus.leave ? "open" : ""}`}
+                >
+                  <a
+                    href="#dashboard"
+                    className="side-menu__item"
+                    onClick={(e) => toggleMenu("leave", e)}
+                    aria-expanded={openMenus.leave}
+                    aria-controls="dashboard-menu"
+                  >
+                    {" "}
+                    <i class="bi bi-person side-menu__icon"></i>
+                    <span className="side-menu__label">Manage Leaves</span>
+                    <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                  </a>
+
+                  <ul
+                    id="dashboard-menu"
+                    className="slide-menu child1"
+                    style={{
+                      display: openMenus.leave ? "block" : "none",
+                      position: "relative",
+                      left: "0px",
+                      top: "0px",
+                      margin: "0px",
+                      transform: "translate(5px, 703px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <li className="slide side-menu__label1">
+                      <a>Leave</a>
+                    </li>
+                    <li className="slide ">
+                      <Link
+                        className="dropdown-item side-menu__item"
+                        to="/addleave"
+                      >
+                        Add Leave
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
               )}
             </ul>
           </nav>
