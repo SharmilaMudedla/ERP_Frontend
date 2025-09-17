@@ -72,7 +72,8 @@ const AddEmployee = () => {
 
   const validateForm = () => {
     let newErrors = {};
-
+    if (!formData.employeeId.trim())
+      newErrors.employeeId = "Employee Id is required.";
     if (!formData.firstName.trim())
       newErrors.firstName = "First name is required.";
     if (!formData.lastName.trim())
@@ -210,6 +211,32 @@ const AddEmployee = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="card-body">
                     <div className="row gy-3">
+                      {/* Last Name */}
+                      <div className="col-xl-6">
+                        <label htmlFor="employeeId" className="form-label">
+                          Employee Id *
+                        </label>
+                        <input
+                          type="text"
+                          name="employeeId"
+                          id="employeeId"
+                          value={formData.employeeId || ""}
+                          onChange={handleChange}
+                          className={`form-control ${
+                            errors.employeeId
+                              ? "is-invalid"
+                              : formData.employeeId
+                              ? "is-valid"
+                              : ""
+                          }`}
+                          placeholder="Enter EmployeeId"
+                        />
+                        {errors.lastName && (
+                          <div className="invalid-feedback">
+                            {errors.lastName}
+                          </div>
+                        )}
+                      </div>
                       <div className="col-xl-6">
                         <label htmlFor="firstName" className="form-label">
                           First Name *
@@ -367,34 +394,6 @@ const AddEmployee = () => {
                           <div className="invalid-feedback">{errors.phone}</div>
                         )}
                       </div>
-
-                      {/* Address */}
-                      <div className="col-xl-12">
-                        <label htmlFor="address" className="form-label">
-                          Address *
-                        </label>
-                        <textarea
-                          id="address"
-                          name="address"
-                          value={formData.address || ""}
-                          onChange={handleChange}
-                          rows="3"
-                          className={`form-control ${
-                            errors.address
-                              ? "is-invalid"
-                              : formData.address
-                              ? "is-valid"
-                              : ""
-                          }`}
-                          placeholder="Enter address"
-                        />
-                        {errors.address && (
-                          <div className="invalid-feedback">
-                            {errors.address}
-                          </div>
-                        )}
-                      </div>
-
                       {/* Department */}
                       <div className="col-xl-6">
                         <label htmlFor="departmentId" className="form-label">
@@ -423,6 +422,33 @@ const AddEmployee = () => {
                         {errors.departmentId && (
                           <div className="invalid-feedback">
                             {errors.departmentId}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Address */}
+                      <div className="col-xl-12">
+                        <label htmlFor="address" className="form-label">
+                          Address *
+                        </label>
+                        <textarea
+                          id="address"
+                          name="address"
+                          value={formData.address || ""}
+                          onChange={handleChange}
+                          rows="3"
+                          className={`form-control ${
+                            errors.address
+                              ? "is-invalid"
+                              : formData.address
+                              ? "is-valid"
+                              : ""
+                          }`}
+                          placeholder="Enter address"
+                        />
+                        {errors.address && (
+                          <div className="invalid-feedback">
+                            {errors.address}
                           </div>
                         )}
                       </div>

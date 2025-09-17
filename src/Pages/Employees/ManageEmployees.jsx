@@ -11,7 +11,7 @@ import ToasterAlert from "../../toaster/ToasterAlert";
 const ManageEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState(null); // 👈 store employee details
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const fetchEmployees = async () => {
     setLoader(true);

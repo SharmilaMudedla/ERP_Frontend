@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Loader from "./loader/Loader";
+import ManageAttendance from "./Pages/Attendance/ManageAttendance";
 
 const Login = lazy(() => import("./Authentication/Login"));
 const Dashboard = lazy(() => import("./Dashboard/Dashboard"));
@@ -28,6 +29,7 @@ const Pageroutes = () => (
       <Route path="/add-department" element={<AddDepartment />} />
       <Route path="/employees" element={<ManageEmployees />} />
       <Route path="/add-employee" element={<AddEmployee />} />
+      <Route path="/attendance" element={<ManageAttendance />} />
     </Routes>
   </Suspense>
 );
