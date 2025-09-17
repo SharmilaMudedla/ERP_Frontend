@@ -3,25 +3,45 @@ import { Link } from "react-router-dom";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
 import { toast } from "sonner";
+import { getEmployees } from "../../Services/employeeService";
 import { getAttendenceByDate } from "../../Services/attendenceService";
 import "./Attendance.css";
 const ViewAttendance = () => {
   const [loader, setLoader] = useState(false);
+  const [attendance, setAttendance] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+
+  const fetchEmployees = async () => {
+    setLoader(true);
+    try {
+      const response = await getEmployees();
+      if (response?.success) {
+        setEmployees(response?.data || []);
+      }
+
+      // console.log("response", response);
+    } catch (error) {
+      setEmployees([]);
+      toast.error(error?.message || "Error fetching employees");
+      console.error(" Error fetching employees:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
 
   const getEmployeeAttendance = async (date) => {
     setLoader(true);
     try {
       const response = await getAttendenceByDate(date);
       if (response?.success) {
-        setEmployees(response.data || []);
+        setAttendance(response.data || []);
       }
     } catch (error) {
       toast.error(error?.message || "Error fetching employees");
-      setEmployees([]);
+      setAttendance([]);
     } finally {
       setLoader(false);
     }
@@ -29,6 +49,7 @@ const ViewAttendance = () => {
 
   useEffect(() => {
     getEmployeeAttendance(selectedDate);
+    fetchEmployees();
   }, [selectedDate]);
   return (
     <>
@@ -82,20 +103,35 @@ const ViewAttendance = () => {
                           <tr>
                             <th>S.No</th>
                             <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Gender</th>
                             <th>Check-In</th>
                             <th>Check-Out</th>
                             <th>Attendance Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {employees.map((emp, idx) => {
-                            console.log("emp", emp);
+                          {attendance.map((att, idx) => {
+                            // console.log("emp", emp);
+                            const matchedEmployee = employees.find(
+                              (emp) => emp.employeeId === att.employeeId
+                            );
+                            const firstName = matchedEmployee
+                              ? matchedEmployee.firstName +
+                                " " +
+                                matchedEmployee.lastName
+                              : "Unknown";
+                            const gender = matchedEmployee
+                              ? matchedEmployee.gender
+                              : "Unknown";
                             return (
-                              <tr key={emp.employeeId}>
+                              <tr key={att.employeeId}>
                                 <td>{idx + 1}</td>
-                                <td>{emp.employeeId}</td>
-                                <td>{emp.checkInTime || ""}</td>
-                                <td>{emp.checkOutTime || ""}</td>
+                                <td>{att.employeeId || ""}</td>
+                                <td>{firstName || ""}</td>
+                                <td>{gender || ""}</td>
+                                <td>{att.checkInTime || ""}</td>
+                                <td>{att.checkOutTime || ""}</td>
                                 <td>
                                   <div className="d-flex gap-3">
                                     {["present", "absent", "leave"].map(
@@ -107,10 +143,10 @@ const ViewAttendance = () => {
                                           <input
                                             className={`radio-input ${status}`}
                                             type="radio"
-                                            name={`status-${emp.employeeId}`}
-                                            value={status}
+                                            name={`status-${att.employeeId}`}
+                                            value={status || ""}
                                             checked={
-                                              emp.status.toLowerCase() ===
+                                              att.status.toLowerCase() ===
                                               status
                                             }
                                             readOnly
