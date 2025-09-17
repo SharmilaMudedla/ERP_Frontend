@@ -72,8 +72,7 @@ const AddEmployee = () => {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.employeeId.trim())
-      newErrors.employeeId = "Employee Id is required.";
+    if (!formData.employeeId) newErrors.employeeId = "Employee Id is required.";
     if (!formData.firstName.trim())
       newErrors.firstName = "First name is required.";
     if (!formData.lastName.trim())
