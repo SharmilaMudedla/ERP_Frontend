@@ -226,8 +226,21 @@ const ManageEmployees = () => {
                       <b>Salary Structure:</b>{" "}
                       {selectedEmployee.salaryStructure}
                     </p>
+
                     <p>
                       <b>Status:</b> {selectedEmployee.status}
+                    </p>
+                    <p>
+                      <b>Image</b>
+                      {selectedEmployee.image ? (
+                        <img
+                          src={`http://localhost:4000/${selectedEmployee.image}`}
+                          alt="Employee Image"
+                          style={{ width: "100px", height: "100px" }}
+                        />
+                      ) : (
+                        <p>No image available</p>
+                      )}
                     </p>
                   </div>
                 </div>

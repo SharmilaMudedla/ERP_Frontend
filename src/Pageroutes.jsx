@@ -19,6 +19,10 @@ const ManageAttendance = lazy(() =>
   import("./Pages/Attendance/ManageAttendance")
 );
 const ViewAttendance = lazy(() => import("./Pages/Attendance/ViewAttendance"));
+const AttendanceReport = lazy(() =>
+  import("./Pages/Attendance/AttendanceReport")
+);
+const ViewReport = lazy(() => import("./Pages/Attendance/ViewReport"));
 
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
@@ -151,6 +155,28 @@ const Pageroutes = () => {
               redirectPath="/dashboard"
             >
               <ViewAttendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/attendanceReport"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <AttendanceReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-report"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ViewReport />
             </ProtectedRoute>
           }
         />

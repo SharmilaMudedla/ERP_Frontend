@@ -9,6 +9,7 @@ import {
 import { getDepartments } from "../../Services/departmentService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
+import { uploadFileImage } from "../../Utils/imagaHandler";
 const initialStage = {
   firstName: "",
   lastName: "",
@@ -29,6 +30,7 @@ const AddEmployee = () => {
   const [formData, setFormData] = useState(initialStage);
   const [errors, setErrors] = useState({});
   const [loader, setLoader] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
   const [params] = useSearchParams();
   const EmployeeId = params.get("uid");
   const navigate = useNavigate();
@@ -50,9 +52,7 @@ const AddEmployee = () => {
       setLoader(false);
     }
   };
-  useEffect(() => {
-    fetchDepartments();
-  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -96,6 +96,7 @@ const AddEmployee = () => {
 
     if (!formData.departmentId)
       newErrors.departmentId = "Department is required.";
+    if (!formData.image) newErrors.image = "Image is required.";
 
     if (!formData.designation.trim())
       newErrors.designation = "Designation is required.";
@@ -135,7 +136,11 @@ const AddEmployee = () => {
       if (response?.success) {
         const singleEmployee = response?.data || {};
         setFormData(singleEmployee);
+        if (singleEmployee.image) {
+          setPreviewImage(`http://localhost:4000/${singleEmployee.image}`);
+        }
       }
+
       toast.success(response?.message || "Employee fetched successfully");
     } catch (error) {
       console.error("Error fetching details:", error);
@@ -151,7 +156,25 @@ const AddEmployee = () => {
     } else {
       setFormData(initialStage);
     }
+    fetchDepartments();
   }, [EmployeeId]);
+
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    setPreviewImage(URL.createObjectURL(file));
+    const imageResponse = await uploadFileImage(event.target.files[0]);
+    if (imageResponse?.data?.success) {
+      setFormData({
+        ...formData,
+        image: imageResponse?.data?.data?.filename,
+      });
+
+      toast.success("file uploaded successfully");
+    } else {
+      toast.error("file upload failed");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -550,6 +573,53 @@ const AddEmployee = () => {
                           placeholder="Enter salary structure"
                           className="form-control"
                         />
+                      </div>
+                      <div className="col-xl-6">
+                        <label htmlFor="image" className="form-label">
+                          Image
+                        </label>
+                        <input
+                          type="file"
+                          id="image"
+                          name="image"
+                          onChange={handleImageChange}
+                          className={`form-select ${
+                            errors.image
+                              ? "is-invalid"
+                              : formData.image
+                              ? "is-valid"
+                              : ""
+                          }`}
+                        />
+                        {errors.image && (
+                          <div className="invalid-feedback">{errors.image}</div>
+                        )}
+                        {/* Show new preview or existing image */}
+                        {previewImage ? (
+                          <div className="img-preview">
+                            <img
+                              src={previewImage}
+                              alt="Preview"
+                              style={{
+                                maxHeight: "120px",
+                                maxWidth: "120px",
+                                marginTop: "8px",
+                              }}
+                            />
+                          </div>
+                        ) : formData.image ? (
+                          <div className="img-preview">
+                            <img
+                              src={`http://localhost:4000/${formData.image}`}
+                              alt="Current"
+                              style={{
+                                maxHeight: "120px",
+                                maxWidth: "120px",
+                                marginTop: "8px",
+                              }}
+                            />
+                          </div>
+                        ) : null}
                       </div>
 
                       {/* Status */}

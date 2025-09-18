@@ -196,7 +196,8 @@ const ManageAttendance = () => {
               <div className="card custom-card">
                 <div className="card-header d-flex justify-content-between align-items-center">
                   <h4 className="card-title m-0">
-                    Attendance for {selectedDate}
+                    {/* Attendance for {selectedDate} */}
+                    Add Attendance
                   </h4>
                   <input
                     type="date"
@@ -217,7 +218,6 @@ const ManageAttendance = () => {
                             <th>S.No</th>
                             <th>Employee ID</th>
                             <th>Employee Name</th>
-                            <th>Gender</th>
                             <th>Check-In</th>
                             <th>Check-Out</th>
                             <th>Attendance Status</th>
@@ -233,7 +233,7 @@ const ManageAttendance = () => {
                                 <td>
                                   {emp.firstName} {emp.lastName}
                                 </td>
-                                <td>{emp.gender}</td>
+
                                 <td>
                                   <div className="input-group">
                                     <input

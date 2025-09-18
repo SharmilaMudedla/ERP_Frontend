@@ -102,65 +102,207 @@ const ViewAttendance = () => {
                         <thead>
                           <tr>
                             <th>S.No</th>
-                            <th>Employee ID</th>
                             <th>Employee Name</th>
-                            <th>Gender</th>
-                            <th>Check-In</th>
-                            <th>Check-Out</th>
+                            <th>Check-In & Out</th>
+                            <th>Overtime</th>
                             <th>Attendance Status</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {attendance.map((att, idx) => {
-                            // console.log("emp", emp);
-                            const matchedEmployee = employees.find(
-                              (emp) => emp.employeeId === att.employeeId
-                            );
-                            const firstName = matchedEmployee
-                              ? matchedEmployee.firstName +
-                                " " +
-                                matchedEmployee.lastName
-                              : "Unknown";
-                            const gender = matchedEmployee
-                              ? matchedEmployee.gender
-                              : "Unknown";
-                            return (
-                              <tr key={att.employeeId}>
-                                <td>{idx + 1}</td>
-                                <td>{att.employeeId || ""}</td>
-                                <td>{firstName || ""}</td>
-                                <td>{gender || ""}</td>
-                                <td>{att.checkInTime || ""}</td>
-                                <td>{att.checkOutTime || ""}</td>
-                                <td>
-                                  <div className="d-flex gap-3">
-                                    {["present", "absent", "leave"].map(
-                                      (status) => (
-                                        <label
-                                          key={status}
-                                          className="radio-label"
+                          {attendance && attendance.length > 0 ? (
+                            attendance.map((att, idx) => {
+                              const matchedEmployee = employees.find(
+                                (emp) => emp.employeeId === att.employeeId
+                              );
+                              const firstName = matchedEmployee
+                                ? `${matchedEmployee.firstName} ${matchedEmployee.lastName}`
+                                : "Unknown";
+
+                              return (
+                                <tr key={att.employeeId}>
+                                  <td>{idx + 1}</td>
+                                  <td>
+                                    {firstName || ""}
+                                    <br></br>
+                                    <span>
+                                      <b>{att.employeeId || ""}</b>
+                                    </span>
+                                  </td>
+
+                                  <td>
+                                    <div
+                                      className="d-flex align-items-center"
+                                      style={{ minWidth: "220px" }}
+                                    >
+                                      <span className="check-inColor fw-bold">
+                                        {att.checkInTime || "--"}
+                                      </span>
+
+                                      <div
+                                        className="mx-2 position-relative timeline"
+                                        style={{ width: "120px" }}
+                                      >
+                                        <hr className="m-0" />
+                                        <span
+                                          className="position-absolute top-50 start-50 translate-middle text-muted small"
+                                          style={{
+                                            background: "#fff",
+                                            padding: "0 4px",
+                                          }}
                                         >
-                                          <input
-                                            className={`radio-input ${status}`}
-                                            type="radio"
-                                            name={`status-${att.employeeId}`}
-                                            value={status || ""}
-                                            checked={
-                                              att.status.toLowerCase() ===
-                                              status
-                                            }
-                                            readOnly
-                                          />
-                                          {status.charAt(0).toUpperCase() +
-                                            status.slice(1)}
-                                        </label>
-                                      )
-                                    )}
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                          {att.checkInTime && att.checkOutTime
+                                            ? (() => {
+                                                const parseTime = (timeStr) => {
+                                                  if (!timeStr) return null;
+                                                  const [time, modifier] =
+                                                    timeStr.split(" ");
+                                                  let [hours, minutes] = time
+                                                    .split(":")
+                                                    .map(Number);
+
+                                                  if (
+                                                    modifier === "PM" &&
+                                                    hours < 12
+                                                  )
+                                                    hours += 12;
+                                                  if (
+                                                    modifier === "AM" &&
+                                                    hours === 12
+                                                  )
+                                                    hours = 0;
+
+                                                  const date = new Date();
+                                                  date.setHours(
+                                                    hours,
+                                                    minutes,
+                                                    0,
+                                                    0
+                                                  );
+                                                  return date;
+                                                };
+
+                                                const inTime = parseTime(
+                                                  att.checkInTime
+                                                );
+                                                const outTime = parseTime(
+                                                  att.checkOutTime
+                                                );
+
+                                                if (!inTime || !outTime)
+                                                  return "";
+
+                                                const diffMs = outTime - inTime;
+                                                const hours = Math.floor(
+                                                  diffMs / (1000 * 60 * 60)
+                                                );
+                                                const mins = Math.floor(
+                                                  (diffMs % (1000 * 60 * 60)) /
+                                                    (1000 * 60)
+                                                );
+
+                                                return `${hours}h ${mins}m`;
+                                              })()
+                                            : ""}
+                                        </span>
+                                      </div>
+                                      <span className="check-OutColor fw-bold">
+                                        {att.checkOutTime || "--"}
+                                      </span>
+                                    </div>
+                                  </td>
+
+                                  <td>
+                                    {att.checkInTime && att.checkOutTime
+                                      ? (() => {
+                                          const parseTime = (timeStr) => {
+                                            if (!timeStr) return null;
+                                            const [time, modifier] =
+                                              timeStr.split(" ");
+                                            let [hours, minutes] = time
+                                              .split(":")
+                                              .map(Number);
+
+                                            if (modifier === "PM" && hours < 12)
+                                              hours += 12;
+                                            if (
+                                              modifier === "AM" &&
+                                              hours === 12
+                                            )
+                                              hours = 0;
+
+                                            const date = new Date();
+                                            date.setHours(hours, minutes, 0, 0);
+                                            return date;
+                                          };
+
+                                          const inTime = parseTime(
+                                            att.checkInTime
+                                          );
+                                          const outTime = parseTime(
+                                            att.checkOutTime
+                                          );
+
+                                          if (!inTime || !outTime) return "";
+
+                                          const diffMs = outTime - inTime;
+                                          const totalHours = Math.floor(
+                                            diffMs / (1000 * 60 * 60)
+                                          );
+                                          const totalMins = Math.floor(
+                                            (diffMs % (1000 * 60 * 60)) /
+                                              (1000 * 60)
+                                          );
+
+                                          // Calculate overtime (above 9 hours)
+                                          let overtimeHours = totalHours - 9;
+                                          let overtimeMins = totalMins;
+
+                                          if (overtimeHours < 0) {
+                                            overtimeHours = 0;
+                                            overtimeMins = 0;
+                                          }
+
+                                          return `${overtimeHours}h ${overtimeMins}m`;
+                                        })()
+                                      : "--"}
+                                  </td>
+
+                                  <td>
+                                    <div className="d-flex gap-3">
+                                      {["present", "absent", "leave"].map(
+                                        (status) => (
+                                          <label
+                                            key={status}
+                                            className="radio-label"
+                                          >
+                                            <input
+                                              className={`radio-input ${status}`}
+                                              type="radio"
+                                              name={`status-${att.employeeId}`}
+                                              value={status}
+                                              checked={
+                                                att.status?.toLowerCase() ===
+                                                status
+                                              }
+                                              readOnly
+                                            />
+                                            {status.charAt(0).toUpperCase() +
+                                              status.slice(1)}
+                                          </label>
+                                        )
+                                      )}
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })
+                          ) : (
+                            <tr>
+                              <td colSpan="7" className="text-center">
+                                No Data Avaiable
+                              </td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>

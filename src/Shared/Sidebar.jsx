@@ -349,6 +349,14 @@ const Sidebar = () => {
                           View Attendance
                         </Link>
                       </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/attendanceReport"
+                        >
+                          Attendance Report
+                        </Link>
+                      </li>
                       <li
                         className={`slide has-sub ${
                           openMenus.leave ? "open" : ""

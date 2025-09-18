@@ -35,3 +35,38 @@
 .radio-input.leave:checked {
   border-color: orange;
 }
+.timeline {
+  position: relative;
+}
+
+.timeline hr {
+  border: 1px solid #ccc;
+}
+
+.timeline::before,
+.timeline::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+}
+
+.timeline::before {
+  left: 0;
+  background: gray;
+}
+
+.timeline::after {
+  right: 0;
+  background: gray;
+}
+.check-inColor {
+  color: green;
+}
+.check-OutColor {
+  color: red;
+}

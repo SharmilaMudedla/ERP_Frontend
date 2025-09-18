@@ -70,10 +70,26 @@ const getAttendenceByDate = async (date) => {
   }
 };
 
+const getAttendanceByEmployee = async (employeeId) => {
+  try {
+    const response = await httpClient.get(
+      `/attendance/getAttendanceByEmployeeId/${employeeId}`
+    );
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addAttendance,
   getEmployeesAttendance,
   getSingleEmployeeAttendance,
   updateAttendance,
   getAttendenceByDate,
+  getAttendanceByEmployee,
 };
