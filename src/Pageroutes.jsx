@@ -19,6 +19,8 @@ const ManageAttendance = lazy(() =>
   import("./Pages/Attendance/ManageAttendance")
 );
 const ViewAttendance = lazy(() => import("./Pages/Attendance/ViewAttendance"));
+const ViewLeave = lazy(() => import("./Pages/Leaves/ManageLeave"));
+const AddLeave = lazy(() => import("./Pages/Leaves/AddLeave"));
 
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
@@ -32,7 +34,6 @@ const Pageroutes = () => {
       <Routes>
         {/* Public route */}
         <Route path="/" element={<Login />} />
-
         {/* Dashboard accessible to all authenticated users */}
         <Route
           path="/dashboard"
@@ -42,7 +43,14 @@ const Pageroutes = () => {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/addleave"
+          element={
+            <ProtectedRoute isAllowed={isAuthenticated} redirectPath="/">
+              <AddLeave />
+            </ProtectedRoute>
+          }
+        />
         {/* Protected routes only for admin/manager */}
         <Route
           path="/Roles"
@@ -143,6 +151,7 @@ const Pageroutes = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/viewAttendance"
           element={
@@ -151,6 +160,17 @@ const Pageroutes = () => {
               redirectPath="/dashboard"
             >
               <ViewAttendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manageleaves"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
+            >
+              <ViewLeave />
             </ProtectedRoute>
           }
         />
