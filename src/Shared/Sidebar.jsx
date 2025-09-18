@@ -357,7 +357,8 @@ const Sidebar = () => {
                           Attendance Report
                         </Link>
                       </li>
-                      
+                    </ul>
+                  </li>
                   <li
                     className={`slide has-sub ${openMenus.leave ? "open" : ""}`}
                   >
