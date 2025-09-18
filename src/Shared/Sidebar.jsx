@@ -357,51 +357,46 @@ const Sidebar = () => {
                           Attendance Report
                         </Link>
                       </li>
-                      <li
-                        className={`slide has-sub ${
-                          openMenus.leave ? "open" : ""
-                        }`}
-                      >
-                        <a
-                          href="#dashboard"
-                          className="side-menu__item"
-                          onClick={(e) => toggleMenu("leave", e)}
-                          aria-expanded={openMenus.leave}
-                          aria-controls="dashboard-menu"
-                        >
-                          {" "}
-                          <i class="bi bi-person side-menu__icon"></i>
-                          <span className="side-menu__label">
-                            Manage Leaves
-                          </span>
-                          <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                        </a>
+                      
+                  <li
+                    className={`slide has-sub ${openMenus.leave ? "open" : ""}`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("leave", e)}
+                      aria-expanded={openMenus.leave}
+                      aria-controls="dashboard-menu"
+                    >
+                      {" "}
+                      <i class="bi bi-person side-menu__icon"></i>
+                      <span className="side-menu__label">Manage Leaves</span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
 
-                        <ul
-                          id="dashboard-menu"
-                          className="slide-menu child1"
-                          style={{
-                            display: openMenus.leave ? "block" : "none",
-                            position: "relative",
-                            left: "0px",
-                            top: "0px",
-                            margin: "0px",
-                            transform: "translate(5px, 703px)",
-                            boxSizing: "border-box",
-                          }}
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.leave ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <li className="slide side-menu__label1">
+                        <a>Leave</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/manageleaves"
                         >
-                          <li className="slide side-menu__label1">
-                            <a>Leave</a>
-                          </li>
-                          <li className="slide ">
-                            <Link
-                              className="dropdown-item side-menu__item"
-                              to="/leave"
-                            >
-                              View Leave Data
-                            </Link>
-                          </li>
-                        </ul>
+                          View Leave Data
+                        </Link>
                       </li>
                     </ul>
                   </li>
