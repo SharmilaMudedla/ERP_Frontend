@@ -5,6 +5,7 @@ import Header from "./Shared/Header";
 import Sidebar from "./Shared/Sidebar";
 import Footer from "./Shared/Footer";
 import { jwtDecode } from "jwt-decode";
+import "./App.css";
 const tokenExpired = (token) => {
   if (!token) return true;
   const decodedToken = jwtDecode(token);
