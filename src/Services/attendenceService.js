@@ -85,6 +85,36 @@ const getAttendanceByEmployee = async (employeeId) => {
   }
 };
 
+const getAttendanceByDateAndEmployee = async (date, employeeId) => {
+  try {
+    const response = await httpClient.get(
+      `/attendance/getAttendanceBydateAndEmployee/${date}/${employeeId}`
+    );
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const getAttendanceByMonthAndEmployee = async (month, employeeId) => {
+  try {
+    const response = await httpClient.get(
+      `/attendance/getAttendanceByMonthAndEmployee/${month}/${employeeId}`
+    );
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addAttendance,
   getEmployeesAttendance,
@@ -92,4 +122,6 @@ export {
   updateAttendance,
   getAttendenceByDate,
   getAttendanceByEmployee,
+  getAttendanceByDateAndEmployee,
+  getAttendanceByMonthAndEmployee,
 };

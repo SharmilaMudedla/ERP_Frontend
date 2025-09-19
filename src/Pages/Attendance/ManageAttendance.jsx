@@ -9,7 +9,7 @@ import {
 } from "../../Services/attendenceService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
-import convertTo12HourFormat from "../../Utils/convert24hours";
+import convertTo12HourFormat from "../../Utils/convert12hours";
 
 const ManageAttendance = () => {
   const [loader, setLoader] = useState(false);
@@ -98,18 +98,21 @@ const ManageAttendance = () => {
     let newErrors = {};
     employees.forEach((emp) => {
       const att = attendanceData[emp._id] || {};
-      if (!att.checkInTime) {
-        newErrors[emp._id] = {
-          ...newErrors[emp._id],
-          checkInTime: "Check-in time required",
-        };
+      if (att.status !== "leave") {
+        if (!att.checkInTime) {
+          newErrors[emp._id] = {
+            ...newErrors[emp._id],
+            checkInTime: "Check-in time required",
+          };
+        }
+        if (!att.checkOutTime) {
+          newErrors[emp._id] = {
+            ...newErrors[emp._id],
+            checkOutTime: "Check-out time required",
+          };
+        }
       }
-      if (!att.checkOutTime) {
-        newErrors[emp._id] = {
-          ...newErrors[emp._id],
-          checkOutTime: "Check-out time required",
-        };
-      }
+
       if (!att.status) {
         newErrors[emp._id] = {
           ...newErrors[emp._id],
@@ -248,6 +251,7 @@ const ManageAttendance = () => {
                                           e.target.value
                                         )
                                       }
+                                      disabled={att.status === "leave"}
                                     />
                                   </div>
                                   {errors[emp._id]?.checkInTime && (
@@ -270,6 +274,7 @@ const ManageAttendance = () => {
                                           e.target.value
                                         )
                                       }
+                                      disabled={att.status === "leave"}
                                     />
                                   </div>
                                   {errors[emp._id]?.checkOutTime && (
