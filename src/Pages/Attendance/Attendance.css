@@ -70,3 +70,25 @@
 .check-OutColor {
   color: red;
 }
+
+.card-title {
+  position: relative;
+  padding-left: 20px;
+}
+
+.card-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px; /* thickness of the line */
+  height: 100%; /* match text height */
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  border-radius: 999px; /* fully rounded top & bottom */
+}

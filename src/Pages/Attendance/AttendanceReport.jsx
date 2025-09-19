@@ -79,7 +79,7 @@ const AttendanceReport = () => {
                               <div className="d-flex align-items-center">
                                 <Link
                                   to={`/view-report/?uid=${employee._id}`}
-                                  className="btn btn-soft-primary btn-sm"
+                                  className="btn btn-primary btn-sm"
                                 >
                                   <i class="bi bi-eye"></i>
                                 </Link>
