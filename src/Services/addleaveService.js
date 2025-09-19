@@ -76,7 +76,18 @@ const getProfileDetails = async () => {
     throw error;
   }
 };
-
+const getLeaveLeft = async (employeeId) => {
+  try {
+    const response = await httpClient.get(`/leave/getLeavesLeft/${employeeId}`);
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 export {
   addLeave,
   getLeaves,
@@ -84,4 +95,5 @@ export {
   updateLeave,
   changeLeaveStatus,
   getProfileDetails,
+  getLeaveLeft,
 };

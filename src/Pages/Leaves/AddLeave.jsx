@@ -6,6 +6,7 @@ import {
   getSingleLeave,
   updateLeave,
   getProfileDetails,
+  getLeaveLeft,
 } from "../../Services/addleaveService";
 import { getUsers } from "../../Services/userService";
 import Loader from "../../loader/Loader";
@@ -31,6 +32,7 @@ const AddLeave = () => {
   const leaveId = params.get("uid");
   const navigate = useNavigate();
   const [leaveleft, setLeaveleft] = useState(12);
+  const today = new Date().toISOString().split("T")[0];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +46,14 @@ const AddLeave = () => {
           const end = new Date(updated.endDate);
           if (start <= end) {
             const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+            if (days > 12) {
+              toast.error("You cannot select more than 12 days of leave.");
+              return prev;
+            }
+
             updated.totalDays = days;
-            const defaultLeaves = 12;
-            updated.leavesLeft = defaultLeaves - days;
+            updated.leavesLeft = leaveleft - days;
             if (updated.leavesLeft < 0) updated.leavesLeft = 0;
           } else {
             updated.totalDays = 0;
@@ -66,7 +73,6 @@ const AddLeave = () => {
       });
     }
   };
-
   const validateForm = () => {
     let newErrors = {};
 
@@ -98,7 +104,32 @@ const AddLeave = () => {
       setLoader(false);
     }
   };
+  const fetchLeavesLeft = async (employeeId) => {
+    setLoader(true);
+    try {
+      const response = await getLeaveLeft(employeeId);
+      console.log("responseleavesleft", response);
+      if (response?.success) {
+        setLeaveleft(response?.data?.leavesLeft ?? 12);
+      }
+      toast.success(response?.message || "Leaves fetched successfully");
+    } catch (error) {
+      console.error("Error fetching details:", error);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Error fetching details"
+      );
+    } finally {
+      setLoader(false);
+    }
+  };
 
+  useEffect(() => {
+    if (formData.employeeId) {
+      fetchLeavesLeft(formData.employeeId);
+    }
+  }, []);
   const fetchEmployeeDetails = async () => {
     setLoader(true);
     try {
@@ -107,14 +138,20 @@ const AddLeave = () => {
         const employeeData = response?.data || {};
         setEmployees(employeeData);
 
+        const empId = employeeData.employeeId || "";
         setFormData((prev) => ({
           ...prev,
-          employeeId: employeeData.employeeId || "",
+          employeeId: empId,
           employeeName:
             employeeData.firstName && employeeData.lastName
               ? `${employeeData.firstName} ${employeeData.lastName}`
               : "",
         }));
+
+        // Only call fetchLeavesLeft after you have the employeeId
+        if (empId) {
+          await fetchLeavesLeft(empId);
+        }
       }
       console.log("response", response);
     } catch (error) {
@@ -161,9 +198,12 @@ const AddLeave = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (leaveleft <= 0) {
+      toast.error("You do not have enough leaves left to apply.");
+      return;
+    }
     if (!validateForm()) return;
     setLoader(true);
-
     try {
       let response;
       if (leaveId) {
@@ -171,11 +211,9 @@ const AddLeave = () => {
       } else {
         response = await addLeave(formData);
       }
-
       if (response?.success) {
-        toast.success(response?.message || "User saved successfully");
-        navigate("/Users");
-        setLeaveleft(response.leaveleft);
+        toast.success(response?.message || "Leave Applied successfully");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error saving Details:", error);
@@ -186,7 +224,6 @@ const AddLeave = () => {
   };
 
   const managers = users.filter((user) => user.roleId?.name === "manager");
-  console.log("managers", managers);
   return (
     <>
       {loader && <Loader />}
@@ -343,6 +380,7 @@ const AddLeave = () => {
                           className={`form-control${
                             errors.startDate ? " is-invalid" : ""
                           }`}
+                          min={today}
                           id="startDate"
                           name="startDate"
                           value={formData.startDate}
@@ -365,6 +403,7 @@ const AddLeave = () => {
                           className={`form-control${
                             errors.endDate ? " is-invalid" : ""
                           }`}
+                          min={formData.startDate || today}
                           id="endDate"
                           name="endDate"
                           value={formData.endDate}
