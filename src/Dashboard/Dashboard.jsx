@@ -91,7 +91,7 @@ const Dashboard = () => {
           <div className="row">
             <div className="col-xxl-5 col-lg-12">
               <div className="row">
-                <div className="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Total Employees</span>
@@ -153,7 +153,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden secondary">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Total Jobs Applied</span>
@@ -206,7 +206,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden success">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">New Employees</span>
@@ -282,7 +282,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden pink">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Newly Recruited</span>
@@ -584,92 +584,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xxl-7 col-sm-12">
-              <div className="card custom-card">
-                <div className="card-header justify-content-between">
-                  <div className="card-title mb-2">Preformance By Category</div>
-                  <div className="dropdown">
-                    <a
-                      href="javascript:void(0);"
-                      className="p-2 fs-12 rounded bg-secondary-transparent"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="true"
-                    >
-                      {" "}
-                      Sort By{" "}
-                      <i className="ri-arrow-down-s-line align-middle ms-1 d-inline-block" />{" "}
-                    </a>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          This Week
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Last Week
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          This Month
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="card-body px-0 pb-0">
-                  <ul className="d-flex flex-wrap mb-0 list-unstyled gap-5 justify-content-around p-3 border-top border-bottom border-block-start-dashed border-block-end-dashed bg-light bg-opacity-25 mb-5">
-                    <li>
-                      <div className="d-flex align-items-start justify-content-between gap-2">
-                        <div className="lh-1 me-1">
-                          <span className="avatar avatar-sm bg-primary">
-                            <i className="ri-stack-line fs-20" />
-                          </span>
-                        </div>
-                        <div>
-                          <span className="d-block mb-1 fw-medium text-muted">
-                            Development
-                          </span>
-                          <h4 className="fw-medium mb-0">64,241</h4>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-start justify-content-between gap-2">
-                        <div className="lh-1 me-1">
-                          <span className="avatar avatar-sm bg-secondary">
-                            <i className="ri-rocket-line fs-20" />
-                          </span>
-                        </div>
-                        <div>
-                          <span className="d-block mb-1 fw-medium text-muted">
-                            Management
-                          </span>
-                          <h4 className="fw-medium mb-0">1,543</h4>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-start justify-content-between gap-2">
-                        <div className="lh-1 me-1">
-                          <span className="avatar avatar-sm bg-pink">
-                            <i className="ri-check-line fs-20" />
-                          </span>
-                        </div>
-                        <div>
-                          <span className="d-block mb-1 fw-medium text-muted">
-                            Designing
-                          </span>
-                          <h4 className="fw-medium mb-0">3,848</h4>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <div id="preformance-category" />
-                </div>
-              </div>
-            </div>
           </div>
           {/* End:: row-1 */}
           {/* Start:: row-2 */}
@@ -835,189 +749,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xxl-3 col-xl-6">
-              <div className="card custom-card">
-                <div className="card-header">
-                  <div className="card-title">Source Overview</div>
-                </div>
-                <div className="card-body">
-                  <div id="source-overview" />
-                </div>
-                <div className="row bg-light bg-opacity-50 mx-0 p-3 py-2 rounded">
-                  <div className="col-6 border-end border-inline-end-dashed text-center">
-                    <p className="text-muted mb-1 fs-12">This Month</p>
-                    <h6 className="text-success">+62.45%</h6>
-                  </div>
-                  <div className="col-6 text-center">
-                    <p className="text-muted mb-1 fs-12">Last Month</p>
-                    <h6 className="text-danger">-48.12%</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-xxl-3 col-xl-6">
-              <div className="card custom-card">
-                <div className="card-header justify-content-between">
-                  <div className="card-title">Today's Meetings</div>
-                  <div>
-                    <a
-                      href="javascript:void(0);"
-                      className="btn btn-light btn-sm"
-                    >
-                      View All
-                    </a>
-                  </div>
-                </div>
-                <div className="card-body py-3">
-                  <ul className="list-unstyled mb-0 schedule-list">
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-danger-transparent">
-                            <img src="assets/images/faces/15.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Anurag Batiya</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            03 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-success-transparent">
-                            <img src="assets/images/faces/6.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Team Meeting</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            05 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-pink-transparent">
-                            <img src="assets/images/faces/13.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Client Meeting</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            06 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-secondary-transparent">
-                            <img src="assets/images/faces/3.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Client Meeting</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            06 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-success-transparent">
-                            <img src="assets/images/faces/11.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Team Meeting</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            05 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center flex-wrap flex-xl-nowrap gap-1">
-                        <div className="lh-1">
-                          <span className="avatar avatar-md avatar-rounded p-1 bg-info-transparent">
-                            <img src="assets/images/faces/1.jpg" alt />
-                          </span>
-                        </div>
-                        <div className="flex-fill ms-2 text-truncate">
-                          <p className="fw-medium mb-0">Project Meeting</p>
-                          <p className="fs-11 text-muted mb-0 text-nowrap text-truncate w-75">
-                            <i className="ri-time-line me-1" />
-                            04 May(9.00am-10.00am)
-                          </p>
-                        </div>
-                        <div className="ms-auto">
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm text-nowrap"
-                          >
-                            Call Now
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+
             <div className="col-xxl-3 col-xl-6">
               <div className="card custom-card">
                 <div className="card-header">
