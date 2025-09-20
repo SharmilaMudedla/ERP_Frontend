@@ -198,11 +198,17 @@ const AddLeave = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (leaveleft <= 0) {
-      toast.error("You do not have enough leaves left to apply.");
+
+    if (!validateForm()) return;
+
+    // Check if requested leave exceeds leaves left
+    if (formData.totalDays > leaveleft) {
+      toast.error(
+        `You cannot apply for ${formData.totalDays} days. Only ${leaveleft} leaves left.`
+      );
       return;
     }
-    if (!validateForm()) return;
+
     setLoader(true);
     try {
       let response;
@@ -211,12 +217,13 @@ const AddLeave = () => {
       } else {
         response = await addLeave(formData);
       }
+
       if (response?.success) {
-        toast.success(response?.message || "Leave Applied successfully");
+        toast.success(response?.message || "Leave applied successfully");
         navigate("/dashboard");
       }
     } catch (error) {
-      console.error("Error saving Details:", error);
+      console.error("Error saving details:", error);
       toast.error(error?.message || "Error in saving details");
     } finally {
       setLoader(false);

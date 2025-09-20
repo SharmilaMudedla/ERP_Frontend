@@ -21,8 +21,6 @@ const ViewAttendance = () => {
       if (response?.success) {
         setEmployees(response?.data || []);
       }
-
-      // console.log("response", response);
     } catch (error) {
       setEmployees([]);
       toast.error(error?.message || "Error fetching employees");

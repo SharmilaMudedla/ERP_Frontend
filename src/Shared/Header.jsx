@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "../loader/Loader";
+import ToasterAlert from "../toaster/ToasterAlert";
+import { toast } from "sonner";
+import { getUserProfileDetails } from "../Services/userService";
 
 const Header = () => {
+  const [loader, setLoader] = useState(false);
+  const [employees, setEmployees] = useState({});
   const navigate = useNavigate();
   const [dark, setDark] = useState(() => {
     return localStorage.getItem("theme") === "dark";
@@ -17,7 +23,27 @@ const Header = () => {
       localStorage.setItem("theme", "light");
     }
   }, [dark]);
+  const fetchEmployeeDetails = async () => {
+    setLoader(true);
+    try {
+      const response = await getUserProfileDetails();
+      if (response?.success) {
+        const employeeData = response?.data || {};
+        setEmployees(employeeData);
+      }
+      console.log("response", response);
+    } catch (error) {
+      setEmployees([]);
+      toast.error(error?.message || "Error fetching employees");
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchEmployeeDetails();
+  }, []);
   const handleLogout = () => {
     localStorage.removeItem("SpondiasAuthToken");
     localStorage.removeItem("UserRole");
@@ -25,6 +51,8 @@ const Header = () => {
   };
   return (
     <>
+      {loader && <Loader />}
+      <ToasterAlert />
       {/* Start::main-header */}
       <header className="app-header sticky" id="header">
         {/* Start::main-header-container */}
@@ -128,9 +156,12 @@ const Header = () => {
                 <li className="p-3 border-bottom">
                   <div className="d-flex align-items-center justify-content-center text-center">
                     <div>
-                      <p className="mb-0 fw-semibold lh-1">Arjun Arora</p>
+                      <p className="mb-0 fw-semibold lh-1">
+                        {" "}
+                        {employees?.name || "Name"}
+                      </p>
                       <span className="fs-11 text-muted">
-                        arjunarora@mail.com
+                        {employees?.email || "Email"}
                       </span>
                     </div>
                   </div>
