@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./Footer.css";
 const Footer = () => {
   return (
     <>
@@ -13,7 +13,9 @@ const Footer = () => {
             <a href="javascript:void(0);" className="text-dark fw-medium"></a>.
             Designed by{" "}
             <a href="https://spondias.com/" target="_blank">
-              <span className="fw-medium text-primary">Spondias</span>
+              <span className="fw-medium text-primary text-rainbow-animation">
+                Spondias
+              </span>
             </a>{" "}
             All rights reserved
           </span>

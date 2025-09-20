@@ -1,0 +1,28 @@
+.text-rainbow-animation {
+  font-family: Arial Black, sans-serif;
+  font-size: 15px;
+  background-image: linear-gradient(
+    to right,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet,
+    red
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: rainbow-animation 10s linear infinite;
+}
+
+@keyframes rainbow-animation {
+  0% {
+    background-position: -100% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
