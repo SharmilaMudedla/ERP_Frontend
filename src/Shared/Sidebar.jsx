@@ -10,6 +10,7 @@ const Sidebar = () => {
     employee: false,
     attendance: false,
     leave: false,
+    event: false,
   });
 
   const toggleMenu = (key, e) => {
@@ -172,7 +173,7 @@ const Sidebar = () => {
                       aria-controls="dashboard-menu"
                     >
                       {" "}
-                      <i class="bi bi-person side-menu__icon"></i>
+                      <i className="bi bi-person side-menu__icon"></i>
                       <span className="side-menu__label">Manage Users</span>
                       <i className="ri-arrow-down-s-line side-menu__angle"></i>
                     </a>
@@ -217,7 +218,7 @@ const Sidebar = () => {
                       aria-controls="dashboard-menu"
                     >
                       {" "}
-                      <i class="ri-git-branch-line"></i>
+                      <i className="ri-git-branch-line"></i>
                       <span className="side-menu__label">
                         &nbsp;&nbsp;Manage Departments
                       </span>
@@ -263,7 +264,7 @@ const Sidebar = () => {
                       aria-controls="dashboard-menu"
                     >
                       {" "}
-                      <i class="bi bi-person-add"></i>
+                      <i className="bi bi-person-add"></i>
                       <span className="side-menu__label">
                         &nbsp; &nbsp;Manage Empolyees
                       </span>
@@ -310,7 +311,7 @@ const Sidebar = () => {
                       aria-controls="dashboard-menu"
                     >
                       {" "}
-                      <i class="ri-id-card-fill"></i>
+                      <i className="ri-id-card-fill"></i>
                       <span className="side-menu__label">
                         &nbsp;&nbsp;Manage Attendance
                       </span>
@@ -370,7 +371,7 @@ const Sidebar = () => {
                       aria-controls="dashboard-menu"
                     >
                       {" "}
-                      <i class="bi bi-person side-menu__icon"></i>
+                      <i className="bi bi-person side-menu__icon"></i>
                       <span className="side-menu__label">Manage Leaves</span>
                       <i className="ri-arrow-down-s-line side-menu__angle"></i>
                     </a>
@@ -396,7 +397,49 @@ const Sidebar = () => {
                           className="dropdown-item side-menu__item"
                           to="/manageleaves"
                         >
-                          View Leave Data
+                          Leave Requests
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                  <li
+                    className={`slide has-sub ${openMenus.event ? "open" : ""}`}
+                  >
+                    <a
+                      href="#dashboard"
+                      className="side-menu__item"
+                      onClick={(e) => toggleMenu("event", e)}
+                      aria-expanded={openMenus.event}
+                      aria-controls="dashboard-menu"
+                    >
+                      {" "}
+                      <i className="ri-calendar-event-line side-menu__icon"></i>
+                      <span className="side-menu__label">Manage Events</span>
+                      <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                    </a>
+
+                    <ul
+                      id="dashboard-menu"
+                      className="slide-menu child1"
+                      style={{
+                        display: openMenus.event ? "block" : "none",
+                        position: "relative",
+                        left: "0px",
+                        top: "0px",
+                        margin: "0px",
+                        transform: "translate(5px, 703px)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <li className="slide side-menu__label1">
+                        <a>Calender</a>
+                      </li>
+                      <li className="slide ">
+                        <Link
+                          className="dropdown-item side-menu__item"
+                          to="/manageEvents"
+                        >
+                          Calender
                         </Link>
                       </li>
                     </ul>
@@ -415,7 +458,7 @@ const Sidebar = () => {
                     aria-controls="dashboard-menu"
                   >
                     {" "}
-                    <i class="bi bi-person side-menu__icon"></i>
+                    <i className="bi bi-person side-menu__icon"></i>
                     <span className="side-menu__label">Manage Leaves</span>
                     <i className="ri-arrow-down-s-line side-menu__angle"></i>
                   </a>
@@ -442,6 +485,50 @@ const Sidebar = () => {
                         to="/addleave"
                       >
                         Add Leave
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+              )}
+              {role === "employee" && (
+                <li
+                  className={`slide has-sub ${openMenus.event ? "open" : ""}`}
+                >
+                  <a
+                    href="#dashboard"
+                    className="side-menu__item"
+                    onClick={(e) => toggleMenu("event", e)}
+                    aria-expanded={openMenus.event}
+                    aria-controls="dashboard-menu"
+                  >
+                    {" "}
+                    <i className="ri-calendar-event-line side-menu__icon"></i>
+                    <span className="side-menu__label">Manage Events</span>
+                    <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                  </a>
+
+                  <ul
+                    id="dashboard-menu"
+                    className="slide-menu child1"
+                    style={{
+                      display: openMenus.event ? "block" : "none",
+                      position: "relative",
+                      left: "0px",
+                      top: "0px",
+                      margin: "0px",
+                      transform: "translate(5px, 703px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <li className="slide side-menu__label1">
+                      <a>Calender</a>
+                    </li>
+                    <li className="slide ">
+                      <Link
+                        className="dropdown-item side-menu__item"
+                        to="/manageEvents"
+                      >
+                        Calender
                       </Link>
                     </li>
                   </ul>

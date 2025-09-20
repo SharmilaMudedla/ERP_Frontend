@@ -24,6 +24,8 @@ const AttendanceReport = lazy(() =>
   import("./Pages/Attendance/AttendanceReport")
 );
 const AttendenceView = lazy(() => import("./Pages/Attendance/ViewReport"));
+const ManageEvents = lazy(() => import("./Pages/Events/ManageEvents"));
+
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
   const role = localStorage.getItem("UserRole") || "";
@@ -184,6 +186,17 @@ const Pageroutes = () => {
               redirectPath="/dashboard"
             >
               <AttendenceView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manageEvents"
+          element={
+            <ProtectedRoute
+              isAllowed={isAuthenticated}
+              redirectPath="/dashboard"
+            >
+              <ManageEvents />
             </ProtectedRoute>
           }
         />
