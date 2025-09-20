@@ -62,5 +62,24 @@ const changeUserStatus = async (id) => {
     throw error;
   }
 };
+const getUserProfileDetails = async () => {
+  try {
+    const response = await httpClient.get("/user/getProfileDetails");
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
-export { addUser, getUsers, getUser, updateUser, changeUserStatus };
+export {
+  addUser,
+  getUsers,
+  getUser,
+  updateUser,
+  changeUserStatus,
+  getUserProfileDetails,
+};

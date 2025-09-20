@@ -23,7 +23,6 @@ const getLeaves = async () => {
     throw error;
   }
 };
-
 const getSingleLeave = async (id) => {
   try {
     const response = await httpClient.get(`/leave/getSingleLeave/${id}`);
@@ -36,7 +35,6 @@ const getSingleLeave = async (id) => {
     throw error;
   }
 };
-
 const updateLeave = async (id, data) => {
   try {
     const response = await httpClient.put(`/leave/updateLeave/${id}`, data);
@@ -49,10 +47,12 @@ const updateLeave = async (id, data) => {
     throw error;
   }
 };
-
-const changeLeaveStatus = async (id) => {
+const changeLeaveStatus = async (id, status, employeeId) => {
   try {
-    const response = await httpClient.patch(`/leave/updateLeaveStatus/${id}`);
+    const response = await httpClient.patch(`/leave/updateLeaveStatus/${id}`, {
+      status,
+      employeeId,
+    });
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -88,6 +88,19 @@ const getLeaveLeft = async (employeeId) => {
     throw error;
   }
 };
+const getLeavesByDate = async (date) => {
+  try {
+    const response = await httpClient.get(`/leave/getLeavesByDate/${date}`);
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addLeave,
   getLeaves,
@@ -96,4 +109,5 @@ export {
   changeLeaveStatus,
   getProfileDetails,
   getLeaveLeft,
+  getLeavesByDate,
 };

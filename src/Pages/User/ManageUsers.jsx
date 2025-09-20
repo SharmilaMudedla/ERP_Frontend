@@ -24,10 +24,10 @@ const ManageUsers = () => {
     }
   };
 
-  const handleChangeStatus = async (id, currentStatus) => {
+  const handleChangeStatus = async (id) => {
     setLoader(true);
     try {
-      const response = await changeUserStatus(id, !currentStatus); // pass new status
+      const response = await changeUserStatus(id);
       if (response?.success) {
         toast.success(response?.message || "User status updated");
         fetchUsers();
@@ -99,15 +99,23 @@ const ManageUsers = () => {
                               <td>{user.name}</td>
                               <td>{user.email || "-"}</td>
                               <td>{user.roleId?.name || "-"}</td>
-
                               <td>
                                 <div className="d-flex gap-2 align-items-center">
                                   <Link
                                     to={`/add-user/?uid=${user._id}`}
+                                    className="btn btn-soft-primary btn-sm j"
+                                  >
+                                    <button className="btn btn-secondary-light btn-icon btn-sm">
+                                      <i className="ti ti-pencil " />
+                                    </button>
+                                  </Link>
+
+                                  {/* <Link
+                                    to={`/add-user/?uid=${user._id}`}
                                     className="btn btn-soft-primary btn-sm"
                                   >
                                     <i className="bi bi-pencil-square"></i>
-                                  </Link>
+                                  </Link> */}
                                   <div className="form-check form-switch">
                                     <input
                                       className="form-check-input"

@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getLeaves, changeLeaveStatus } from "../../Services/addleaveService";
+import {
+  getLeaves,
+  changeLeaveStatus,
+  getLeavesByDate,
+} from "../../Services/addleaveService";
 import { toast } from "sonner";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
+const PAGE_SIZE = 5;
 const ManageLeave = () => {
   const [leaves, setLeaves] = useState([]);
   const [loader, setLoader] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
   const fetchLeaves = async () => {
     setLoader(true);
     try {
       const response = await getLeaves();
-      console.log("response", response);
       if (response?.success) {
         setLeaves(response?.data || []);
       }
@@ -24,13 +33,42 @@ const ManageLeave = () => {
     }
   };
 
-  const handleChangeStatus = async (id) => {
+  const filteredLeaves = useMemo(() => {
+    return leaves.filter((leave) => {
+      const employeeName = leave?.employeeName || "";
+      const employeeId = leave?.employeeId || "";
+      return (
+        employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  }, [leaves, searchTerm]);
+
+  const totalPages = Math.ceil(filteredLeaves.length / PAGE_SIZE);
+  const paginatedLeaves = filteredLeaves.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
+  useEffect(() => {
+    fetchLeaves();
+  }, []);
+  const handleChangeStatus = async (id, status, employeeId) => {
     setLoader(true);
     try {
-      const response = await changeLeaveStatus(id);
+      const response = await changeLeaveStatus(id, status, employeeId);
       if (response?.success) {
         toast.success(response?.message || "Leave status updated");
-        fetchLeaves();
+        if (selectedDate) {
+          fetchLeavesByDateHandler(selectedDate);
+        } else {
+          fetchLeaves();
+        }
+      } else {
+        toast.error(response?.message || "Error updating status");
       }
     } catch (error) {
       toast.error(error?.message || "Error updating status");
@@ -38,10 +76,30 @@ const ManageLeave = () => {
       setLoader(false);
     }
   };
+  const fetchLeavesByDateHandler = async (date) => {
+    setLoader(true);
+    try {
+      const response = await getLeavesByDate(date);
+      if (response?.success) {
+        setLeaves(response?.data || []);
+      } else {
+        setLeaves([]);
+      }
+    } catch (error) {
+      toast.error(error?.message || "Error fetching leaves by date");
+      setLeaves([]);
+    } finally {
+      setLoader(false);
+    }
+  };
 
   useEffect(() => {
-    fetchLeaves();
-  }, []);
+    if (selectedDate) {
+      fetchLeavesByDateHandler(selectedDate);
+    } else {
+      fetchLeaves();
+    }
+  }, [selectedDate]);
   return (
     <>
       {loader && <Loader />}
@@ -51,78 +109,12 @@ const ManageLeave = () => {
           <div class="col-xxl-9">
             <div className="d-flex align-items-center justify-content-between my-3 page-header-breadcrumb flex-wrap gap-2">
               <div>
-                <p className="fw-medium fs-18 mb-0">Hello there, Arjun Arora</p>
+                <p className="fw-medium fs-18 mb-0">Employees Leave Requests</p>
                 <p className="fs-13 text-muted mb-0">
-                  Let's make today a productive one!
+                  {/* Let's make today a productive one! */}
                 </p>
               </div>
-              <div className="d-flex align-items-center gap-2 flex-wrap">
-                <div className="d-flex gap-2">
-                  <div className="position-relative">
-                    <button
-                      className="btn btn-primary btn-wave"
-                      type="button"
-                      id="dropdownMenuClickableInside"
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="outside"
-                      aria-expanded="false"
-                    >
-                      Filter By <i className="ri-arrow-down-s-fill ms-1" />
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuClickableInside"
-                    >
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Today
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Yesterday
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Last 7 Days
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Last 30 Days
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Last 6 Months
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="javascript:void(0);">
-                          Last Year
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <button
-                    className="btn btn-secondary btn-icon btn-wave"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Download"
-                  >
-                    <i className="ti ti-download" />
-                  </button>
-                  <button
-                    className="btn btn-success btn-icon btn-wave"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Share"
-                  >
-                    <i className="ti ti-share-3" />
-                  </button>
-                </div>
-              </div>
+              <div className="d-flex align-items-center gap-2 flex-wrap"></div>
             </div>
 
             <div className="row">
@@ -393,53 +385,30 @@ const ManageLeave = () => {
               <div className="col-xl-12">
                 <div className="card custom-card overflow-hidden">
                   <div className="card-header justify-content-between">
-                    <div className="card-title">Recent Orders</div>
-                    <div className="d-flex flex-wrap gap-2">
+                    <div className="card-title">Employee Leaves</div>
+                    <div className="d-flex flex-wrap gap-2 justify-content-center">
+                      <div>
+                        <input
+                          type="date"
+                          id="attendance-date"
+                          className="form-control"
+                          style={{ maxWidth: 200 }}
+                          value={selectedDate}
+                          onChange={(e) => setSelectedDate(e.target.value)}
+                        />
+                      </div>
                       <div>
                         <input
                           className="form-control form-control-sm"
                           type="text"
                           placeholder="Search Here"
+                          value={searchTerm}
+                          onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setCurrentPage(1);
+                          }}
                           aria-label=".form-control-sm example"
                         />
-                      </div>
-                      <div className="dropdown">
-                        <a
-                          href="javascript:void(0);"
-                          className="btn btn-primary btn-sm btn-wave waves-effect waves-light"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          {" "}
-                          Sort By
-                          <i className="ri-arrow-down-s-line align-middle ms-1 d-inline-block" />
-                        </a>
-                        <ul className="dropdown-menu" role="menu">
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              New
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              Popular
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              Relevant
-                            </a>
-                          </li>
-                        </ul>
                       </div>
                     </div>
                   </div>
@@ -448,353 +417,122 @@ const ManageLeave = () => {
                       <table className="table text-nowrap table-hover">
                         <thead>
                           <tr>
-                            <th>Customer</th>
-                            <th>Products</th>
-                            <th>Ordered Date</th>
+                            <th>Employee Id</th>
+                            <th>Employee Name</th>
+                            <th>Leave Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Total Days</th>
+                            <th>Reason</th>
                             <th>Status</th>
-                            <th>Total Amount</th>
-                            <th>Payment Method</th>
                             <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-md bg-primary-transparent">
-                                    JD
+                          {paginatedLeaves.length === 0 ? (
+                            <tr>
+                              <td colSpan={9} className="text-center">
+                                No leave records found.
+                              </td>
+                            </tr>
+                          ) : (
+                            paginatedLeaves.map((leave) => (
+                              <tr key={leave._id}>
+                                <td>{leave.employeeId}</td>
+                                <td>{leave.employeeName}</td>
+                                <td>{leave.leaveType || "N/A"}</td>
+                                <td>
+                                  {new Date(
+                                    leave.startDate
+                                  ).toLocaleDateString()}
+                                </td>
+                                <td>
+                                  {new Date(leave.endDate).toLocaleDateString()}
+                                </td>
+                                <td>{leave.totalDays}</td>
+                                <td>{leave.reason}</td>
+                                <td>
+                                  <span
+                                    className={`badge ${
+                                      leave.status === "Pending"
+                                        ? "bg-primary"
+                                        : leave.status === "Approved"
+                                        ? "bg-success"
+                                        : leave.status === "Rejected"
+                                        ? "bg-danger"
+                                        : "bg-secondary"
+                                    }`}
+                                  >
+                                    {leave.status}
                                   </span>
-                                </div>
-                                <div>
-                                  <span className="fw-semibold d-block">
-                                    John Doe
-                                  </span>
-                                  <span className="text-muted fs-12">
-                                    #SPK1001
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-sm avatar-rounded">
-                                    <img
-                                      src="assets/images/ecommerce/png/20.png"
-                                      alt
-                                    />
-                                  </span>
-                                </div>
-                                <div className="flex-fill">
-                                  <span className="d-block fw-semibold">
-                                    Wrist Watch
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <span className="fw-semibold d-block">
-                                2024-10-05
-                              </span>
-                              <span className="fs-12 text-muted">12:45PM</span>
-                            </td>
-                            <td>
-                              <span className="badge bg-primary">Shipped</span>
-                            </td>
-                            <td>$150.00</td>
-                            <td>
-                              <div>
-                                <i className="ri-bank-card-line me-1 fs-14" />
-                                Credit Card
-                              </div>
-                              <div className="fs-12 text-muted">
-                                **** **** 1111
-                              </div>
-                            </td>
-                            <td>
-                              <div className="btn-list">
-                                <button className="btn btn-primary-light btn-icon btn-sm ">
-                                  <i className="ri-eye-line" />
-                                </button>
-                                <button className="btn btn-secondary-light btn-icon btn-sm ">
-                                  <i className="ti ti-pencil" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-md bg-primary-transparent">
-                                    JS
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="fw-semibold d-block">
-                                    Jane Smith
-                                  </span>
-                                  <span className="text-muted fs-12">
-                                    #SPK1002
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-sm avatar-rounded">
-                                    <img
-                                      src="assets/images/ecommerce/png/16.png"
-                                      alt
-                                    />
-                                  </span>
-                                </div>
-                                <div className="flex-fill">
-                                  <span className="d-block fw-semibold">
-                                    Teddy Bear
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <span className="fw-semibold d-block">
-                                2024-10-06
-                              </span>
-                              <span className="fs-12 text-muted">10:15AM</span>
-                            </td>
-                            <td>
-                              <span className="badge bg-secondary">
-                                Pending
-                              </span>
-                            </td>
-                            <td>$230.00</td>
-                            <td>
-                              <div>
-                                <i className="ri-bank-card-line me-1 fs-14" />
-                                MasterCard
-                              </div>
-                              <div className="fs-12 text-muted">
-                                **** **** 4444
-                              </div>
-                            </td>
-                            <td>
-                              <div className="btn-list">
-                                <button className="btn btn-primary-light btn-icon btn-sm ">
-                                  <i className="ri-eye-line" />
-                                </button>
-                                <button className="btn btn-secondary-light btn-icon btn-sm ">
-                                  <i className="ti ti-pencil" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-md bg-primary-transparent">
-                                    BL
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="fw-semibold d-block">
-                                    Bob Lee
-                                  </span>
-                                  <span className="text-muted fs-12">
-                                    #SPK1003
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-sm avatar-rounded">
-                                    <img
-                                      src="assets/images/ecommerce/png/23.png"
-                                      alt
-                                    />
-                                  </span>
-                                </div>
-                                <div className="flex-fill">
-                                  <span className="d-block fw-semibold">
-                                    Shoes
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <span className="fw-semibold d-block">
-                                2024-10-07
-                              </span>
-                              <span className="fs-12 text-muted">04:53PM</span>
-                            </td>
-                            <td>
-                              <span className="badge bg-success">
-                                Delivered
-                              </span>
-                            </td>
-                            <td>$120.00</td>
-                            <td>
-                              <div>
-                                <i className="ri-bank-card-line me-1 fs-14" />
-                                Bank Transfer
-                              </div>
-                              <div className="fs-12 text-muted">
-                                Direct Payment
-                              </div>
-                            </td>
-                            <td>
-                              <div className="btn-list">
-                                <button className="btn btn-primary-light btn-icon btn-sm ">
-                                  <i className="ri-eye-line" />
-                                </button>
-                                <button className="btn btn-secondary-light btn-icon btn-sm ">
-                                  <i className="ti ti-pencil" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-md bg-primary-transparent">
-                                    AJ
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="fw-semibold d-block">
-                                    Alice Johnson
-                                  </span>
-                                  <span className="text-muted fs-12">
-                                    #SPK1004
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-sm avatar-rounded">
-                                    <img
-                                      src="assets/images/ecommerce/png/11.png"
-                                      alt
-                                    />
-                                  </span>
-                                </div>
-                                <div className="flex-fill">
-                                  <span className="d-block fw-semibold">
-                                    Over Coat
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <span className="fw-semibold d-block">
-                                2024-10-08
-                              </span>
-                              <span className="fs-12 text-muted">11:26AM</span>
-                            </td>
-                            <td>
-                              <span className="badge bg-danger">Cancelled</span>
-                            </td>
-                            <td>$85.00</td>
-                            <td>
-                              <div>
-                                <i className="ri-bank-card-line me-1 fs-14" />
-                                American Express
-                              </div>
-                              <div className="fs-12 text-muted">
-                                ****** 10005
-                              </div>
-                            </td>
-                            <td>
-                              <div className="btn-list">
-                                <button className="btn btn-primary-light btn-icon btn-sm ">
-                                  <i className="ri-eye-line" />
-                                </button>
-                                <button className="btn btn-secondary-light btn-icon btn-sm ">
-                                  <i className="ti ti-pencil" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="border-bottom-0">
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-md bg-primary-transparent">
-                                    MB
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="fw-semibold d-block">
-                                    Michael Brown
-                                  </span>
-                                  <span className="text-muted fs-12">
-                                    #SPK1005
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center gap-2">
-                                <div className="lh-1">
-                                  <span className="avatar avatar-sm avatar-rounded">
-                                    <img
-                                      src="assets/images/ecommerce/png/13.png"
-                                      alt
-                                    />
-                                  </span>
-                                </div>
-                                <div className="flex-fill">
-                                  <span className="d-block fw-semibold">
-                                    Leather Watch
-                                  </span>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="border-bottom-0">
-                              <span className="fw-semibold d-block">
-                                2024-10-09
-                              </span>
-                              <span className="fs-12 text-muted">03:29PM</span>
-                            </td>
-                            <td className="border-bottom-0">
-                              <span className="badge bg-primary">Shipped</span>
-                            </td>
-                            <td className="border-bottom-0">$500.00</td>
-                            <td className="border-bottom-0">
-                              <div>
-                                <i className="ri-bank-card-line me-1 fs-14" />
-                                PayPal
-                              </div>
-                              <div className="fs-12 text-muted">PayPal App</div>
-                            </td>
-                            <td className="border-bottom-0">
-                              <div className="btn-list">
-                                <button className="btn btn-primary-light btn-icon btn-sm ">
-                                  <i className="ri-eye-line" />
-                                </button>
-                                <button className="btn btn-secondary-light btn-icon btn-sm ">
-                                  <i className="ti ti-pencil" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                                </td>
+                                <td>
+                                  <div className="btn-list">
+                                    {leave.status === "Pending" && (
+                                      <>
+                                        <button
+                                          className="btn btn-danger-light btn-icon btn-sm"
+                                          onClick={() =>
+                                            handleChangeStatus(
+                                              leave._id,
+                                              "Rejected",
+                                              leave.employeeId
+                                            )
+                                          }
+                                        >
+                                          <i className="bi bi-x-lg"></i>
+                                        </button>
+
+                                        <button
+                                          className="btn btn-success-light btn-icon btn-sm"
+                                          onClick={() =>
+                                            handleChangeStatus(
+                                              leave._id,
+                                              "Approved",
+                                              leave.employeeId
+                                            )
+                                          }
+                                        >
+                                          <i className="bi bi-check2"></i>
+                                        </button>
+                                      </>
+                                    )}
+
+                                    {leave.status === "Approved" && (
+                                      <button
+                                        className="btn btn-success-light btn-icon btn-sm"
+                                        disabled
+                                      >
+                                        <i className="bi bi-check2"></i>
+                                      </button>
+                                    )}
+
+                                    {leave.status === "Rejected" && (
+                                      <button
+                                        className="btn btn-danger-light btn-icon btn-sm"
+                                        disabled
+                                      >
+                                        <i className="bi bi-x-lg"></i>
+                                      </button>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
                         </tbody>
                       </table>
                     </div>
                   </div>
                   <div className="card-footer py-2">
-                    <div className="d-flex align-items-center ">
+                    <div className="d-flex align-items-center">
                       <div>
-                        {" "}
-                        Showing 5 Entries{" "}
-                        <i className="bi bi-arrow-right ms-2 fw-semibold" />
+                        Showing {(currentPage - 1) * PAGE_SIZE + 1} to{" "}
+                        {Math.min(
+                          currentPage * PAGE_SIZE,
+                          filteredLeaves.length
+                        )}{" "}
+                        of {filteredLeaves.length} Entries
                       </div>
                       <div className="ms-auto">
                         <nav
@@ -802,41 +540,48 @@ const ManageLeave = () => {
                           className="pagination-style-4"
                         >
                           <ul className="pagination mb-0">
-                            <li className="page-item disabled">
-                              {" "}
-                              <a
+                            <li
+                              className={`page-item ${
+                                currentPage === 1 ? "disabled" : ""
+                              }`}
+                            >
+                              <button
                                 className="page-link"
-                                href="javascript:void(0);"
+                                onClick={() =>
+                                  handlePageChange(currentPage - 1)
+                                }
                               >
-                                {" "}
-                                Prev{" "}
-                              </a>{" "}
+                                Prev
+                              </button>
                             </li>
-                            <li className="page-item active">
-                              <a
+                            {[...Array(totalPages)].map((_, idx) => (
+                              <li
+                                key={idx}
+                                className={`page-item ${
+                                  currentPage === idx + 1 ? "active" : ""
+                                }`}
+                              >
+                                <button
+                                  className="page-link"
+                                  onClick={() => handlePageChange(idx + 1)}
+                                >
+                                  {idx + 1}
+                                </button>
+                              </li>
+                            ))}
+                            <li
+                              className={`page-item ${
+                                currentPage === totalPages ? "disabled" : ""
+                              }`}
+                            >
+                              <button
                                 className="page-link"
-                                href="javascript:void(0);"
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
                               >
-                                1
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a
-                                className="page-link"
-                                href="javascript:void(0);"
-                              >
-                                2
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              {" "}
-                              <a
-                                className="page-link text-primary"
-                                href="javascript:void(0);"
-                              >
-                                {" "}
-                                next{" "}
-                              </a>{" "}
+                                Next
+                              </button>
                             </li>
                           </ul>
                         </nav>
