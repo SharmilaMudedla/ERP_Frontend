@@ -23,7 +23,7 @@ const Header = () => {
       localStorage.setItem("theme", "light");
     }
   }, [dark]);
-  const fetchEmployeeDetails = async () => {
+  const fetchUserDetails = async () => {
     setLoader(true);
     try {
       const response = await getUserProfileDetails();
@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    fetchEmployeeDetails();
+    fetchUserDetails();
   }, []);
   const handleLogout = () => {
     localStorage.removeItem("SpondiasAuthToken");

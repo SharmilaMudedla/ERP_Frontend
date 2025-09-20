@@ -5,6 +5,7 @@ import {
   changeLeaveStatus,
   getLeavesByDate,
 } from "../../Services/addleaveService";
+import { getUserProfileDetails } from "../../Services/userService";
 import { toast } from "sonner";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
@@ -12,12 +13,34 @@ const PAGE_SIZE = 5;
 const ManageLeave = () => {
   const [leaves, setLeaves] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [users, setUsers] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDate, setSelectedDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+  const fetchUserDetails = async () => {
+    setLoader(true);
+    try {
+      const response = await getUserProfileDetails();
+      if (response?.success) {
+        const employeeData = response?.data || {};
+        setUsers(employeeData);
+      }
+      console.log("response", response);
+    } catch (error) {
+      setUsers([]);
+      toast.error(error?.message || "Error fetching employees");
+      console.error("Error fetching employees:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
   const fetchLeaves = async () => {
     setLoader(true);
     try {
@@ -34,15 +57,23 @@ const ManageLeave = () => {
   };
 
   const filteredLeaves = useMemo(() => {
-    return leaves.filter((leave) => {
-      const employeeName = leave?.employeeName || "";
-      const employeeId = leave?.employeeId || "";
-      return (
-        employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        employeeId.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-  }, [leaves, searchTerm]);
+    const roleName = localStorage.getItem("UserRole");
+    const userId = users?._id;
+
+    return leaves
+      .filter((leave) => {
+        if (roleName === "admin") return true;
+        return leave.reportingManager === userId;
+      })
+      .filter((leave) => {
+        const employeeName = leave?.employeeName || "";
+        const employeeId = leave?.employeeId || "";
+        return (
+          employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          employeeId.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+  }, [leaves, users, searchTerm]);
 
   const totalPages = Math.ceil(filteredLeaves.length / PAGE_SIZE);
   const paginatedLeaves = filteredLeaves.slice(
@@ -109,7 +140,7 @@ const ManageLeave = () => {
           <div class="col-xxl-9">
             <div className="d-flex align-items-center justify-content-between my-3 page-header-breadcrumb flex-wrap gap-2">
               <div>
-                <p className="fw-medium fs-18 mb-0">Employees Leave Requests</p>
+                <p className="fw-medium fs-18 mb-0">Employee Leave Requests</p>
                 <p className="fs-13 text-muted mb-0">
                   {/* Let's make today a productive one! */}
                 </p>
