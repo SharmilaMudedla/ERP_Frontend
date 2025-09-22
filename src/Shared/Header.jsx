@@ -71,7 +71,7 @@ const Header = () => {
     localStorage.removeItem("UserRole");
     navigate("/");
   };
-
+  const role = localStorage.getItem("UserRole");
   return (
     <>
       {loader && <Loader />}
@@ -155,15 +155,20 @@ const Header = () => {
                     </div>
                   </div>
                 </li>
-                <li>
-                  <a
-                    className="dropdown-item d-flex align-items-center"
-                    href="profile.html"
-                  >
-                    <i className="ri-user-line fs-15 me-2 text-gray fw-normal" />
-                    Profile
-                  </a>
-                </li>
+
+                {/* Conditionally render Profile link only for "employee" */}
+                {role === "employee" && (
+                  <li>
+                    <Link
+                      className="dropdown-item d-flex align-items-center"
+                      to="/profile"
+                    >
+                      <i className="ri-user-line fs-15 me-2 text-gray fw-normal" />
+                      Profile
+                    </Link>
+                  </li>
+                )}
+
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
