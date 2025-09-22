@@ -62,20 +62,7 @@ const changeLeaveStatus = async (id, status, employeeId) => {
     throw error;
   }
 };
-const getProfileDetails = async () => {
-  try {
-    const response = await httpClient.get(
-      "/employee/getEmployeeProfileDetails"
-    );
-    if (!response?.data?.success) {
-      throw new Error(response?.data?.message || "Something went wrong");
-    }
-    return response?.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+
 const getLeaveLeft = async (employeeId) => {
   try {
     const response = await httpClient.get(`/leave/getLeavesLeft/${employeeId}`);
@@ -107,7 +94,6 @@ export {
   getSingleLeave,
   updateLeave,
   changeLeaveStatus,
-  getProfileDetails,
   getLeaveLeft,
   getLeavesByDate,
 };

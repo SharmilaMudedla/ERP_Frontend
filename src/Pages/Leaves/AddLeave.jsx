@@ -5,9 +5,9 @@ import {
   addLeave,
   getSingleLeave,
   updateLeave,
-  getProfileDetails,
   getLeaveLeft,
 } from "../../Services/addleaveService";
+import { getEmployeeProfileDetails } from "../../Services/employeeService";
 import { getUsers } from "../../Services/userService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
@@ -133,7 +133,7 @@ const AddLeave = () => {
   const fetchEmployeeDetails = async () => {
     setLoader(true);
     try {
-      const response = await getProfileDetails();
+      const response = await getEmployeeProfileDetails();
       if (response?.success) {
         const employeeData = response?.data || {};
         setEmployees(employeeData);

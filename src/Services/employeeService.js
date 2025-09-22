@@ -67,6 +67,20 @@ const changeEmployeeStatus = async (id) => {
     throw error;
   }
 };
+const getEmployeeProfileDetails = async () => {
+  try {
+    const response = await httpClient.get(
+      "/employee/getEmployeeProfileDetails"
+    );
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export {
   addEmployee,
@@ -74,4 +88,5 @@ export {
   getEmployee,
   updateEmployee,
   changeEmployeeStatus,
+  getEmployeeProfileDetails,
 };
