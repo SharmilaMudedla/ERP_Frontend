@@ -23,3 +23,11 @@
   scrollbar-width: thin;
   scrollbar-color: #888 #f0f0f0;
 }
+
+.fc-event-time {
+  display: none !important;
+}
+/* .fc-event {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+} */
