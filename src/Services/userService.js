@@ -1,7 +1,7 @@
 import httpClient from "../Utils/httpClient";
 const addUser = async (data) => {
   try {
-    const response = await httpClient.post("/user/addUser", data);
+    const response = await httpClient.post("/api/user/addUser", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +13,7 @@ const addUser = async (data) => {
 };
 const getUsers = async () => {
   try {
-    const response = await httpClient.get("/user/getUsers");
+    const response = await httpClient.get("/api/user/getUsers");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -26,7 +26,7 @@ const getUsers = async () => {
 
 const getUser = async (id) => {
   try {
-    const response = await httpClient.get(`/user/getSingleUser/${id}`);
+    const response = await httpClient.get(`/api/user/getSingleUser/${id}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -39,7 +39,7 @@ const getUser = async (id) => {
 
 const updateUser = async (id, data) => {
   try {
-    const response = await httpClient.put(`/user/updateUser/${id}`, data);
+    const response = await httpClient.put(`/api/user/updateUser/${id}`, data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -52,7 +52,7 @@ const updateUser = async (id, data) => {
 
 const changeUserStatus = async (id) => {
   try {
-    const response = await httpClient.patch(`/user/changeUserStatus/${id}`);
+    const response = await httpClient.patch(`/api/user/changeUserStatus/${id}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -64,7 +64,7 @@ const changeUserStatus = async (id) => {
 };
 const getUserProfileDetails = async () => {
   try {
-    const response = await httpClient.get("/user/getProfileDetails");
+    const response = await httpClient.get("/api/user/getProfileDetails");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }

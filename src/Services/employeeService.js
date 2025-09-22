@@ -1,7 +1,7 @@
 import httpClient from "../Utils/httpClient";
 const addEmployee = async (data) => {
   try {
-    const response = await httpClient.post("/employee/addEmployee", data);
+    const response = await httpClient.post("/api/employee/addEmployee", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +13,7 @@ const addEmployee = async (data) => {
 };
 const getEmployees = async () => {
   try {
-    const response = await httpClient.get("/employee/getEmployees");
+    const response = await httpClient.get("/api/employee/getEmployees");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -26,7 +26,9 @@ const getEmployees = async () => {
 
 const getEmployee = async (id) => {
   try {
-    const response = await httpClient.get(`/employee/getSingleEmployee/${id}`);
+    const response = await httpClient.get(
+      `/api/employee/getSingleEmployee/${id}`
+    );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -40,7 +42,7 @@ const getEmployee = async (id) => {
 const updateEmployee = async (id, data) => {
   try {
     const response = await httpClient.put(
-      `/employee/updateEmployee/${id}`,
+      `/api/employee/updateEmployee/${id}`,
       data
     );
     if (!response?.data?.success) {
@@ -56,7 +58,7 @@ const updateEmployee = async (id, data) => {
 const changeEmployeeStatus = async (id) => {
   try {
     const response = await httpClient.patch(
-      `/employee/updateEmployeeStatus/${id}`
+      `/api/employee/updateEmployeeStatus/${id}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -70,7 +72,7 @@ const changeEmployeeStatus = async (id) => {
 const getEmployeeProfileDetails = async () => {
   try {
     const response = await httpClient.get(
-      "/employee/getEmployeeProfileDetails"
+      "/api/employee/getEmployeeProfileDetails"
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");

@@ -1,7 +1,7 @@
 import httpClient from "../Utils/httpClient";
 const addRole = async (data) => {
   try {
-    const response = await httpClient.post("/role/addRole", data);
+    const response = await httpClient.post("/api/role/addRole", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +13,7 @@ const addRole = async (data) => {
 };
 const getRoles = async () => {
   try {
-    const response = await httpClient.get("/role/getRoles");
+    const response = await httpClient.get("/api/role/getRoles");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -26,7 +26,7 @@ const getRoles = async () => {
 
 const getRole = async (id) => {
   try {
-    const response = await httpClient.get(`/role/getSingleRole/${id}`);
+    const response = await httpClient.get(`/api/role/getSingleRole/${id}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -39,7 +39,7 @@ const getRole = async (id) => {
 
 const updateRole = async (id, data) => {
   try {
-    const response = await httpClient.put(`/role/updateRole/${id}`, data);
+    const response = await httpClient.put(`/api/role/updateRole/${id}`, data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -52,7 +52,7 @@ const updateRole = async (id, data) => {
 
 const changeRoleStatus = async (id) => {
   try {
-    const response = await httpClient.patch(`/role/updateRoleStatus/${id}`);
+    const response = await httpClient.patch(`/api/role/updateRoleStatus/${id}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }

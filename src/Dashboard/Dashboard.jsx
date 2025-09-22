@@ -54,70 +54,72 @@ const Dashboard = () => {
           <div className="row">
             <div className="col-xxl-5 col-lg-12">
               <div className="row">
-                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
-                  <div className="card custom-card hrm-cards overflow-hidden">
-                    <div className="card-body p-4">
-                      <span className="d-block mb-2">Total Employees</span>
-                      <h4 className="fw-semibold mb-2">
-                        {employeeCount || ""}
-                      </h4>
-                      <span className="fs-12 text-muted">
-                        This Month
-                        <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
-                          <i className="ri-arrow-up-line me-1" />
-                          2.45%
+                {(role === "admin" || role === "manager") && (
+                  <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                    <div className="card custom-card hrm-cards overflow-hidden">
+                      <div className="card-body p-4">
+                        <span className="d-block mb-2">Total Employees</span>
+                        <h4 className="fw-semibold mb-2">
+                          {employeeCount || ""}
+                        </h4>
+                        <span className="fs-12 text-muted">
+                          This Month
+                          <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
+                            <i className="ri-arrow-up-line me-1" />
+                            2.45%
+                          </span>
                         </span>
-                      </span>
-                      <span className="hrm-cards-icon svg-white text-fixed-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 256 256"
-                        >
-                          <rect width={256} height={256} fill="none" />
-                          <polygon
-                            points="224 64 128 96 32 64 128 32 224 64"
-                            opacity="0.2"
-                          />
-                          <line
-                            x1={32}
-                            y1={64}
-                            x2={32}
-                            y2={144}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <path
-                            d="M56,216c15.7-24.08,41.11-40,72-40s56.3,15.92,72,40"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <polygon
-                            points="224 64 128 96 32 64 128 32 224 64"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <path
-                            d="M169.34,82.22a56,56,0,1,1-82.68,0"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                        </svg>
-                      </span>
+                        <span className="hrm-cards-icon svg-white text-fixed-white">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 256 256"
+                          >
+                            <rect width={256} height={256} fill="none" />
+                            <polygon
+                              points="224 64 128 96 32 64 128 32 224 64"
+                              opacity="0.2"
+                            />
+                            <line
+                              x1={32}
+                              y1={64}
+                              x2={32}
+                              y2={144}
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={16}
+                            />
+                            <path
+                              d="M56,216c15.7-24.08,41.11-40,72-40s56.3,15.92,72,40"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={16}
+                            />
+                            <polygon
+                              points="224 64 128 96 32 64 128 32 224 64"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={16}
+                            />
+                            <path
+                              d="M169.34,82.22a56,56,0,1,1-82.68,0"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={16}
+                            />
+                          </svg>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden secondary">
                     <div className="card-body p-4">

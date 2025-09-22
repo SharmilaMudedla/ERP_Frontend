@@ -1,7 +1,7 @@
 import httpClient from "../Utils/httpClient";
 const addLeave = async (data) => {
   try {
-    const response = await httpClient.post("/leave/addLeave", data);
+    const response = await httpClient.post("/api/leave/addLeave", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +13,7 @@ const addLeave = async (data) => {
 };
 const getLeaves = async () => {
   try {
-    const response = await httpClient.get("/leave/getLeaves");
+    const response = await httpClient.get("/api/leave/getLeaves");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -25,7 +25,7 @@ const getLeaves = async () => {
 };
 const getSingleLeave = async (id) => {
   try {
-    const response = await httpClient.get(`/leave/getSingleLeave/${id}`);
+    const response = await httpClient.get(`/api/leave/getSingleLeave/${id}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -37,7 +37,7 @@ const getSingleLeave = async (id) => {
 };
 const updateLeave = async (id, data) => {
   try {
-    const response = await httpClient.put(`/leave/updateLeave/${id}`, data);
+    const response = await httpClient.put(`/api/leave/updateLeave/${id}`, data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -49,10 +49,13 @@ const updateLeave = async (id, data) => {
 };
 const changeLeaveStatus = async (id, status, employeeId) => {
   try {
-    const response = await httpClient.patch(`/leave/updateLeaveStatus/${id}`, {
-      status,
-      employeeId,
-    });
+    const response = await httpClient.patch(
+      `/api/leave/updateLeaveStatus/${id}`,
+      {
+        status,
+        employeeId,
+      }
+    );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -65,7 +68,9 @@ const changeLeaveStatus = async (id, status, employeeId) => {
 
 const getLeaveLeft = async (employeeId) => {
   try {
-    const response = await httpClient.get(`/leave/getLeavesLeft/${employeeId}`);
+    const response = await httpClient.get(
+      `/api/leave/getLeavesLeft/${employeeId}`
+    );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -77,7 +82,7 @@ const getLeaveLeft = async (employeeId) => {
 };
 const getLeavesByDate = async (date) => {
   try {
-    const response = await httpClient.get(`/leave/getLeavesByDate/${date}`);
+    const response = await httpClient.get(`/api/leave/getLeavesByDate/${date}`);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }

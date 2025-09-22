@@ -1,7 +1,10 @@
 import httpClient from "../Utils/httpClient";
 const addAttendance = async (data) => {
   try {
-    const response = await httpClient.post("/attendance/addAttendance", data);
+    const response = await httpClient.post(
+      "/api/attendance/addAttendance",
+      data
+    );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +16,7 @@ const addAttendance = async (data) => {
 };
 const getEmployeesAttendance = async () => {
   try {
-    const response = await httpClient.get("/attendance/getAttendances");
+    const response = await httpClient.get("/api/attendance/getAttendances");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -27,7 +30,7 @@ const getEmployeesAttendance = async () => {
 const getSingleEmployeeAttendance = async (id) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getSingleAttendance/${id}`
+      `/api/attendance/getSingleAttendance/${id}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -42,7 +45,7 @@ const getSingleEmployeeAttendance = async (id) => {
 const updateAttendance = async (id, data) => {
   try {
     const response = await httpClient.put(
-      `/attendance/updateAttendance/${id}`,
+      `/api/attendance/updateAttendance/${id}`,
       data
     );
     if (!response?.data?.success) {
@@ -58,7 +61,7 @@ const updateAttendance = async (id, data) => {
 const getAttendenceByDate = async (date) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getAttendanceByDate/${date}`
+      `/api/attendance/getAttendanceByDate/${date}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -73,7 +76,7 @@ const getAttendenceByDate = async (date) => {
 const getAttendanceByEmployee = async (employeeId) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getAttendanceByEmployeeId/${employeeId}`
+      `/api/attendance/getAttendanceByEmployeeId/${employeeId}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -88,7 +91,7 @@ const getAttendanceByEmployee = async (employeeId) => {
 const getAttendanceByDateAndEmployee = async (date, employeeId) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getAttendanceBydateAndEmployee/${date}/${employeeId}`
+      `/api/attendance/getAttendanceBydateAndEmployee/${date}/${employeeId}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -103,7 +106,7 @@ const getAttendanceByDateAndEmployee = async (date, employeeId) => {
 const getAttendanceByMonthAndEmployee = async (month, employeeId) => {
   try {
     const response = await httpClient.get(
-      `/attendance/getAttendanceByMonthAndEmployee/${month}/${employeeId}`
+      `/api/attendance/getAttendanceByMonthAndEmployee/${month}/${employeeId}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");

@@ -1,7 +1,10 @@
 import httpClient from "../Utils/httpClient";
 const addDepartment = async (data) => {
   try {
-    const response = await httpClient.post("/department/addDepartment", data);
+    const response = await httpClient.post(
+      "/api/department/addDepartment",
+      data
+    );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -13,7 +16,7 @@ const addDepartment = async (data) => {
 };
 const getDepartments = async () => {
   try {
-    const response = await httpClient.get("/department/getDepartments");
+    const response = await httpClient.get("/api/department/getDepartments");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -27,7 +30,7 @@ const getDepartments = async () => {
 const getSingleDepartment = async (id) => {
   try {
     const response = await httpClient.get(
-      `/department/getSingleDepartment/${id}`
+      `/api/department/getSingleDepartment/${id}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
@@ -42,7 +45,7 @@ const getSingleDepartment = async (id) => {
 const updateDepartment = async (id, data) => {
   try {
     const response = await httpClient.put(
-      `/department/updateDepartment/${id}`,
+      `/api/department/updateDepartment/${id}`,
       data
     );
     if (!response?.data?.success) {
@@ -58,7 +61,7 @@ const updateDepartment = async (id, data) => {
 const changeDepartmentStatus = async (id) => {
   try {
     const response = await httpClient.patch(
-      `/department/updateDepartmentStatus/${id}`
+      `/api/department/updateDepartmentStatus/${id}`
     );
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");

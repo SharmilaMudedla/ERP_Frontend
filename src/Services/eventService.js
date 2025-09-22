@@ -2,7 +2,7 @@ import httpClient from "../Utils/httpClient";
 
 const addEvent = async (data) => {
   try {
-    const response = await httpClient.post("/event/addEvent", data);
+    const response = await httpClient.post("/api/event/addEvent", data);
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
@@ -14,7 +14,7 @@ const addEvent = async (data) => {
 };
 const getEvents = async () => {
   try {
-    const response = await httpClient.get("/event/getEvents");
+    const response = await httpClient.get("/api/event/getEvents");
     if (!response?.data?.success) {
       throw new Error(response?.data?.message || "Something went wrong");
     }
