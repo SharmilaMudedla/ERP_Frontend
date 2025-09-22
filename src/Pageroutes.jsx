@@ -27,7 +27,7 @@ const AttendenceView = lazy(() => import("./Pages/Attendance/ViewReport"));
 const ManageEvents = lazy(() => import("./Pages/Events/ManageEvents"));
 const ManageLeaves = lazy(() => import("./Pages/Leaves/ManageLeave"));
 const EmployeeLeaves = lazy(() => import("./Pages/Leaves/EmployeeManageLeave"));
-
+const Profile = lazy(() => import("./Pages/MyProfile/Profile"));
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
   const role = localStorage.getItem("UserRole") || "";
@@ -40,6 +40,8 @@ const Pageroutes = () => {
       <Routes>
         {/* Public route */}
         <Route path="/" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+
         {/* Dashboard accessible to all authenticated users */}
         <Route
           path="/dashboard"
