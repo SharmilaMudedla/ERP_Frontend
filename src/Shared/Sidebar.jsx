@@ -487,6 +487,14 @@ const Sidebar = () => {
                         Apply Leave
                       </Link>
                     </li>
+                    <li className="slide ">
+                      <Link
+                        className="dropdown-item side-menu__item"
+                        to="/leaves"
+                      >
+                        Manage Leaves
+                      </Link>
+                    </li>
                   </ul>
                 </li>
               )}
