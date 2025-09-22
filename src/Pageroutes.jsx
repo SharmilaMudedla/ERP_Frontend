@@ -26,6 +26,7 @@ const AttendanceReport = lazy(() =>
 const AttendenceView = lazy(() => import("./Pages/Attendance/ViewReport"));
 const ManageEvents = lazy(() => import("./Pages/Events/ManageEvents"));
 const ManageLeaves = lazy(() => import("./Pages/Leaves/ManageLeave"));
+const EmployeeLeaves = lazy(() => import("./Pages/Leaves/EmployeeManageLeave"));
 
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
@@ -48,11 +49,27 @@ const Pageroutes = () => {
             </ProtectedRoute>
           }
         />
+        {/* Protected routes only for employees */}
+
         <Route
           path="/addleave"
           element={
-            <ProtectedRoute isAllowed={isAuthenticated} redirectPath="/">
+            <ProtectedRoute
+              isAllowed={isAuthenticated && role === "employee"}
+              redirectPath="/dashboard"
+            >
               <AddLeave />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/leaves"
+          element={
+            <ProtectedRoute
+              isAllowed={isAuthenticated && role === "employee"}
+              redirectPath="/dashboard"
+            >
+              <EmployeeLeaves />
             </ProtectedRoute>
           }
         />
@@ -205,8 +222,8 @@ const Pageroutes = () => {
           path="/manageleaves"
           element={
             <ProtectedRoute
-              isAllowed={isAuthenticated}
-              redirectPath="/manageleaves"
+              isAllowed={isAdminOrManager}
+              redirectPath="/dashboard"
             >
               <ManageLeaves />
             </ProtectedRoute>
