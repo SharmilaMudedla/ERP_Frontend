@@ -1,6 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getEmployeeData } from "../Services/dashboardService";
+import { getEmployees } from "../Services/employeeService";
 
 const Dashboard = () => {
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [employees, setEmployees] = useState([]);
+  const fectchEmployeeCount = async () => {
+    try {
+      const response = await getEmployeeData();
+      if (response?.success) {
+        setEmployeeCount(response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchEmployees = async () => {
+    try {
+      const response = await getEmployees();
+      // console.log(response);
+      if (response?.success) {
+        setEmployees(response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fectchEmployeeCount();
+    fetchEmployees();
+  });
+  const role = localStorage.getItem("UserRole");
   return (
     <>
       <div className="main-content app-content">
@@ -28,7 +58,9 @@ const Dashboard = () => {
                   <div className="card custom-card hrm-cards overflow-hidden">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Total Employees</span>
-                      <h4 className="fw-semibold mb-2">23,768</h4>
+                      <h4 className="fw-semibold mb-2">
+                        {employeeCount || ""}
+                      </h4>
                       <span className="fs-12 text-muted">
                         This Month
                         <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
@@ -86,7 +118,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden secondary">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Total Jobs Applied</span>
@@ -138,8 +170,8 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
-                </div>
-                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                </div> */}
+                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden success">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">New Employees</span>
@@ -214,8 +246,8 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
-                </div>
-                <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                </div> */}
+                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                   <div className="card custom-card hrm-cards overflow-hidden pink">
                     <div className="card-body p-4">
                       <span className="d-block mb-2">Newly Recruited</span>
@@ -275,7 +307,7 @@ const Dashboard = () => {
                       </span>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="card custom-card">
                 <div className="card-header">
@@ -781,603 +813,208 @@ const Dashboard = () => {
           </div>
           {/* End:: row-2 */}
           {/* Start:: row-3 */}
-          <div className="row">
-            <div className="col-xxl-12">
-              <div className="card custom-card">
-                <div className="card-header justify-content-between">
-                  <div className="card-title">Employee Directory</div>
-                  <div className="d-flex flex-wrap">
-                    <div className="me-3 my-1">
-                      <input
-                        className="form-control form-control-sm"
-                        type="text"
-                        placeholder="Search Here"
-                        aria-label=" example"
-                      />
-                    </div>
-                    <div className="dropdown my-1">
-                      <a
-                        href="javascript:void(0);"
-                        className="btn btn-sm btn-primary"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Sort By
-                        <i className="ri-arrow-down-s-line align-middle ms-1" />
-                      </a>
-                      <ul className="dropdown-menu" role="menu">
-                        <li>
-                          <a
-                            className="dropdown-item"
-                            href="javascript:void(0);"
-                          >
-                            New
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="dropdown-item"
-                            href="javascript:void(0);"
-                          >
-                            Popular
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="dropdown-item"
-                            href="javascript:void(0);"
-                          >
-                            Relevant
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="table-responsive">
-                    <table className="table table-hover text-nowrap table-bordered text-center">
-                      <thead>
-                        <tr>
-                          <th scope="col" className="text-center">
-                            S.No
-                          </th>
-                          <th scope="col">Employee Id</th>
-                          <th scope="col">Employee Name</th>
-                          <th scope="col">Position</th>
-                          <th scope="col">Department</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Status</th>
-                          <th scope="col">Contact</th>
-                          <th scope="col">Salary</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="text-center">01</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23520
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/1.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Richard Dom
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Team Leader</span>
-                          </td>
-                          <td>
-                            <span className>Backend</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">
-                              richard116@demo.com
-                            </a>
-                          </td>
-                          <td>
-                            <span className="badge bg-success-transparent">
-                              Active
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0987654321</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$15,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">02</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23521
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/2.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Kakashra Sri
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Web Developer</span>
-                          </td>
-                          <td>
-                            <span className>Front End</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">
-                              Kakashra987@demo.com
-                            </a>
-                          </td>
-                          <td>
-                            <span className="badge bg-success-transparent">
-                              Active
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0986548761</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$20,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">03</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23522
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/3.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Nikki Jey
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Project Manager</span>
-                          </td>
-                          <td>
-                            <span className>HR</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">Nikki654@demo.com</a>
-                          </td>
-                          <td>
-                            <span className="badge bg-info-transparent">
-                              On Leave
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0986548787</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$25,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">04</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23523
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/4.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Sasukey Ahuhi
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Project Manager</span>
-                          </td>
-                          <td>
-                            <span className>HR</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">
-                              Sasukey986@demo.com
-                            </a>
-                          </td>
-                          <td>
-                            <span className="badge bg-success-transparent">
-                              Active
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0986548788</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$30,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">05</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23524
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/5.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Xiong Yu
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>UI Developer</span>
-                          </td>
-                          <td>
-                            <span className>Engineering</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">Xiongu987@demo.com</a>
-                          </td>
-                          <td>
-                            <span className="badge bg-success-transparent">
-                              Active
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0986548988</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$35,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">06</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23525
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/6.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Arifa Zed
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Team Member</span>
-                          </td>
-                          <td>
-                            <span className>IT</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">Arifa432@demo.com</a>
-                          </td>
-                          <td>
-                            <span className="badge bg-danger-transparent">
-                              Resigned
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+0986548985</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$40,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-center">07</td>
-                          <td>
-                            <span className="text-primary fs-14">
-                              #emp23526
-                            </span>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <img
-                                src="assets/images/faces/7.jpg"
-                                className="avatar avatar-sm"
-                                alt
-                              />
-                              <div className="flex-1 flex-between pos-relative ms-2">
-                                <div className>
-                                  <a
-                                    href="javascript:void(0);"
-                                    className="fs-13 fw-medium"
-                                  >
-                                    Jennifer Tab
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className>Project Manager</span>
-                          </td>
-                          <td>
-                            <span className>Front End</span>
-                          </td>
-                          <td>
-                            <a href="javascript:void(0);">
-                              Jennifer543@demo.com
-                            </a>
-                          </td>
-                          <td>
-                            <span className="badge bg-success-transparent">
-                              Active
-                            </span>
-                          </td>
-                          <td>
-                            <span className>+09865489987</span>
-                          </td>
-                          <td>
-                            <span className="fw-medium">$45,000</span>
-                          </td>
-                          <td>
-                            <div className="g-2">
-                              <a
-                                aria-label="anchor"
-                                className="btn  btn-primary-light btn-sm"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Edit"
-                              >
-                                <span className="ri-pencil-line fs-14" />
-                              </a>
-                              <a
-                                aria-label="anchor"
-                                className="btn btn-danger-light btn-sm ms-2"
-                                data-bs-toggle="tooltip"
-                                data-bs-original-title="Delete"
-                              >
-                                <span className="ri-delete-bin-7-line fs-14" />
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <div className="d-flex align-items-center">
-                    <div>
-                      Showing 7 Entries{" "}
-                      <i className="bi bi-arrow-right ms-2 fw-medium" />
-                    </div>
-                    <div className="ms-auto">
-                      <nav
-                        aria-label="Page navigation"
-                        className="pagination-style-4"
-                      >
-                        <ul className="pagination mb-0">
-                          <li className="page-item disabled">
-                            <a className="page-link" href="javascript:void(0);">
-                              Prev
-                            </a>
-                          </li>
-                          <li className="page-item active">
-                            <a className="page-link" href="javascript:void(0);">
-                              1
-                            </a>
-                          </li>
-                          <li className="page-item">
-                            <a className="page-link" href="javascript:void(0);">
-                              2
-                            </a>
-                          </li>
-                          <li className="page-item">
+          {(role === "admin" || role === "manager") && (
+            <div className="row">
+              <div className="col-xxl-12">
+                <div className="card custom-card">
+                  <div className="card-header justify-content-between">
+                    <div className="card-title">Employee Directory</div>
+                    <div className="d-flex flex-wrap">
+                      <div className="me-3 my-1">
+                        <input
+                          className="form-control form-control-sm"
+                          type="text"
+                          placeholder="Search Here"
+                          aria-label=" example"
+                        />
+                      </div>
+                      <div className="dropdown my-1">
+                        <a
+                          href="javascript:void(0);"
+                          className="btn btn-sm btn-primary"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          Sort By
+                          <i className="ri-arrow-down-s-line align-middle ms-1" />
+                        </a>
+                        <ul className="dropdown-menu" role="menu">
+                          <li>
                             <a
-                              className="page-link text-primary"
+                              className="dropdown-item"
                               href="javascript:void(0);"
                             >
-                              next
+                              New
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href="javascript:void(0);"
+                            >
+                              Popular
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href="javascript:void(0);"
+                            >
+                              Relevant
                             </a>
                           </li>
                         </ul>
-                      </nav>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div className="table-responsive">
+                      <table className="table table-hover text-nowrap table-bordered text-center">
+                        <thead>
+                          <tr>
+                            <th scope="col" className="text-center">
+                              S.No
+                            </th>
+                            <th scope="col">Employee Id</th>
+                            <th scope="col">Employee Name</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Salary</th>
+                            {/* <th scope="col">Action</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {employees.map((emp, index) => (
+                            <tr>
+                              <td className="text-center">{index + 1}</td>
+                              <td>
+                                <span className="text-primary fs-14">
+                                  {emp.employeeId}
+                                </span>
+                              </td>
+                              <td>
+                                <div className="d-flex align-items-center">
+                                  <img
+                                    src={`http:localhost:3000/${emp.image}`}
+                                    className="avatar avatar-sm"
+                                    alt
+                                  />
+                                  <div className="flex-1 flex-between pos-relative ms-2">
+                                    <div className>
+                                      <a
+                                        href="javascript:void(0);"
+                                        className="fs-13 fw-medium"
+                                      >
+                                        {emp.firstName} {emp.lastName}
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <span className>{emp.designation}</span>
+                              </td>
+                              <td>
+                                <span className>{emp.department}</span>
+                              </td>
+                              <td>
+                                <a href="javascript:void(0);">{emp.email}</a>
+                              </td>
+                              <td>
+                                <span className="badge bg-success-transparent">
+                                  {emp.status}
+                                </span>
+                              </td>
+                              <td>
+                                <span className>{emp.phone}</span>
+                              </td>
+                              <td>
+                                <span className="fw-medium">
+                                  {emp.salaryStructure}
+                                </span>
+                              </td>
+                              {/* <td>
+                              <div className="g-2">
+                                <a
+                                  aria-label="anchor"
+                                  className="btn  btn-primary-light btn-sm"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-original-title="Edit"
+                                >
+                                  <span className="ri-pencil-line fs-14" />
+                                </a>
+                                <a
+                                  aria-label="anchor"
+                                  className="btn btn-danger-light btn-sm ms-2"
+                                  data-bs-toggle="tooltip"
+                                  data-bs-original-title="Delete"
+                                >
+                                  <span className="ri-delete-bin-7-line fs-14" />
+                                </a>
+                              </div>
+                            </td> */}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="card-footer">
+                    <div className="d-flex align-items-center">
+                      <div>
+                        Showing 7 Entries{" "}
+                        <i className="bi bi-arrow-right ms-2 fw-medium" />
+                      </div>
+                      <div className="ms-auto">
+                        <nav
+                          aria-label="Page navigation"
+                          className="pagination-style-4"
+                        >
+                          <ul className="pagination mb-0">
+                            <li className="page-item disabled">
+                              <a
+                                className="page-link"
+                                href="javascript:void(0);"
+                              >
+                                Prev
+                              </a>
+                            </li>
+                            <li className="page-item active">
+                              <a
+                                className="page-link"
+                                href="javascript:void(0);"
+                              >
+                                1
+                              </a>
+                            </li>
+                            <li className="page-item">
+                              <a
+                                className="page-link"
+                                href="javascript:void(0);"
+                              >
+                                2
+                              </a>
+                            </li>
+                            <li className="page-item">
+                              <a
+                                className="page-link text-primary"
+                                href="javascript:void(0);"
+                              >
+                                next
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
           {/* End:: row-3 */}
         </div>
       </div>

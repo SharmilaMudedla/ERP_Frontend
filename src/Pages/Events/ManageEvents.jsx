@@ -176,9 +176,19 @@ const ManageEvents = () => {
           title: evt.title,
           start: evt.startDate,
           end: evt.endDate,
-          color: evt.color,
           description: evt.description,
+          backgroundColor: evt.color,
+          borderColor: evt.color,
+          textColor: "#fff",
         })),
+        // eventDidMount: (info) => {
+        //   info.el.style.backgroundColor =
+        //     info.event.extendedProps.backgroundColor;
+        //   info.el.style.color = "blue";
+        //   info.el.style.borderRadius = "6px";
+        //   info.el.style.padding = "2px 6px";
+        // },
+
         eventClick: (arg) => {
           alert(
             `Event: ${arg.event.title}\nDescription: ${arg.event.extendedProps.description}`
@@ -195,8 +205,8 @@ const ManageEvents = () => {
         const response = await getEvents();
         if (response?.success) {
           const eventsData = response.data || [];
-          setEvents(eventsData); // update state for external list
-          initializeCalendar(eventsData); // render calendar
+          setEvents(eventsData);
+          initializeCalendar(eventsData);
         }
       } catch (error) {
         toast.error(error?.message || "Error fetching Events");
@@ -226,8 +236,6 @@ const ManageEvents = () => {
     )
       tempErrors.endDate = "End Date cannot be before Start Date";
     if (!formData.color) tempErrors.color = "Background color is required";
-    if (!formData.description.trim())
-      tempErrors.description = "Description is required";
 
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
@@ -258,6 +266,7 @@ const ManageEvents = () => {
       setLoader(false);
     }
   };
+  const role = localStorage.getItem("UserRole");
 
   return (
     <>
@@ -388,15 +397,17 @@ const ManageEvents = () => {
               <div className="card custom-card">
                 <div className="card-header justify-content-between">
                   <div className="card-title">All Events</div>
-                  <button
-                    className="btn btn-primary btn-wave"
-                    data-bs-toggle="modal"
-                    data-bs-target="#eventsModal"
-                    onClick={() => setModalShow(true)}
-                  >
-                    <i className="ri-add-line align-middle me-1 fw-medium d-inline-block" />
-                    Create New Event
-                  </button>
+                  {(role === "admin" || role === "manager") && (
+                    <button
+                      className="btn btn-primary btn-wave"
+                      data-bs-toggle="modal"
+                      data-bs-target="#eventsModal"
+                      onClick={() => setModalShow(true)}
+                    >
+                      <i className="ri-add-line align-middle me-1 fw-medium d-inline-block" />
+                      Create New Event
+                    </button>
+                  )}
                 </div>
                 <div className="card-body p-0">
                   <div
@@ -406,7 +417,14 @@ const ManageEvents = () => {
                     {events.map((event) => (
                       <div
                         key={event.id}
-                        className="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event bg-primary-transparent"
+                        className="fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event"
+                        style={{
+                          backgroundColor: event.color,
+                          borderRadius: "6px",
+                          padding: "4px 8px",
+                          color: "#fff",
+                          cursor: "pointer",
+                        }}
                       >
                         <div className="fc-event-main text-primary">
                           {event.title}
@@ -530,11 +548,6 @@ const ManageEvents = () => {
                         value={formData.description}
                         onChange={handleInputChange}
                       ></textarea>
-                      {errors.description && (
-                        <div className="invalid-feedback">
-                          {errors.description}
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

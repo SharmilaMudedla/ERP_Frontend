@@ -484,7 +484,7 @@ const Sidebar = () => {
                         className="dropdown-item side-menu__item"
                         to="/addleave"
                       >
-                        Add Leave
+                        Apply Leave
                       </Link>
                     </li>
                   </ul>
