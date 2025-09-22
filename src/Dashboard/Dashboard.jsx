@@ -900,10 +900,14 @@ const Dashboard = () => {
                               <td>
                                 <div className="d-flex align-items-center">
                                   <img
-                                    src={`http:localhost:3000/${emp.image}`}
+                                    // src={`${import.meta.env.VITE_LOCAL}/${
+                                    //   emp.image
+                                    // }`}
+                                    src={`http:localhost:4000/${emp.image}`}
                                     className="avatar avatar-sm"
-                                    alt
+                                    alt="Employee"
                                   />
+
                                   <div className="flex-1 flex-between pos-relative ms-2">
                                     <div className>
                                       <a
