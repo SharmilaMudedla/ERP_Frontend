@@ -84,6 +84,33 @@ const getEmployeeProfileDetails = async () => {
   }
 };
 
+const getEmployeeData = async () => {
+  try {
+    const response = await httpClient.get("/api/employee/totalEmployees");
+    // console.log(response);
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const getEmployeeBirthdays = async () => {
+  try {
+    const response = await httpClient.get("/api/employee/getEmployeeBirthdays");
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addEmployee,
   getEmployees,
@@ -91,4 +118,6 @@ export {
   updateEmployee,
   changeEmployeeStatus,
   getEmployeeProfileDetails,
+  getEmployeeBirthdays,
+  getEmployeeData,
 };

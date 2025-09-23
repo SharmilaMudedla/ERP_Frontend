@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getEmployeeData } from "../Services/dashboardService";
-import { getEmployees } from "../Services/employeeService";
+import {
+  getEmployees,
+  getEmployeeBirthdays,
+  getEmployeeData,
+} from "../Services/employeeService";
+import { getEvents } from "../Services/eventService";
 
 const Dashboard = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [employees, setEmployees] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [remainders, setRemainders] = useState([]);
   const fectchEmployeeCount = async () => {
     try {
       const response = await getEmployeeData();
@@ -26,9 +32,32 @@ const Dashboard = () => {
       console.error(error);
     }
   };
+  const fetchEvents = async () => {
+    try {
+      const response = await getEvents();
+      if (response?.success) {
+        setEvents(response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchBrithdayRemainders = async () => {
+    try {
+      const response = await getEmployeeBirthdays();
+      console.log(response);
+      if (response?.success) {
+        setRemainders(response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     fectchEmployeeCount();
     fetchEmployees();
+    fetchEvents();
+    fetchBrithdayRemainders();
   });
   const role = localStorage.getItem("UserRole");
   return (
@@ -311,7 +340,7 @@ const Dashboard = () => {
                   </div>
                 </div> */}
               </div>
-              <div className="card custom-card">
+              {/* <div className="card custom-card">
                 <div className="card-header">
                   <div className="card-title">Upcoming Events</div>
                 </div>
@@ -549,7 +578,7 @@ const Dashboard = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* End:: row-1 */}
@@ -559,10 +588,7 @@ const Dashboard = () => {
               <div className="card custom-card overflow-hidden">
                 <div className="card-header justify-content-between">
                   <div className="card-title">Event List</div>
-                  <a
-                    href="javascript:void(0);"
-                    className="fs-12 text-muted tag-link"
-                  >
+                  <a href="/manageEvents" className="fs-12 text-muted tag-link">
                     {" "}
                     View All
                     <i className="ti ti-arrow-narrow-right ms-1" />{" "}
@@ -570,31 +596,54 @@ const Dashboard = () => {
                 </div>
                 <div className="card-body">
                   <ul className="list-group list-unstyled hrm-events-list mb-0">
-                    <li>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main1 me-2">
-                            <span className="avatar bg-primary-transparent svg-primary avatar-rounded avatar-md">
-                              <i className="ri-calendar-line fs-14" />
+                    {events.map((event, index) => (
+                      <li key={index}>
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center lh-1">
+                            <span className="avatar-main1 me-2">
+                              <span className="avatar bg-primary-transparent svg-primary avatar-rounded avatar-md">
+                                <i className="ri-calendar-line fs-14" />
+                              </span>
                             </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">
-                              Office Anniversary
-                            </span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              19, Dec 2024 - Thursday
+                            <div className="d-flex flex-column">
+                              <span className="d-block fw-medium mb-2">
+                                {event.title}
+                              </span>
+                              <span className="d-block fw-medium text-muted fs-12 mb-1">
+                                {new Date(event.startDate).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    day: "2-digit",
+                                  }
+                                )}
+                                ,{" "}
+                                {new Date(event.startDate).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    month: "short",
+                                    year: "numeric",
+                                  }
+                                )}{" "}
+                                -{" "}
+                                {new Date(event.startDate).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    weekday: "long",
+                                  }
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <span className="badge bg-primary-transparent">
+                              {event.description}
                             </span>
                           </div>
                         </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            Full Day
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
+                      </li>
+                    ))}
+
+                    {/* <li>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center lh-1">
                           <span className="avatar-main2 me-2">
@@ -615,8 +664,8 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center lh-1">
                           <span className="avatar-main3 me-2">
@@ -639,8 +688,8 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center lh-1">
                           <span className="avatar-main4 me-2">
@@ -663,8 +712,8 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center lh-1">
                           <span className="avatar-main5 me-2">
@@ -687,8 +736,8 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
-                    </li>
-                    <li className="mb-0">
+                    </li> */}
+                    {/* <li className="mb-0">
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center lh-1">
                           <span className="avatar-main6 me-2">
@@ -711,7 +760,7 @@ const Dashboard = () => {
                           </span>
                         </div>
                       </div>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -720,28 +769,46 @@ const Dashboard = () => {
             <div className="col-xxl-3 col-xl-6">
               <div className="card custom-card">
                 <div className="card-header">
-                  <div className="card-title">Recruitment Pipeline</div>
+                  <div className="card-title">
+                    Tomorrow's BirthDay Remainders
+                  </div>
                 </div>
                 <div className="card-body">
                   <ul className="list-unstyled recruitment-pipeline-list mb-0">
-                    <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-primary-transparent">
-                            <i className="ri ri-layout-grid-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">
-                          Total Applications
-                        </div>
-                        <div className="text-end">
-                          <span className="text-primary h6 mb-0 fw-semibold">
-                            2,350
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
+                    {remainders?.thisMonthBirthdays &&
+                    remainders.thisMonthBirthdays.length > 0 ? (
+                      remainders.thisMonthBirthdays.map((remainder, index) => (
+                        <li key={index}>
+                          <div className="d-flex align-items-center gap-2">
+                            <div>
+                              <span className="avatar avatar-md avatar-rounded bg-primary-transparent">
+                                <i className="ri-cake-2-line fs-14" />
+                              </span>
+                            </div>
+                            <div className="flex-fill fw-semibold">
+                              {`${remainder.firstName} ${remainder.lastName}`}
+                            </div>
+                            <div className="text-end">
+                              <span className="text-primary h6 mb-0 fw-semibold">
+                                {new Date(
+                                  remainder.dateOfBirth
+                                ).toLocaleDateString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="text-center text-muted">
+                        No data available
+                      </li>
+                    )}
+
+                    {/* <li>
                       <div className="d-flex align-items-center gap-2">
                         <div>
                           <span className="avatar avatar-md avatar-rounded bg-secondary-transparent">
@@ -807,7 +874,7 @@ const Dashboard = () => {
                           <span className="text-danger h6 mb-0">220</span>
                         </div>
                       </div>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -890,7 +957,7 @@ const Dashboard = () => {
                         </thead>
                         <tbody>
                           {employees.map((emp, index) => (
-                            <tr>
+                            <tr key={emp._id}>
                               <td className="text-center">{index + 1}</td>
                               <td>
                                 <span className="text-primary fs-14">
@@ -903,13 +970,13 @@ const Dashboard = () => {
                                     // src={`${import.meta.env.VITE_LOCAL}/${
                                     //   emp.image
                                     // }`}
-                                    src={`http:localhost:4000/${emp.image}`}
+                                    src={`http://localhost:4000/${emp.image}`}
                                     className="avatar avatar-sm"
                                     alt="Employee"
                                   />
 
                                   <div className="flex-1 flex-between pos-relative ms-2">
-                                    <div className>
+                                    <div>
                                       <a
                                         href="javascript:void(0);"
                                         className="fs-13 fw-medium"
@@ -921,10 +988,10 @@ const Dashboard = () => {
                                 </div>
                               </td>
                               <td>
-                                <span className>{emp.designation}</span>
+                                <span>{emp.designation}</span>
                               </td>
                               <td>
-                                <span className>{emp.department}</span>
+                                <span>{emp.department}</span>
                               </td>
                               <td>
                                 <a href="javascript:void(0);">{emp.email}</a>
@@ -935,7 +1002,7 @@ const Dashboard = () => {
                                 </span>
                               </td>
                               <td>
-                                <span className>{emp.phone}</span>
+                                <span>{emp.phone}</span>
                               </td>
                               <td>
                                 <span className="fw-medium">
