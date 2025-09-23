@@ -14525,7 +14525,11 @@ caption {
   align-items: center;
   justify-content: center;
   position: relative;
-  background: linear-gradient(to right bottom, rgb(155 195 255 / 87%), rgb(234 228 239 / 87%));
+  background: linear-gradient(
+    to right bottom,
+    rgb(155 195 255 / 87%),
+    rgb(234 228 239 / 87%)
+  );
 }
 .authentication .authentication-cover:before {
   position: absolute;
@@ -16692,7 +16696,7 @@ button.btn.todo-handle {
   inset-inline-start: 0;
   width: 100%;
   height: 100%;
-  background-color:#060505d6;
+  background-color: #060505d6;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25986,7 +25990,7 @@ input.error {
   padding: 0 0.6rem 0 0;
 }
 .app-sidebar .side-menu__item {
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 2.25rem 0.75rem 1.25rem;
   position: relative;
   display: flex;
   align-items: center;

@@ -3,7 +3,6 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <>
-      &lt;&gt;
       {/* Start::main-footer */}
       <footer className="footer mt-auto py-3 bg-white text-center">
         <div className="container">

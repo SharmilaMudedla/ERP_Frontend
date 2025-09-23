@@ -5,6 +5,7 @@ import ToasterAlert from "../toaster/ToasterAlert";
 import { toast } from "sonner";
 import { getUserProfileDetails } from "../Services/userService";
 import { getEmployeeProfileDetails } from "../Services/employeeService";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Header = () => {
   const [loader, setLoader] = useState(false);
@@ -84,27 +85,58 @@ const Header = () => {
               <div className="horizontal-logo">
                 <a href="index.html" className="header-logo">
                   <img
-                    src="assets/images/brand-logos/desktop-logo.png"
+                    src="assets/images/brand-logos/Spondias-logo.png"
                     alt="logo"
                     className="desktop-logo"
+                    style={{ height: "4.0rem" }}
                   />
-                  <img
-                    src="assets/images/brand-logos/toggle-logo.png"
-                    alt="logo"
-                    className="toggle-logo"
-                  />
+                  {/* <img
+              src="assets/images/brand-logos/toggle-dark.png"
+              alt="logo"
+              className="toggle-dark"
+            /> */}
                   <img
                     src="assets/images/brand-logos/desktop-dark.png"
                     alt="logo"
                     className="desktop-dark"
                   />
                   <img
-                    src="assets/images/brand-logos/toggle-dark.png"
+                    src="assets/images/brand-logos/Spondias-logo.png"
                     alt="logo"
-                    className="toggle-dark"
+                    className="toggle-logo"
                   />
                 </a>
               </div>
+            </div>
+            {/* Start::header-element */}
+            <div className="header-element mx-lg-0 mx-2 d-lg-none">
+              {/* d-md-none hides on md+ screens */}
+              <button
+                className="btn header-link"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasSidebar"
+                aria-controls="offcanvasSidebar"
+                aria-label="Toggle sidebar"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="header-link-icon menu-btn"
+                  width={24}
+                  height={24}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M4 5h12M4 12h16M4 19h8"
+                    color="currentColor"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
 
