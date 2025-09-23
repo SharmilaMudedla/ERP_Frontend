@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-  getEmployeeData,
+  getEmployees,
   getEmployeeBirthdays,
-} from "../Services/dashboardService";
-import { getEmployees } from "../Services/employeeService";
+  getEmployeeData,
+} from "../Services/employeeService";
 import { getEvents } from "../Services/eventService";
 
 const Dashboard = () => {
@@ -57,7 +57,7 @@ const Dashboard = () => {
     fectchEmployeeCount();
     fetchEmployees();
     fetchEvents();
-    fetchBrithdayRemainders;
+    fetchBrithdayRemainders();
   });
   const role = localStorage.getItem("UserRole");
   return (
@@ -340,7 +340,7 @@ const Dashboard = () => {
                   </div>
                 </div> */}
               </div>
-              <div className="card custom-card">
+              {/* <div className="card custom-card">
                 <div className="card-header">
                   <div className="card-title">Upcoming Events</div>
                 </div>
@@ -578,7 +578,7 @@ const Dashboard = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
           {/* End:: row-1 */}
@@ -775,23 +775,28 @@ const Dashboard = () => {
                 </div>
                 <div className="card-body">
                   <ul className="list-unstyled recruitment-pipeline-list mb-0">
-                    {remainders && remainders.length > 0 ? (
-                      remainders.map((remainder, index) => (
+                    {remainders?.thisMonthBirthdays &&
+                    remainders.thisMonthBirthdays.length > 0 ? (
+                      remainders.thisMonthBirthdays.map((remainder, index) => (
                         <li key={index}>
                           <div className="d-flex align-items-center gap-2">
                             <div>
                               <span className="avatar avatar-md avatar-rounded bg-primary-transparent">
-                                <i className="ri ri-layout-grid-line fs-15" />
+                                <i className="ri-cake-2-line fs-14" />
                               </span>
                             </div>
                             <div className="flex-fill fw-semibold">
-                              {remainder?.firstName +
-                                " " +
-                                remainder?.lastName || ""}
+                              {`${remainder.firstName} ${remainder.lastName}`}
                             </div>
                             <div className="text-end">
                               <span className="text-primary h6 mb-0 fw-semibold">
-                                {remainder?.dateOfBirth || ""}
+                                {new Date(
+                                  remainder.dateOfBirth
+                                ).toLocaleDateString("en-GB", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
                               </span>
                             </div>
                           </div>
@@ -965,7 +970,7 @@ const Dashboard = () => {
                                     // src={`${import.meta.env.VITE_LOCAL}/${
                                     //   emp.image
                                     // }`}
-                                    src={`http:localhost:4000/${emp.image}`}
+                                    src={`http://localhost:4000/${emp.image}`}
                                     className="avatar avatar-sm"
                                     alt="Employee"
                                   />
