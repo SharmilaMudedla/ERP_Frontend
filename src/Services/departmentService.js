@@ -73,10 +73,24 @@ const changeDepartmentStatus = async (id) => {
   }
 };
 
+const totalDepartments = async () => {
+  try {
+    const response = await httpClient.get("/api/department/totalDepartments");
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addDepartment,
   getDepartments,
   getSingleDepartment,
   updateDepartment,
   changeDepartmentStatus,
+  totalDepartments,
 };

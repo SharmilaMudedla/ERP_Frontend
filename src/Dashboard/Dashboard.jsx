@@ -4,13 +4,17 @@ import {
   getEmployeeBirthdays,
   getEmployeeData,
 } from "../Services/employeeService";
+import { totalDepartments } from "../Services/departmentService";
+import { totalManagers } from "../Services/userService";
 import { getEvents } from "../Services/eventService";
 
 const Dashboard = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
+  const [departmentCount, setDepartmentCount] = useState(0);
   const [employees, setEmployees] = useState([]);
   const [events, setEvents] = useState([]);
   const [remainders, setRemainders] = useState([]);
+  const [managerCount, setManagerCount] = useState(0);
   const fectchEmployeeCount = async () => {
     try {
       const response = await getEmployeeData();
@@ -21,10 +25,30 @@ const Dashboard = () => {
       console.error(error);
     }
   };
+  const fetchDepartmentsCount = async () => {
+    try {
+      const response = await totalDepartments();
+      if (response?.success) {
+        setDepartmentCount(response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchManagersCount = async () => {
+    try {
+      const response = await totalManagers();
+      console.log(response);
+      if (response?.success) {
+        setManagerCount(response?.data[0].managerCount);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const fetchEmployees = async () => {
     try {
       const response = await getEmployees();
-      // console.log(response);
       if (response?.success) {
         setEmployees(response?.data);
       }
@@ -45,7 +69,6 @@ const Dashboard = () => {
   const fetchBrithdayRemainders = async () => {
     try {
       const response = await getEmployeeBirthdays();
-      console.log(response);
       if (response?.success) {
         setRemainders(response?.data);
       }
@@ -58,7 +81,9 @@ const Dashboard = () => {
     fetchEmployees();
     fetchEvents();
     fetchBrithdayRemainders();
-  });
+    fetchDepartmentsCount();
+    fetchManagersCount();
+  }, []);
   const role = localStorage.getItem("UserRole");
   return (
     <>
@@ -84,261 +109,72 @@ const Dashboard = () => {
             <div className="col-xxl-5 col-lg-12">
               <div className="row">
                 {(role === "admin" || role === "manager") && (
-                  <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
-                    <div className="card custom-card hrm-cards overflow-hidden">
-                      <div className="card-body p-4">
-                        <span className="d-block mb-2">Total Employees</span>
-                        <h4 className="fw-semibold mb-2">
-                          {employeeCount || ""}
-                        </h4>
-                        <span className="fs-12 text-muted">
-                          This Month
-                          <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
-                            <i className="ri-arrow-up-line me-1" />
-                            2.45%
+                  <>
+                    <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                      <div className="card custom-card hrm-cards overflow-hidden">
+                        <div className="card-body p-4">
+                          <span className="d-block mb-2">Total Employees</span>
+                          <h4 className="fw-semibold mb-2">
+                            {employeeCount || ""}
+                          </h4>
+
+                          <span className="hrm-cards-icon svg-white text-fixed-white">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg>
                           </span>
-                        </span>
-                        <span className="hrm-cards-icon svg-white text-fixed-white">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 256 256"
-                          >
-                            <rect width={256} height={256} fill="none" />
-                            <polygon
-                              points="224 64 128 96 32 64 128 32 224 64"
-                              opacity="0.2"
-                            />
-                            <line
-                              x1={32}
-                              y1={64}
-                              x2={32}
-                              y2={144}
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={16}
-                            />
-                            <path
-                              d="M56,216c15.7-24.08,41.11-40,72-40s56.3,15.92,72,40"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={16}
-                            />
-                            <polygon
-                              points="224 64 128 96 32 64 128 32 224 64"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={16}
-                            />
-                            <path
-                              d="M169.34,82.22a56,56,0,1,1-82.68,0"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={16}
-                            />
-                          </svg>
-                        </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                    <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                      <div className="card custom-card hrm-cards overflow-hidden">
+                        <div className="card-body p-4">
+                          <span className="d-block mb-2">Total Managers</span>
+                          <h4 className="fw-semibold mb-2">
+                            {managerCount || ""}
+                          </h4>
+
+                          <span className="hrm-cards-icon svg-white text-fixed-white">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                      <div className="card custom-card hrm-cards overflow-hidden">
+                        <div className="card-body p-4">
+                          <span className="d-block mb-2">
+                            Total Departments
+                          </span>
+                          <h4 className="fw-semibold mb-2">
+                            {departmentCount || ""}
+                          </h4>
+
+                          <span className="hrm-cards-icon svg-white text-fixed-white">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                            >
+                              <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 )}
-                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
-                  <div className="card custom-card hrm-cards overflow-hidden secondary">
-                    <div className="card-body p-4">
-                      <span className="d-block mb-2">Total Jobs Applied</span>
-                      <h4 className="fw-semibold mb-2">1,673</h4>
-                      <span className="fs-12 text-muted">
-                        This Month
-                        <span className="text-danger fs-12 fw-medium ms-2 d-inline-block">
-                          <i className="ri-arrow-down-line me-1" />
-                          0.62%
-                        </span>
-                      </span>
-                      <span className="hrm-cards-icon svg-white text-fixed-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 256 256"
-                        >
-                          <rect width={256} height={256} fill="none" />
-                          <circle
-                            cx={104}
-                            cy={144}
-                            r={32}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <path
-                            d="M72,144a32,32,0,1,1,32,32h88V80H64v64Z"
-                            opacity="0.2"
-                          />
-                          <path
-                            d="M53.39,208a56,56,0,0,1,101.22,0H216a8,8,0,0,0,8-8V56a8,8,0,0,0-8-8H40a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8Z"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <polyline
-                            points="176 176 192 176 192 80 64 80 64 96"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
-                  <div className="card custom-card hrm-cards overflow-hidden success">
-                    <div className="card-body p-4">
-                      <span className="d-block mb-2">New Employees</span>
-                      <h4 className="fw-semibold mb-2">526</h4>
-                      <span className="fs-12 text-muted">
-                        This Month
-                        <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
-                          <i className="ri-arrow-up-line me-1" />
-                          3.75%
-                        </span>
-                      </span>
-                      <span className="hrm-cards-icon svg-white text-fixed-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 256 256"
-                        >
-                          <rect width={256} height={256} fill="none" />
-                          <path
-                            d="M128,232a32,32,0,0,1,32-32h64a8,8,0,0,0,8-8V64a8,8,0,0,0-8-8H160a32,32,0,0,0-32,32Z"
-                            opacity="0.2"
-                          />
-                          <path
-                            d="M128,88a32,32,0,0,1,32-32h64a8,8,0,0,1,8,8V192a8,8,0,0,1-8,8H160a32,32,0,0,0-32,32"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <path
-                            d="M24,192a8,8,0,0,0,8,8H96a32,32,0,0,1,32,32V88A32,32,0,0,0,96,56H32a8,8,0,0,0-8,8Z"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <line
-                            x1={160}
-                            y1={96}
-                            x2={200}
-                            y2={96}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <line
-                            x1={160}
-                            y1={128}
-                            x2={200}
-                            y2={128}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <line
-                            x1={160}
-                            y1={160}
-                            x2={200}
-                            y2={160}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
-                  <div className="card custom-card hrm-cards overflow-hidden pink">
-                    <div className="card-body p-4">
-                      <span className="d-block mb-2">Newly Recruited</span>
-                      <h4 className="fw-semibold mb-2">5,553</h4>
-                      <span className="fs-12 text-muted">
-                        This Month
-                        <span className="text-success fs-12 fw-medium ms-2 d-inline-block">
-                          <i className="ri-arrow-up-line me-1" />
-                          21.54%
-                        </span>
-                      </span>
-                      <span className="hrm-cards-icon svg-white text-fixed-white">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 256 256"
-                        >
-                          <rect width={256} height={256} fill="none" />
-                          <path
-                            d="M128,128h24a40,40,0,0,1,0,80H128Z"
-                            opacity="0.2"
-                          />
-                          <path
-                            d="M128,48H112a40,40,0,0,0,0,80h16Z"
-                            opacity="0.2"
-                          />
-                          <line
-                            x1={128}
-                            y1={24}
-                            x2={128}
-                            y2={48}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <line
-                            x1={128}
-                            y1={208}
-                            x2={128}
-                            y2={232}
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                          <path
-                            d="M184,88a40,40,0,0,0-40-40H112a40,40,0,0,0,0,80h40a40,40,0,0,1,0,80H104a40,40,0,0,1-40-40"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={16}
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </div> */}
               </div>
               {/* <div className="card custom-card">
                 <div className="card-header">

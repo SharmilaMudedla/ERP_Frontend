@@ -75,6 +75,19 @@ const getUserProfileDetails = async () => {
   }
 };
 
+const totalManagers = async () => {
+  try {
+    const response = await httpClient.get("/api/user/totalManagers");
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   addUser,
   getUsers,
@@ -82,4 +95,5 @@ export {
   updateUser,
   changeUserStatus,
   getUserProfileDetails,
+  totalManagers,
 };
