@@ -117,7 +117,7 @@ const ManageLeave = () => {
         setLeaves([]);
       }
     } catch (error) {
-      toast.error(error?.message || "Error fetching leaves by date");
+      toast.info(error?.message || "Error fetching leaves by date");
       setLeaves([]);
     } finally {
       setLoader(false);
