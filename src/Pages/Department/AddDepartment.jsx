@@ -8,6 +8,7 @@ import {
 } from "../../Services/departmentService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
+import { getUsers } from "../../Services/userService";
 
 const initialStage = {
   name: "",
@@ -19,8 +20,10 @@ const AddDepartment = () => {
   const [formData, setFormData] = useState(initialStage);
   const [errors, setErrors] = useState({});
   const [loader, setLoader] = useState(false);
+  const [users, setUsers] = useState([]);
   const [params] = useSearchParams();
   const DepartmentId = params.get("uid");
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -45,6 +48,7 @@ const AddDepartment = () => {
     if (!formData.name.trim()) newErrors.name = "Department name is required.";
     if (!formData.description.trim())
       newErrors.description = "Description is required.";
+    if (!formData.managerId) newErrors.managerId = "Manager is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -53,14 +57,35 @@ const AddDepartment = () => {
     setLoader(true);
     try {
       const response = await getSingleDepartment(DepartmentId);
+
       if (response?.success) {
         const singleDepartment = response?.data || {};
         setFormData(singleDepartment);
+        const dept = response.data;
+        setFormData({
+          name: dept.name || "",
+          description: dept.description || "",
+          managerId: dept.managerId?._id || "",
+        });
       }
       toast.success(response?.message || "Department fetched successfully");
     } catch (error) {
       console.error("Error fetching details:", error);
       toast.error(error?.message || "Error fetching details");
+    } finally {
+      setLoader(false);
+    }
+  };
+  const fetchUsers = async () => {
+    setLoader(true);
+    try {
+      const response = await getUsers();
+      if (response?.success) {
+        setUsers(response?.data || []);
+      }
+    } catch (error) {
+      setUsers([]);
+      toast.error(error?.message || "Error fetching users");
     } finally {
       setLoader(false);
     }
@@ -72,6 +97,7 @@ const AddDepartment = () => {
     } else {
       setFormData(initialStage);
     }
+    fetchUsers();
   }, [DepartmentId]);
 
   const handleSubmit = async (e) => {
@@ -98,7 +124,7 @@ const AddDepartment = () => {
       setLoader(false);
     }
   };
-
+  const managers = users.filter((user) => user.roleId?.name === "manager");
   return (
     <>
       {loader && <Loader />}
@@ -189,7 +215,7 @@ const AddDepartment = () => {
                       </div>
 
                       {/* Manager ID (optional dropdown if you fetch managers) */}
-                      <div className="col-xl-6">
+                      {/* <div className="col-xl-6">
                         <label htmlFor="managerId" className="form-label">
                           Manager
                         </label>
@@ -202,6 +228,36 @@ const AddDepartment = () => {
                           onChange={handleChange}
                           placeholder="Enter manager ID"
                         />
+                      </div> */}
+                      <div className="col-xl-6">
+                        <label
+                          htmlFor="reportingManager"
+                          className="form-label"
+                        >
+                          Manager
+                        </label>
+                        <select
+                          className={`form-control${
+                            errors.managerId ? " is-invalid" : ""
+                          }`}
+                          id="managerId"
+                          name="managerId"
+                          value={formData.managerId}
+                          onChange={handleChange}
+                        >
+                          <option value="">Select Manager</option>
+                          {managers &&
+                            managers.map((manager) => (
+                              <option key={manager._id} value={manager._id}>
+                                {manager.name}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.managerId && (
+                          <div className="invalid-feedback">
+                            {errors.managerId}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
