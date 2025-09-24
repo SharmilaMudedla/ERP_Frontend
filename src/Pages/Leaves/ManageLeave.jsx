@@ -4,7 +4,7 @@ import {
   getLeaves,
   changeLeaveStatus,
   getLeavesByDate,
-} from "../../Services/addleaveService";
+} from "../../Services/leaveService";
 import { getUserProfileDetails } from "../../Services/userService";
 import { toast } from "sonner";
 import Loader from "../../loader/Loader";

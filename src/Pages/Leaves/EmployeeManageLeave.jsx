@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getLeaves } from "../../Services/addleaveService";
+import { getLeaves } from "../../Services/leaveService";
 import { toast } from "sonner";
 import { getEmployeeProfileDetails } from "../../Services/employeeService";
 

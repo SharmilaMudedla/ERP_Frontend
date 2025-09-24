@@ -110,6 +110,7 @@ const Header = () => {
             </div>
             {/* Start::header-element */}
             <div className="header-element mx-lg-0 mx-2 d-lg-none">
+              {" "}
               {/* d-md-none hides on md+ screens */}
               <button
                 className="btn header-link"
@@ -138,6 +139,8 @@ const Header = () => {
                 </svg>
               </button>
             </div>
+
+            {/* End::header-element */}
           </div>
 
           <ul className="header-content-right">

@@ -6,7 +6,7 @@ import {
   getSingleLeave,
   updateLeave,
   getLeaveLeft,
-} from "../../Services/addleaveService";
+} from "../../Services/leaveService";
 import { getEmployeeProfileDetails } from "../../Services/employeeService";
 import { getUsers } from "../../Services/userService";
 import Loader from "../../loader/Loader";
