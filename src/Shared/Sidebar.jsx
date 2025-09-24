@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Sidebar = () => {
@@ -14,6 +14,14 @@ const Sidebar = () => {
     event: false,
     payroll: false,
   });
+  const closeOffcanvas = () => {
+    const offcanvasEl = document.getElementById("offcanvasSidebar");
+    if (offcanvasEl && window.innerWidth < 992) {
+      const offcanvasInstance =
+        window.bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+      offcanvasInstance.hide();
+    }
+  };
 
   const toggleMenu = (key, e) => {
     e.preventDefault();
@@ -27,8 +35,10 @@ const Sidebar = () => {
   };
 
   const role = localStorage.getItem("UserRole");
-
-  // Sidebar menu markup reused (to avoid duplication)
+  const location = useLocation();
+  useEffect(() => {
+    closeOffcanvas();
+  }, [location.pathname]);
   const sidebarMenu = (
     <>
       {/* Sidebar Header */}
@@ -69,7 +79,7 @@ const Sidebar = () => {
               <Link
                 to="/dashboard"
                 className="side-menu__item"
-                // onClick={(e) => toggleMenu("dashboard", e)}
+                onClick={closeOffcanvas}
                 aria-expanded={openMenus.dashboard}
                 aria-controls="dashboard-menu"
               >

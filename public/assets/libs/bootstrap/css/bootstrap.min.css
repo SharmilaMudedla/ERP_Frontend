@@ -6619,7 +6619,6 @@ fieldset:disabled .btn {
   .offcanvas.offcanvas-start {
     left: -180px !important;
   }
-    
 }
 .offcanvas.offcanvas-start {
   top: 0;
@@ -6679,7 +6678,7 @@ fieldset:disabled .btn {
   opacity: 0;
 }
 .offcanvas-backdrop.show {
-  opacity: 0.5;
+  opacity: 0;
 }
 .offcanvas-header {
   display: flex;
