@@ -28,7 +28,6 @@ const AddUser = () => {
       if (response?.success) {
         setRoles(response?.data || []);
       }
-      console.log("response", response);
     } catch (error) {
       setRoles([]);
       toast.error(error?.message || "Error fetching Roles");
@@ -75,6 +74,12 @@ const AddUser = () => {
       if (response?.success) {
         const singleUser = response?.data || {};
         setFormData(singleUser);
+        const userRole = response.data;
+        setFormData({
+          name: userRole.name || "",
+          email: userRole.email || "",
+          roleId: userRole.roleId?._id || "",
+        });
       }
       toast.success(response?.message || "User fetched successfully");
     } catch (error) {
