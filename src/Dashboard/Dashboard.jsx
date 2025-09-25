@@ -38,7 +38,6 @@ const Dashboard = () => {
   const fetchManagersCount = async () => {
     try {
       const response = await totalManagers();
-      console.log(response);
       if (response?.success) {
         setManagerCount(response?.data[0].managerCount);
       }
@@ -176,245 +175,6 @@ const Dashboard = () => {
                   </>
                 )}
               </div>
-              {/* <div className="card custom-card">
-                <div className="card-header">
-                  <div className="card-title">Upcoming Events</div>
-                </div>
-                <div className="card-body">
-                  <ul className="list-unstyled timeline-widget mb-0 mb-2">
-                    <li className="timeline-widget-list">
-                      <div className="d-flex align-items-top">
-                        <div className="me-5 text-center">
-                          <span className="d-block fs-20 fw-semibold text-primary">
-                            02
-                          </span>
-                          <span className="d-block fs-12 text-muted">Mon</span>
-                        </div>
-                        <div className="d-flex flex-wrap flex-fill align-items-top justify-content-between ps-3">
-                          <div>
-                            <p className="mb-1 text-truncate timeline-widget-content text-wrap fs-13 fw-semibold">
-                              You have an announcement - Diam Eirmod
-                            </p>
-                            <p className="mb-0 fs-12 lh-1 text-muted">
-                              10:00AM
-                              <span className="badge bg-primary ms-2">
-                                Announcement
-                              </span>
-                            </p>
-                          </div>
-                          <div className="dropdown mt-2 mt-sm-0">
-                            <a
-                              aria-label="anchor"
-                              href="javascript:void(0);"
-                              className="p-2 fs-14 bg-primary-transparent rounded"
-                              data-bs-toggle="dropdown"
-                            >
-                              <i className="fe fe-more-vertical" />
-                            </a>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Another action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Something else here
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="timeline-widget-list">
-                      <div className="d-flex align-items-top">
-                        <div className="me-5 text-center">
-                          <span className="d-block fs-20 fw-semibold text-primary">
-                            15
-                          </span>
-                          <span className="d-block fs-12 text-muted">Sun</span>
-                        </div>
-                        <div className="d-flex flex-wrap flex-fill align-items-top justify-content-between ps-3">
-                          <div>
-                            <p className="mb-1 text-truncate timeline-widget-content text-wrap fs-13 fw-semibold">
-                              National holiday - Vero Jayanti
-                            </p>
-                            <p className="mb-0 fs-12 lh-1 text-muted">
-                              <span className="badge bg-warning">Holiday</span>
-                            </p>
-                          </div>
-                          <div className="dropdown mt-2 mt-sm-0">
-                            <a
-                              aria-label="anchor"
-                              href="javascript:void(0);"
-                              className="p-2 fs-14 bg-primary-transparent rounded"
-                              data-bs-toggle="dropdown"
-                            >
-                              <i className="fe fe-more-vertical" />
-                            </a>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Another action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Something else here
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="timeline-widget-list">
-                      <div className="d-flex align-items-top">
-                        <div className="me-5 text-center">
-                          <span className="d-block fs-20 fw-semibold text-primary">
-                            23
-                          </span>
-                          <span className="d-block fs-12 text-muted">Mon</span>
-                        </div>
-                        <div className="d-flex flex-wrap flex-fill align-items-top justify-content-between ps-3">
-                          <div>
-                            <p className="mb-1 text-truncate timeline-widget-content text-wrap fs-13 fw-semibold">
-                              John pup birthday - Team Member
-                            </p>
-                            <p className="mb-0 fs-12 lh-1 text-muted">
-                              09:00AM
-                              <span className="badge bg-success ms-2">
-                                Birthday
-                              </span>
-                            </p>
-                          </div>
-                          <div className="dropdown mt-2 mt-sm-0">
-                            <a
-                              aria-label="anchor"
-                              href="javascript:void(0);"
-                              className="p-2 fs-14 bg-primary-transparent rounded"
-                              data-bs-toggle="dropdown"
-                            >
-                              <i className="fe fe-more-vertical" />
-                            </a>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Another action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Something else here
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="timeline-widget-list">
-                      <div className="d-flex align-items-top">
-                        <div className="me-5 text-center">
-                          <span className="d-block fs-20 fw-semibold text-primary">
-                            31
-                          </span>
-                          <span className="d-block fs-12 text-muted">Tue</span>
-                        </div>
-                        <div className="d-flex flex-wrap flex-fill align-items-top justify-content-between ps-3">
-                          <div>
-                            <p className="mb-1 text-truncate timeline-widget-content text-wrap fs-13 fw-semibold">
-                              National Holiday - Dolore Ipsum
-                            </p>
-                            <p className="mb-0 fs-12 lh-1 text-muted">
-                              <span className="badge bg-warning">Holiday</span>
-                            </p>
-                          </div>
-                          <div className="dropdown mt-2 mt-sm-0">
-                            <a
-                              aria-label="anchor"
-                              href="javascript:void(0);"
-                              className="p-2 fs-14 bg-primary-transparent rounded"
-                              data-bs-toggle="dropdown"
-                            >
-                              <i className="fe fe-more-vertical" />
-                            </a>
-                            <ul className="dropdown-menu">
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Another action
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  href="javascript:void(0);"
-                                >
-                                  Something else here
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
             </div>
           </div>
           {/* End:: row-1 */}
@@ -478,125 +238,6 @@ const Dashboard = () => {
                         </div>
                       </li>
                     ))}
-
-                    {/* <li>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main2 me-2">
-                            <span className="avatar bg-secondary-transparent svg-secondary avatar-rounded avatar-md">
-                              <i className="ri-cake-2-line fs-14" />
-                            </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">Holi</span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              10, Mar 2024 - Sunday
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            Festival
-                          </span>
-                        </div>
-                      </div>
-                    </li> */}
-                    {/* <li>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main3 me-2">
-                            <span className="avatar bg-success-transparent svg-success avatar-rounded avatar-md">
-                              <i className="ri-add-line fs-14" />
-                            </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">
-                              Good Friday
-                            </span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              05, Apr 2024 - Friday
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            Festival
-                          </span>
-                        </div>
-                      </div>
-                    </li> */}
-                    {/* <li>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main4 me-2">
-                            <span className="avatar bg-danger-transparent svg-danger avatar-rounded avatar-md">
-                              <i className="ri-flag-line fs-14" />
-                            </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">
-                              Independence Day
-                            </span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              15, Aug 2024 - Thursday
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            Public Holiday
-                          </span>
-                        </div>
-                      </div>
-                    </li> */}
-                    {/* <li>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main5 me-2">
-                            <span className="avatar bg-info-transparent svg-info avatar-rounded avatar-md">
-                              <i className="ri-gift-2-line fs-14" />
-                            </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">
-                              Christmas
-                            </span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              25, Dec 2024 - Friday
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            Public Holiday
-                          </span>
-                        </div>
-                      </div>
-                    </li> */}
-                    {/* <li className="mb-0">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center lh-1">
-                          <span className="avatar-main6 me-2">
-                            <span className="avatar bg-warning-transparent svg-warning avatar-rounded avatar-md">
-                              <i className="ri-briefcase-2-line fs-14" />
-                            </span>
-                          </span>
-                          <div className="d-flex flex-column">
-                            <span className="d-block fw-medium mb-2">
-                              Office Tour
-                            </span>
-                            <span className="d-block fw-medium text-muted fs-12 mb-1">
-                              15, Jan 2024 - 16, Jan 2024
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="badge bg-primary-transparent">
-                            2 Days
-                          </span>
-                        </div>
-                      </div>
-                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -643,74 +284,6 @@ const Dashboard = () => {
                         No data available
                       </li>
                     )}
-
-                    {/* <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-secondary-transparent">
-                            <i className="ri ri-user-add-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">Recruited</div>
-                        <div className="text-end">
-                          <span className="text-secondary h6 mb-0">780</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-success-transparent">
-                            <i className="ri ri-file-list-3-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">
-                          Short Listed
-                        </div>
-                        <div className="text-end">
-                          <span className="text-success h6 mb-0">650</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-warning-transparent">
-                            <i className="ri ri-close-circle-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">Rejected</div>
-                        <div className="text-end">
-                          <span className="text-warning h6 mb-0">550</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-info-transparent">
-                            <i className="ri ri-file-excel-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">Blocked</div>
-                        <div className="text-end">
-                          <span className="text-info h6 mb-0">310</span>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="d-flex align-items-center gap-2">
-                        <div>
-                          <span className="avatar avatar-md avatar-rounded bg-danger-transparent">
-                            <i className="ri ri-information-line fs-15" />
-                          </span>
-                        </div>
-                        <div className="flex-fill fw-semibold">Interviewed</div>
-                        <div className="text-end">
-                          <span className="text-danger h6 mb-0">220</span>
-                        </div>
-                      </div>
-                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -785,10 +358,10 @@ const Dashboard = () => {
                             <th scope="col">Position</th>
                             <th scope="col">Department</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Employee Type</th>
                             <th scope="col">Status</th>
                             <th scope="col">Contact</th>
                             <th scope="col">Salary</th>
-                            {/* <th scope="col">Action</th> */}
                           </tr>
                         </thead>
                         <tbody>
@@ -797,16 +370,15 @@ const Dashboard = () => {
                               <td className="text-center">{index + 1}</td>
                               <td>
                                 <span className="text-primary fs-14">
-                                  {emp.employeeId}
+                                  {emp?.employeeId || "N/A"}
                                 </span>
                               </td>
                               <td>
                                 <div className="d-flex align-items-center">
                                   <img
-                                    // src={`${import.meta.env.VITE_LOCAL}/${
-                                    //   emp.image
-                                    // }`}
-                                    src={`http://localhost:4000/${emp.image}`}
+                                    src={`${import.meta.env.VITE_BASE_URL}/${
+                                      emp.image
+                                    }`}
                                     className="avatar avatar-sm"
                                     alt="Employee"
                                   />
@@ -817,54 +389,42 @@ const Dashboard = () => {
                                         href="javascript:void(0);"
                                         className="fs-13 fw-medium"
                                       >
-                                        {emp.firstName} {emp.lastName}
+                                        {emp?.firstName || "N/A"}{" "}
+                                        {emp?.lastName || "N/A"}
                                       </a>
                                     </div>
                                   </div>
                                 </div>
                               </td>
                               <td>
-                                <span>{emp.designation}</span>
+                                <span>{emp?.designation || "N/A"}</span>
                               </td>
                               <td>
-                                <span>{emp.department}</span>
+                                <span>{emp?.departmentId?.name || "N/A"}</span>
                               </td>
                               <td>
-                                <a href="javascript:void(0);">{emp.email}</a>
+                                <a href="javascript:void(0);">
+                                  {emp?.email || "N/A"}
+                                </a>
+                              </td>
+                              <td>
+                                <a href="javascript:void(0);">
+                                  {emp?.employeeType || "N/A"}
+                                </a>
                               </td>
                               <td>
                                 <span className="badge bg-success-transparent">
-                                  {emp.status}
+                                  {emp?.status || "N/A"}
                                 </span>
                               </td>
                               <td>
-                                <span>{emp.phone}</span>
+                                <span>{emp?.phone || "N/A"}</span>
                               </td>
                               <td>
                                 <span className="fw-medium">
-                                  {emp.salaryStructure}
+                                  {emp?.salaryStructure || "N/A"}
                                 </span>
                               </td>
-                              {/* <td>
-                              <div className="g-2">
-                                <a
-                                  aria-label="anchor"
-                                  className="btn  btn-primary-light btn-sm"
-                                  data-bs-toggle="tooltip"
-                                  data-bs-original-title="Edit"
-                                >
-                                  <span className="ri-pencil-line fs-14" />
-                                </a>
-                                <a
-                                  aria-label="anchor"
-                                  className="btn btn-danger-light btn-sm ms-2"
-                                  data-bs-toggle="tooltip"
-                                  data-bs-original-title="Delete"
-                                >
-                                  <span className="ri-delete-bin-7-line fs-14" />
-                                </a>
-                              </div>
-                            </td> */}
                             </tr>
                           ))}
                         </tbody>
