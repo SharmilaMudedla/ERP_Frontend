@@ -11,7 +11,6 @@ const ManageRoles = () => {
   const [roles, setRoles] = useState([]);
   const [loader, setLoader] = useState(false);
 
-  // search, sort & pagination
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
