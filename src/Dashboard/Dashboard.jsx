@@ -3,10 +3,15 @@ import {
   getEmployees,
   getEmployeeBirthdays,
   getEmployeeData,
+  getEmployeesAssignedToManager,
 } from "../Services/employeeService";
 import { totalDepartments } from "../Services/departmentService";
-import { totalManagers } from "../Services/userService";
+import { totalManagers, getUserProfileDetails } from "../Services/userService";
 import { getEvents } from "../Services/eventService";
+import { Toast } from "bootstrap";
+import ToasterAlert from "../toaster/ToasterAlert";
+import Loader from "../loader/Loader";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
@@ -14,7 +19,51 @@ const Dashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [events, setEvents] = useState([]);
   const [remainders, setRemainders] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [profile, setProfile] = useState({});
   const [managerCount, setManagerCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+  const filteredEmployees = employees.filter((emp) => {
+    const fullName = `${emp?.firstName} ${emp?.lastName}`.toLowerCase();
+    return (
+      fullName.includes(searchTerm.toLowerCase()) ||
+      emp?.employeeId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp?.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+  const sortedEmployees = [...filteredEmployees].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    let valA = a[sortConfig.key];
+    let valB = b[sortConfig.key];
+
+    // Handle nested values like departmentId.name
+    if (sortConfig.key === "department") {
+      valA = a?.departmentId?.name || "";
+      valB = b?.departmentId?.name || "";
+    }
+
+    if (typeof valA === "string") valA = valA.toLowerCase();
+    if (typeof valB === "string") valB = valB.toLowerCase();
+
+    if (valA < valB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (valA > valB) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
+  const totalPages = Math.ceil(sortedEmployees.length / itemsPerPage);
+  const paginatedEmployees = sortedEmployees.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
   const fectchEmployeeCount = async () => {
     try {
       const response = await getEmployeeData();
@@ -45,16 +94,16 @@ const Dashboard = () => {
       console.error(error);
     }
   };
-  const fetchEmployees = async () => {
-    try {
-      const response = await getEmployees();
-      if (response?.success) {
-        setEmployees(response?.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const fetchEmployees = async () => {
+  //   try {
+  //     const response = await getEmployees();
+  //     if (response?.success) {
+  //       setEmployees(response?.data);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const fetchEvents = async () => {
     try {
       const response = await getEvents();
@@ -75,17 +124,64 @@ const Dashboard = () => {
       console.error(error);
     }
   };
+  const fetchUserProfileDetails = async () => {
+    setLoader(true);
+    try {
+      const response = await getUserProfileDetails();
+      if (response?.success) {
+        setProfile(response?.data || {});
+      }
+    } catch (error) {
+      setProfile({});
+      toast.error(error?.message || "Error fetching user");
+      console.error("Error fetching user:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  const fetchEmployees = async () => {
+    setLoader(true);
+    try {
+      let response;
+      const role = localStorage.getItem("UserRole");
+
+      if (role === "manager") {
+        response = await getEmployeesAssignedToManager(profile._id);
+      } else {
+        response = await getEmployees();
+      }
+
+      if (response?.success) {
+        setEmployees(response?.data || []);
+      } else {
+        setEmployees([]);
+      }
+    } catch (error) {
+      setEmployees([]);
+      toast.error(error?.message || "Error fetching employees");
+    } finally {
+      setLoader(false);
+    }
+  };
+  useEffect(() => {
+    if (profile?._id) {
+      fetchEmployees();
+    }
+  }, [profile]);
   useEffect(() => {
     fectchEmployeeCount();
-    fetchEmployees();
     fetchEvents();
     fetchBrithdayRemainders();
     fetchDepartmentsCount();
     fetchManagersCount();
+    fetchUserProfileDetails();
   }, []);
   const role = localStorage.getItem("UserRole");
   return (
     <>
+      {loader && <Loader />}
+      <ToasterAlert />
       <div className="main-content app-content">
         <div className="container-fluid">
           {/* Start::page-header */}
@@ -303,45 +399,9 @@ const Dashboard = () => {
                           className="form-control form-control-sm"
                           type="text"
                           placeholder="Search Here"
-                          aria-label=" example"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                      </div>
-                      <div className="dropdown my-1">
-                        <a
-                          href="javascript:void(0);"
-                          className="btn btn-sm btn-primary"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Sort By
-                          <i className="ri-arrow-down-s-line align-middle ms-1" />
-                        </a>
-                        <ul className="dropdown-menu" role="menu">
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              New
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              Popular
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="javascript:void(0);"
-                            >
-                              Relevant
-                            </a>
-                          </li>
-                        </ul>
                       </div>
                     </div>
                   </div>
@@ -353,10 +413,38 @@ const Dashboard = () => {
                             <th scope="col" className="text-center">
                               S.No
                             </th>
-                            <th scope="col">Employee Id</th>
-                            <th scope="col">Employee Name</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Department</th>
+                            <th
+                              onClick={() => handleSort("employeeId")}
+                              scope="col"
+                            >
+                              Employee Id{" "}
+                              {sortConfig.key === "employeeId" &&
+                                (sortConfig.direction === "asc" ? " ▲" : " ▼")}
+                            </th>
+                            <th
+                              scope="col"
+                              onClick={() => handleSort("firstName")}
+                            >
+                              Employee Name
+                              {sortConfig.key === "firstName" &&
+                                (sortConfig.direction === "asc" ? " ▲" : " ▼")}
+                            </th>
+                            <th
+                              scope="col"
+                              onClick={() => handleSort("designation")}
+                            >
+                              Position
+                              {sortConfig.key === "designation" &&
+                                (sortConfig.direction === "asc" ? " ▲" : " ▼")}
+                            </th>
+                            <th
+                              scope="col"
+                              onClick={() => handleSort("department")}
+                            >
+                              Department
+                              {sortConfig.key === "department" &&
+                                (sortConfig.direction === "asc" ? " ▲" : " ▼")}
+                            </th>
                             <th scope="col">Email</th>
                             <th scope="col">Employee Type</th>
                             <th scope="col">Status</th>
@@ -365,68 +453,81 @@ const Dashboard = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {employees.map((emp, index) => (
-                            <tr key={emp._id}>
-                              <td className="text-center">{index + 1}</td>
-                              <td>
-                                <span className="text-primary fs-14">
-                                  {emp?.employeeId || "N/A"}
-                                </span>
-                              </td>
-                              <td>
-                                <div className="d-flex align-items-center">
-                                  <img
-                                    src={`${import.meta.env.VITE_BASE_URL}/${
-                                      emp.image
-                                    }`}
-                                    className="avatar avatar-sm"
-                                    alt="Employee"
-                                  />
+                          {paginatedEmployees.length > 0 ? (
+                            paginatedEmployees.map((emp, index) => (
+                              <tr key={emp._id}>
+                                <td className="text-center">{index + 1}</td>
+                                <td>
+                                  <span className="text-primary fs-14">
+                                    {emp?.employeeId || "N/A"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <div className="d-flex align-items-center">
+                                    <img
+                                      src={`${import.meta.env.VITE_BASE_URL}/${
+                                        emp.image
+                                      }`}
+                                      className="avatar avatar-sm"
+                                      alt="Employee"
+                                    />
 
-                                  <div className="flex-1 flex-between pos-relative ms-2">
-                                    <div>
-                                      <a
-                                        href="javascript:void(0);"
-                                        className="fs-13 fw-medium"
-                                      >
-                                        {emp?.firstName || "N/A"}{" "}
-                                        {emp?.lastName || "N/A"}
-                                      </a>
+                                    <div className="flex-1 flex-between pos-relative ms-2">
+                                      <div>
+                                        <a
+                                          href="javascript:void(0);"
+                                          className="fs-13 fw-medium"
+                                        >
+                                          {emp?.firstName || "N/A"}{" "}
+                                          {emp?.lastName || "N/A"}
+                                        </a>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </td>
-                              <td>
-                                <span>{emp?.designation || "N/A"}</span>
-                              </td>
-                              <td>
-                                <span>{emp?.departmentId?.name || "N/A"}</span>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0);">
-                                  {emp?.email || "N/A"}
-                                </a>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0);">
-                                  {emp?.employeeType || "N/A"}
-                                </a>
-                              </td>
-                              <td>
-                                <span className="badge bg-success-transparent">
-                                  {emp?.status || "N/A"}
-                                </span>
-                              </td>
-                              <td>
-                                <span>{emp?.phone || "N/A"}</span>
-                              </td>
-                              <td>
-                                <span className="fw-medium">
-                                  {emp?.salaryStructure || "N/A"}
-                                </span>
+                                </td>
+                                <td>
+                                  <span>{emp?.designation || "N/A"}</span>
+                                </td>
+                                <td>
+                                  <span>
+                                    {emp?.departmentId?.name || "N/A"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <a href="javascript:void(0);">
+                                    {emp?.email || "N/A"}
+                                  </a>
+                                </td>
+                                <td>
+                                  <a href="javascript:void(0);">
+                                    {emp?.employeeType || "N/A"}
+                                  </a>
+                                </td>
+                                <td>
+                                  <span className="badge bg-success-transparent">
+                                    {emp?.status || "N/A"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span>{emp?.phone || "N/A"}</span>
+                                </td>
+                                <td>
+                                  <span className="fw-medium">
+                                    {emp?.salaryStructure || "N/A"}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan="9"
+                                className="text-center text-muted"
+                              >
+                                No employees found
                               </td>
                             </tr>
-                          ))}
+                          )}
                         </tbody>
                       </table>
                     </div>
@@ -434,7 +535,8 @@ const Dashboard = () => {
                   <div className="card-footer">
                     <div className="d-flex align-items-center">
                       <div>
-                        Showing 7 Entries{" "}
+                        Showing {paginatedEmployees.length} of{" "}
+                        {employees.length} entries
                         <i className="bi bi-arrow-right ms-2 fw-medium" />
                       </div>
                       <div className="ms-auto">
@@ -443,34 +545,43 @@ const Dashboard = () => {
                           className="pagination-style-4"
                         >
                           <ul className="pagination mb-0">
-                            <li className="page-item disabled">
-                              <a
+                            <li
+                              className={`page-item ${
+                                currentPage === 1 && "disabled"
+                              }`}
+                            >
+                              <button
                                 className="page-link"
-                                href="javascript:void(0);"
+                                onClick={() => setCurrentPage((p) => p - 1)}
                               >
                                 Prev
-                              </a>
+                              </button>
                             </li>
-                            <li className="page-item active">
+
+                            {[...Array(totalPages)].map((_, i) => (
+                              <li
+                                key={i}
+                                className={`page-item ${
+                                  currentPage === i + 1 && "active"
+                                }`}
+                              >
+                                <button
+                                  className="page-link"
+                                  onClick={() => setCurrentPage(i + 1)}
+                                >
+                                  {i + 1}
+                                </button>
+                              </li>
+                            ))}
+
+                            <li
+                              className={`page-item ${
+                                currentPage === totalPages && "disabled"
+                              }`}
+                            >
                               <a
                                 className="page-link"
-                                href="javascript:void(0);"
-                              >
-                                1
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a
-                                className="page-link"
-                                href="javascript:void(0);"
-                              >
-                                2
-                              </a>
-                            </li>
-                            <li className="page-item">
-                              <a
-                                className="page-link text-primary"
-                                href="javascript:void(0);"
+                                onClick={() => setCurrentPage((p) => p + 1)}
                               >
                                 next
                               </a>
