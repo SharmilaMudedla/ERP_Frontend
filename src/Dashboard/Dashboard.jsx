@@ -187,13 +187,13 @@ const Dashboard = () => {
           {/* Start::page-header */}
           <div className="my-4 page-header-breadcrumb d-flex align-items-center justify-content-between flex-wrap gap-2">
             <div>
-              <h1 className="page-title fw-medium fs-18 mb-2">HRM</h1>
+              <h1 className="page-title fw-medium fs-18 mb-2">ERP</h1>
               <ol className="breadcrumb mb-0">
                 <li className="breadcrumb-item">
                   <a href="javascript:void(0);">Dashboards</a>
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
-                  HRM
+                  ERP
                 </li>
               </ol>
             </div>
@@ -203,7 +203,7 @@ const Dashboard = () => {
           <div className="row">
             <div className="col-xxl-5 col-lg-12">
               <div className="row">
-                {(role === "admin" || role === "manager") && (
+                {(role === "admin" || role === "hr") && (
                   <>
                     <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="card custom-card hrm-cards overflow-hidden">
@@ -269,6 +269,27 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </>
+                )}
+                {role === "manager" && (
+                  <div className="col-xxl-3 col-lg-3 col-md-3 col-sm-3 col-12">
+                    <div className="card custom-card hrm-cards overflow-hidden">
+                      <div className="card-body p-4">
+                        <span className="d-block mb-2">Total Employees</span>
+                        <h4 className="fw-semibold mb-2">
+                          {employeeCount || ""}
+                        </h4>
+                        <span className="hrm-cards-icon svg-white text-fixed-white">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                          >
+                            <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -387,7 +408,7 @@ const Dashboard = () => {
           </div>
           {/* End:: row-2 */}
           {/* Start:: row-3 */}
-          {(role === "admin" || role === "manager") && (
+          {(role === "admin" || role === "hr") && (
             <div className="row">
               <div className="col-xxl-12">
                 <div className="card custom-card">
