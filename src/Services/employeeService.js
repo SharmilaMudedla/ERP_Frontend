@@ -110,6 +110,20 @@ const getEmployeeBirthdays = async () => {
     throw error;
   }
 };
+const getEmployeesAssignedToManager = async (id) => {
+  try {
+    const response = await httpClient.get(
+      `/api/employee/getEmployeesAssignedToManager/${id}`
+    );
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message || "Something went wrong");
+    }
+    return response?.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export {
   addEmployee,
@@ -120,4 +134,5 @@ export {
   getEmployeeProfileDetails,
   getEmployeeBirthdays,
   getEmployeeData,
+  getEmployeesAssignedToManager,
 };

@@ -4,7 +4,9 @@ import { toast } from "sonner";
 import {
   getEmployees,
   changeEmployeeStatus,
+  getEmployeesAssignedToManager,
 } from "../../Services/employeeService";
+import { getUserProfileDetails } from "../../Services/userService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
 
@@ -12,6 +14,7 @@ const PAGE_SIZE = 5;
 
 const ManageEmployees = () => {
   const [employees, setEmployees] = useState([]);
+  const [profile, setProfile] = useState({});
   const [loader, setLoader] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -21,11 +24,38 @@ const ManageEmployees = () => {
     direction: "asc",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const fetchUserProfileDetails = async () => {
+    setLoader(true);
+    try {
+      const response = await getUserProfileDetails();
+      if (response?.success) {
+        setProfile(response?.data || {});
+      }
+    } catch (error) {
+      setProfile({});
+      toast.error(error?.message || "Error fetching user");
+      console.error("Error fetching user:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserProfileDetails();
+  }, []);
 
   const fetchEmployees = async () => {
     setLoader(true);
     try {
-      const response = await getEmployees();
+      let response;
+      const role = localStorage.getItem("UserRole");
+
+      if (role === "manager") {
+        response = await getEmployeesAssignedToManager(profile._id);
+      } else {
+        response = await getEmployees();
+      }
+
       if (response?.success) {
         setEmployees(response?.data || []);
       } else {
@@ -38,7 +68,11 @@ const ManageEmployees = () => {
       setLoader(false);
     }
   };
-
+  useEffect(() => {
+    if (profile?._id) {
+      fetchEmployees();
+    }
+  }, [profile]);
   const handleChangeStatus = async (id) => {
     setLoader(true);
     try {
@@ -55,10 +89,6 @@ const ManageEmployees = () => {
       setLoader(false);
     }
   };
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
 
   const filteredEmployees = employees.filter(
     (emp) =>
@@ -124,11 +154,13 @@ const ManageEmployees = () => {
               </nav>
             </div>
             <div>
-              <Link to={"/add-employee"}>
-                <button className="btn btn-primary btn-wave">
-                  Add New Employee
-                </button>
-              </Link>
+              {localStorage.getItem("UserRole") !== "manager" && (
+                <Link to={"/add-employee"}>
+                  <button className="btn btn-primary btn-wave">
+                    Add New Employee
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
 

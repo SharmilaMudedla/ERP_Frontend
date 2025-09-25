@@ -34,7 +34,10 @@ const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
   const role = localStorage.getItem("UserRole") || "";
 
-  const isAdminOrManager = token && (role === "admin" || role === "manager");
+  const isAdmin = token && role === "admin";
+  const isHr = token && role === "hr";
+  const isManager = token && role === "manager";
+
   const isAuthenticated = !!token;
 
   return (
@@ -77,14 +80,11 @@ const Pageroutes = () => {
             </ProtectedRoute>
           }
         />
-        {/* Protected routes only for admin/manager */}
+        {/* Protected routes only for admin/manager/hr */}
         <Route
           path="/Roles"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <ManageRoles />
             </ProtectedRoute>
           }
@@ -93,7 +93,7 @@ const Pageroutes = () => {
           path="/addPayroll"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr}
               redirectPath="/dashboard"
             >
               <AddPayroll />
@@ -104,7 +104,7 @@ const Pageroutes = () => {
           path="/payroll"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr}
               redirectPath="/dashboard"
             >
               <ManagePayroll />
@@ -114,10 +114,7 @@ const Pageroutes = () => {
         <Route
           path="/Users"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <ManageUsers />
             </ProtectedRoute>
           }
@@ -125,10 +122,7 @@ const Pageroutes = () => {
         <Route
           path="/add-role"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <AddRole />
             </ProtectedRoute>
           }
@@ -136,10 +130,7 @@ const Pageroutes = () => {
         <Route
           path="/add-user"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <AddUser />
             </ProtectedRoute>
           }
@@ -147,10 +138,7 @@ const Pageroutes = () => {
         <Route
           path="/department"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <ManageDepartment />
             </ProtectedRoute>
           }
@@ -158,10 +146,7 @@ const Pageroutes = () => {
         <Route
           path="/add-department"
           element={
-            <ProtectedRoute
-              isAllowed={isAdminOrManager}
-              redirectPath="/dashboard"
-            >
+            <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <AddDepartment />
             </ProtectedRoute>
           }
@@ -170,7 +155,7 @@ const Pageroutes = () => {
           path="/employees"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <ManageEmployees />
@@ -181,7 +166,7 @@ const Pageroutes = () => {
           path="/add-employee"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <AddEmployee />
@@ -192,7 +177,7 @@ const Pageroutes = () => {
           path="/attendance"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <ManageAttendance />
@@ -204,7 +189,7 @@ const Pageroutes = () => {
           path="/viewAttendance"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <ViewAttendance />
@@ -215,7 +200,7 @@ const Pageroutes = () => {
           path="/attendanceReport"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <AttendanceReport />
@@ -226,7 +211,7 @@ const Pageroutes = () => {
           path="/view-report"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <AttendenceView />
@@ -248,7 +233,7 @@ const Pageroutes = () => {
           path="/manageleaves"
           element={
             <ProtectedRoute
-              isAllowed={isAdminOrManager}
+              isAllowed={isAdmin || isHr || isManager}
               redirectPath="/dashboard"
             >
               <ManageLeaves />
