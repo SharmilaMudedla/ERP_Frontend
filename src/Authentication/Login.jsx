@@ -23,7 +23,6 @@ const Login = () => {
       if (response?.success) {
         setRoles(response?.data || []);
       }
-      console.log("response", response);
     } catch (error) {
       setRoles([]);
       toast.error(error?.message || "Error fetching Roles");
