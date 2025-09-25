@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Sidebar = () => {
@@ -33,7 +33,12 @@ const Sidebar = () => {
       return newState;
     });
   };
-
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("SpondiasAuthToken");
+    localStorage.removeItem("UserRole");
+    navigate("/");
+  };
   const role = localStorage.getItem("UserRole");
   const location = useLocation();
   useEffect(() => {
@@ -606,6 +611,34 @@ const Sidebar = () => {
                     </li>
                   </ul>
                 </li>
+                <li
+                  className={`slide has-sub ${openMenus.profile ? "open" : ""}`}
+                >
+                  <Link
+                    to="/profile"
+                    className="side-menu__item"
+                    onClick={closeOffcanvas}
+                    aria-expanded={openMenus.profile}
+                    aria-controls="dashboard-menu"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      className="bi bi-person-circle side-menu__icon"
+                      viewBox="0 0 16 16"
+                      width="1em"
+                      height="1em"
+                    >
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+                      />
+                    </svg>
+                    <span className="side-menu__label">Profile</span>
+                    <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                  </Link>
+                </li>
               </>
             )}
             {role === "hr" && (
@@ -971,7 +1004,7 @@ const Sidebar = () => {
                     <li className="slide side-menu__label1">
                       <a>Leave</a>
                     </li>
-                    <li className="slide ">
+                    <li className="slide">
                       <Link
                         className="dropdown-item side-menu__item"
                         to="/manageleaves"
@@ -983,6 +1016,17 @@ const Sidebar = () => {
                 </li>
               </>
             )}
+
+            <li className="slide">
+              <button
+                className="side-menu__item btn btn-link text-start w-100"
+                onClick={handleLogout}
+                style={{ textDecoration: "none" }}
+              >
+                <i className="ri-logout-box-r-line side-menu__icon"></i>
+                <span className="side-menu__label">Sign Out</span>
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
