@@ -406,8 +406,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          {/* End:: row-2 */}
-          {/* Start:: row-3 */}
           {(role === "admin" || role === "hr") && (
             <div className="row">
               <div className="col-xxl-12">
