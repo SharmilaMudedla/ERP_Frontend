@@ -30,6 +30,8 @@ const EmployeeLeaves = lazy(() => import("./Pages/Leaves/EmployeeManageLeave"));
 const Profile = lazy(() => import("./Pages/MyProfile/Profile"));
 const AddPayroll = lazy(() => import("./Pages/payroll/AddPayroll"));
 const ManagePayroll = lazy(() => import("./Pages/payroll/ManagePayroll"));
+const AddSalary = lazy(() => import("./Pages/Salary/AddSalary"));
+const ManageSalary = lazy(() => import("./Pages/Salary/ManageSalary"));
 const Pageroutes = () => {
   const token = localStorage.getItem("SpondiasAuthToken");
   const role = localStorage.getItem("UserRole") || "";
@@ -86,6 +88,28 @@ const Pageroutes = () => {
           element={
             <ProtectedRoute isAllowed={isAdmin} redirectPath="/dashboard">
               <ManageRoles />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/addSalary"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdmin || isHr}
+              redirectPath="/dashboard"
+            >
+              <AddSalary />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/salary"
+          element={
+            <ProtectedRoute
+              isAllowed={isAdmin || isHr}
+              redirectPath="/dashboard"
+            >
+              <ManageSalary />
             </ProtectedRoute>
           }
         />
