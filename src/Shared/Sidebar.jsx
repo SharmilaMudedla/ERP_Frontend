@@ -908,69 +908,7 @@ const Sidebar = () => {
                     </li>
                   </ul>
                 </li>
-                {/* Attendance Dropdown */}
-                <li
-                  className={`slide has-sub ${
-                    openMenus.attendance ? "open" : ""
-                  }`}
-                >
-                  <a
-                    href="#dashboard"
-                    className="side-menu__item"
-                    onClick={(e) => toggleMenu("attendance", e)}
-                    aria-expanded={openMenus.attendance}
-                    aria-controls="dashboard-menu"
-                  >
-                    {" "}
-                    <i className="ri-id-card-fill"></i>
-                    <span className="side-menu__label">
-                      &nbsp;&nbsp; Attendance
-                    </span>
-                    <i className="ri-arrow-down-s-line side-menu__angle"></i>
-                  </a>
 
-                  <ul
-                    id="dashboard-menu"
-                    className="slide-menu child1"
-                    style={{
-                      display: openMenus.attendance ? "block" : "none",
-                      position: "relative",
-                      left: "0px",
-                      top: "0px",
-                      margin: "0px",
-                      transform: "translate(5px, 703px)",
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    <li className="slide side-menu__label1">
-                      <a>attendance</a>
-                    </li>
-                    <li className="slide ">
-                      <Link
-                        className="dropdown-item side-menu__item"
-                        to="/attendance"
-                      >
-                        Attendance
-                      </Link>
-                    </li>
-                    <li className="slide ">
-                      <Link
-                        className="dropdown-item side-menu__item"
-                        to="/viewAttendance"
-                      >
-                        View Attendance
-                      </Link>
-                    </li>
-                    <li className="slide ">
-                      <Link
-                        className="dropdown-item side-menu__item"
-                        to="/attendanceReport"
-                      >
-                        Attendance Report
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
                 {/* Leaves Dropdown */}
                 <li
                   className={`slide has-sub ${openMenus.leave ? "open" : ""}`}

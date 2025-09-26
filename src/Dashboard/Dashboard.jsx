@@ -46,7 +46,6 @@ const Dashboard = () => {
     let valA = a[sortConfig.key];
     let valB = b[sortConfig.key];
 
-    // Handle nested values like departmentId.name
     if (sortConfig.key === "department") {
       valA = a?.departmentId?.name || "";
       valB = b?.departmentId?.name || "";
@@ -66,12 +65,23 @@ const Dashboard = () => {
   );
   const fectchEmployeeCount = async () => {
     try {
-      const response = await getEmployeeData();
-      if (response?.success) {
-        setEmployeeCount(response?.data);
+      const role = localStorage.getItem("UserRole");
+
+      let response;
+      if (role === "manager") {
+        response = await getEmployeesAssignedToManager(profile._id);
+        if (response?.success) {
+          setEmployeeCount(response?.data?.length || 0);
+        }
+      } else {
+        response = await getEmployeeData();
+        if (response?.success) {
+          setEmployeeCount(response?.data || 0);
+        }
       }
     } catch (error) {
       console.error(error);
+      setEmployeeCount(0);
     }
   };
   const fetchDepartmentsCount = async () => {
@@ -94,16 +104,7 @@ const Dashboard = () => {
       console.error(error);
     }
   };
-  // const fetchEmployees = async () => {
-  //   try {
-  //     const response = await getEmployees();
-  //     if (response?.success) {
-  //       setEmployees(response?.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+
   const fetchEvents = async () => {
     try {
       const response = await getEvents();
@@ -125,6 +126,8 @@ const Dashboard = () => {
     }
   };
   const fetchUserProfileDetails = async () => {
+    const role = localStorage.getItem("UserRole");
+    if (role === "employee") return;
     setLoader(true);
     try {
       const response = await getUserProfileDetails();
@@ -167,6 +170,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (profile?._id) {
       fetchEmployees();
+      fectchEmployeeCount();
     }
   }, [profile]);
   useEffect(() => {
@@ -406,7 +410,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          {(role === "admin" || role === "hr") && (
+          {(role === "admin" || role === "hr" || role === "manager") && (
             <div className="row">
               <div className="col-xxl-12">
                 <div className="card custom-card">
@@ -532,7 +536,7 @@ const Dashboard = () => {
                                 </td>
                                 <td>
                                   <span className="fw-medium">
-                                    {emp?.salaryStructure || "N/A"}
+                                    {emp?.salaryStructure?.basicSalary || "N/A"}
                                   </span>
                                 </td>
                               </tr>
