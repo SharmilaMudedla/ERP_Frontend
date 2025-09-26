@@ -7,6 +7,7 @@ import {
   updateEmployee,
 } from "../../Services/employeeService";
 import { getDepartments } from "../../Services/departmentService";
+import { getSalaries } from "../../Services/salaryService";
 import Loader from "../../loader/Loader";
 import ToasterAlert from "../../toaster/ToasterAlert";
 import { uploadFileImage } from "../../Utils/imagaHandler";
@@ -28,6 +29,7 @@ const initialStage = {
 
 const AddEmployee = () => {
   const [formData, setFormData] = useState(initialStage);
+  const [salaries, setSalaries] = useState([]);
   const [errors, setErrors] = useState({});
   const [loader, setLoader] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
@@ -50,6 +52,16 @@ const AddEmployee = () => {
       console.error(" Error fetching department:", error);
     } finally {
       setLoader(false);
+    }
+  };
+  const fetchSalaries = async () => {
+    try {
+      const response = await getSalaries();
+      if (response?.success) {
+        setSalaries(response?.data || []);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -157,6 +169,7 @@ const AddEmployee = () => {
       setFormData(initialStage);
     }
     fetchDepartments();
+    fetchSalaries();
   }, [EmployeeId]);
 
   const handleImageChange = async (event) => {
@@ -562,18 +575,46 @@ const AddEmployee = () => {
                       {/* Salary Structure */}
                       <div className="col-xl-6">
                         <label htmlFor="salaryStructure" className="form-label">
-                          Salary Structure
+                          Salary Structure *
                         </label>
-                        <input
-                          type="text"
+                        <select
                           id="salaryStructure"
                           name="salaryStructure"
                           value={formData.salaryStructure || ""}
                           onChange={handleChange}
-                          placeholder="Enter salary structure"
-                          className="form-control"
-                        />
+                          className={`form-select ${
+                            errors.salaryStructure
+                              ? "is-invalid"
+                              : formData.salaryStructure
+                              ? "is-valid"
+                              : ""
+                          }`}
+                        >
+                          <option value="">Select Structure</option>
+                          {salaries.map((salary) => (
+                            <option key={salary._id} value={salary._id}>
+                              {salary.basicSalary}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.salaryStructure && (
+                          <div className="invalid-feedback">
+                            {errors.salaryStructure}
+                          </div>
+                        )}
                       </div>
+                      {/* <div className="col-xl-6">
+                        <label htmlFor="salaryStructure" className="form-label">
+                          Salary Structure
+                        </label>
+                        <select
+                          name="salaryStructure"
+                          id="salaryStructure"
+                          className="form-control"
+                          value={formData.salaryStructure || ""}
+                          onChange={handleChange}
+                        ></select>
+                      </div> */}
                       <div className="col-xl-6">
                         <label htmlFor="image" className="form-label">
                           Image

@@ -12,6 +12,7 @@ const Sidebar = () => {
     attendance: false,
     leave: false,
     event: false,
+    salary: false,
     payroll: false,
   });
   const closeOffcanvas = () => {
@@ -448,6 +449,69 @@ const Sidebar = () => {
                         to="/manageEvents"
                       >
                         Calender
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  className={`slide has-sub ${openMenus.salary ? "open" : ""}`}
+                >
+                  <a
+                    href="#dashboard"
+                    className="side-menu__item"
+                    onClick={(e) => toggleMenu("salary", e)}
+                    aria-expanded={openMenus.salary}
+                    aria-controls="dashboard-menu"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="side-menu__icon"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                        d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12M11 7h6M7 7h1m-1 5h1m-1 5h1m3-5h6m-6 5h6"
+                        color="currentColor"
+                      />
+                    </svg>
+                    <span className="side-menu__label"> Salary </span>
+                    <i className="ri-arrow-down-s-line side-menu__angle"></i>
+                  </a>
+
+                  <ul
+                    id="dashboard-menu"
+                    className="slide-menu child1"
+                    style={{
+                      display: openMenus.salary ? "block" : "none",
+                      position: "relative",
+                      left: "0px",
+                      top: "0px",
+                      margin: "0px",
+                      transform: "translate(5px, 703px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <li className="slide side-menu__label1">
+                      <a>Manage Salary</a>
+                    </li>
+                    <li className="slide ">
+                      <Link
+                        className="dropdown-item side-menu__item"
+                        to="/salary"
+                      >
+                        Salary
+                      </Link>
+                      <Link
+                        className="dropdown-item side-menu__item"
+                        to="/addSalary"
+                      >
+                        Add Salary
                       </Link>
                     </li>
                   </ul>
