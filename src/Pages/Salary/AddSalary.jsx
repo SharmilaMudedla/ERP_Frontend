@@ -331,7 +331,7 @@ const AddSalary = () => {
 
                   {/* Footer */}
                   <div className="card-footer border-top-0 d-flex justify-content-between">
-                    <Link to="/department" className="btn btn-danger">
+                    <Link to="/salary" className="btn btn-danger">
                       Cancel
                     </Link>
                     <button type="submit" className="btn btn-primary">
