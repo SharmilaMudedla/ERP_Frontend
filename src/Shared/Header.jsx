@@ -73,6 +73,13 @@ const Header = () => {
     navigate("/");
   };
   const role = localStorage.getItem("UserRole");
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+
+    if (imagePath.startsWith("http")) return imagePath;
+
+    return `https://erp-backendapi-9upv.onrender.com/${imagePath}`;
+  };
   return (
     <>
       {loader && <Loader />}
@@ -159,9 +166,7 @@ const Header = () => {
                       src={
                         localStorage.getItem("UserRole") === "employee"
                           ? profile?.image
-                            ? `${import.meta.env.VITE_BASE_URL}/${
-                                profile.image
-                              }`
+                            ? `${getImageUrl(profile?.image)}`
                             : "assets/images/profile/placeholder.png"
                           : "assets/images/faces/10.jpg"
                       }
