@@ -32,13 +32,7 @@ const Profile = () => {
   useEffect(() => {
     fetchEmployeeDetails();
   }, []);
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return null;
 
-    if (imagePath.startsWith("http")) return imagePath;
-
-    return `https://erp-backendapi-9upv.onrender.com/${imagePath}`;
-  };
   return (
     <>
       {loader && <Loader />}
@@ -55,7 +49,9 @@ const Profile = () => {
                   <div className="row align-items-center">
                     <div className="col-md-4 text-center">
                       <img
-                        src={getImageUrl(profile?.image) || ""}
+                        src={`${import.meta.env.VITE_BASE_URL}/${
+                          profile.image
+                        }`}
                         alt={`${profile.firstName} ${profile.lastName}`}
                         className="rounded-circle border"
                         style={{

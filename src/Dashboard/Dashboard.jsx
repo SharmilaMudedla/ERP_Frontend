@@ -182,13 +182,6 @@ const Dashboard = () => {
     fetchUserProfileDetails();
   }, []);
   const role = localStorage.getItem("UserRole");
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return null;
-
-    if (imagePath.startsWith("http")) return imagePath;
-
-    return `https://erp-backendapi-9upv.onrender.com/${imagePath}`;
-  };
   return (
     <>
       {loader && <Loader />}
@@ -495,10 +488,9 @@ const Dashboard = () => {
                                 <td>
                                   <div className="d-flex align-items-center">
                                     <img
-                                      src={getImageUrl(emp.image)}
-                                      // src={`${import.meta.env.VITE_BASE_URL}/${
-                                      //   emp.image
-                                      // }`}
+                                      src={`${import.meta.env.VITE_BASE_URL}/${
+                                        emp.image
+                                      }`}
                                       className="avatar avatar-sm"
                                       alt="Employee"
                                     />
