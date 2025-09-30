@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  baseURL: https://erp-backendapi-9upv.onrender.com,
+  baseURL: "https://erp-backendapi-9upv.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
