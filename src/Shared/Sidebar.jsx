@@ -49,7 +49,7 @@ const Sidebar = () => {
     <>
       {/* Sidebar Header */}
       <div className="main-sidebar-header">
-        <a href="index.html" className="header-logo">
+        <a href="#" className="header-logo">
           <img
             src="assets/images/brand-logos/Spondias-logo.png"
             alt="logo"

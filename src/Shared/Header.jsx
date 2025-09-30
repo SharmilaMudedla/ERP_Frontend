@@ -83,7 +83,7 @@ const Header = () => {
           <div className="header-content-left">
             <div className="header-element">
               <div className="horizontal-logo">
-                <a href="index.html" className="header-logo">
+                <a href="" className="header-logo">
                   <img
                     src="assets/images/brand-logos/Spondias-logo.png"
                     alt="logo"
